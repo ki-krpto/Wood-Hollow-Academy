@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d2tb7eeyt2com"]
 
-[ext_resource type="PackedScene" uid="uid://d4ion4k585l3g" path="res://assets/maps/cave_level.tmx" id="1_ulcgi"]
+[ext_resource type="PackedScene" uid="uid://d4ion4k585l3g" path="res://assets/maps/cave_level.tscn" id="1_ulcgi"]
 
 [node name="Node2D" type="Node2D" unique_id=2003156474]
 
