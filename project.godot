@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="Wood Hollow Academy"
+run/main_scene="uid://d2tb7eeyt2com"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/YATI/plugin.cfg")
 
 [physics]
 
