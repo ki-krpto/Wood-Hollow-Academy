@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwlbl0cvnmk06"]
+
+[ext_resource type="Script" path="res://scripts/overworld/Overworld.gd" id="1_6u4cc"]
+
+[node name="Overworld" type="Node2D"]
+script = ExtResource("1_6u4cc")
+
+[node name="DialogueUI" type="CanvasLayer" parent="."]
+
+[node name="DialoguePanel" type="Panel" parent="DialogueUI"]
+visible = false
+anchor_left = 0.05
+anchor_right = 0.95
+anchor_top = 0.7
+anchor_bottom = 0.95
+color = Color(0, 0, 0, 1)
+
+[node name="DialogueLabel" type="Label" parent="DialogueUI"]
+anchors_preset = 8
+anchor_left = 0.1
+anchor_right = 0.9
+anchor_top = 0.73
+anchor_bottom = 0.92
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24

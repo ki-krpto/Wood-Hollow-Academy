@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=3 uid="uid://cr0wkbky40no5"]
+
+[ext_resource type="Script" path="res://scripts/inventory/InventoryUI.gd" id="1_b4a72"]
+
+[node name="InventoryUI" type="CanvasLayer"]
+script = ExtResource("1_b4a72")
+
+[node name="AttackLabel" type="Label" parent="."]
+position = Vector2(320, 60)
+
+[node name="HealthLabel" type="Label" parent="."]
+position = Vector2(320, 85)
+
+[node name="XPLabel" type="Label" parent="."]
+position = Vector2(320, 110)
+
+[node name="LevelLabel" type="Label" parent="."]
+position = Vector2(320, 135)
+
+[node name="ArmorSlot" type="ColorRect" parent="."]
+position = Vector2(60, 95)
+size = Vector2(35, 45)
+color = Color(1, 1, 1, 1)
+
+[node name="WeaponSlot" type="ColorRect" parent="."]
+position = Vector2(60, 160)
+size = Vector2(35, 45)
+color = Color(1, 1, 1, 1)
+
+[node name="UseButton" type="ColorRect" parent="."]
+position = Vector2(245, 255)
+size = Vector2(35, 20)
+color = Color(0.78, 0.78, 0.78, 1)
+
+[node name="SlotsContainer" type="Node2D" parent="."]

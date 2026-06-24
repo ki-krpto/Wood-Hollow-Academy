@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2ny4hbvjmv8t"]
+
+[ext_resource type="Script" path="res://scripts/overworld/EnemyEntity.gd" id="1_yev8v"]
+
+[node name="EnemyEntity" type="Area2D"]
+script = ExtResource("1_yev8v")

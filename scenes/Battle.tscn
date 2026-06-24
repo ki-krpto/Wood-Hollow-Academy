@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3 uid="uid://baw1vwphnhj3a"]
+
+[ext_resource type="Script" path="res://scripts/battle/Battle.gd" id="1_0mpkj"]
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_0mpkj")
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.08, 0.08, 0.31, 1)
+
+[node name="EnemySprite" type="Sprite2D" parent="."]
+position = Vector2(320, 140)
+scale = Vector2(3, 3)
+
+[node name="EnemyName" type="Label" parent="."]
+position = Vector2(220, 30)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="EnemyHPBar" type="TextureProgressBar" parent="."]
+position = Vector2(220, 55)
+size = Vector2(200, 20)
+max_value = 100
+value = 100
+fill_mode = 0
+tint_progress = Color(0, 1, 0, 1)
+tint_under = Color(0.5, 0.5, 0.5, 1)
+
+[node name="MenuPanel" type="ColorRect" parent="."]
+position = Vector2(0, 300)
+size = Vector2(640, 180)
+color = Color(0.47, 0.31, 0.16, 1)
+
+[node name="MenuButtons" type="VBoxContainer" parent="MenuPanel"]
+position = Vector2(10, 10)
+size = Vector2(140, 160)
+
+[node name="AttackBtn" type="Button" parent="MenuButtons"]
+text = "Attack"
+theme_override_font_sizes/font_size = 20
+
+[node name="ItemsBtn" type="Button" parent="MenuButtons"]
+text = "Items"
+theme_override_font_sizes/font_size = 20
+
+[node name="StancesBtn" type="Button" parent="MenuButtons"]
+text = "Stances"
+theme_override_font_sizes/font_size = 20
+
+[node name="RunBtn" type="Button" parent="MenuButtons"]
+text = "Run Away"
+theme_override_font_sizes/font_size = 20
+
+[node name="InfoPanel" type="ColorRect" parent="MenuPanel"]
+position = Vector2(200, 10)
+size = Vector2(240, 160)
+color = Color(0.35, 0.2, 0.1, 1)
+
+[node name="MessageLabel" type="Label" parent="MenuPanel"]
+position = Vector2(200, 165)
+size = Vector2(240, 20)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="RightPanel" type="VBoxContainer" parent="MenuPanel"]
+position = Vector2(460, 10)
+size = Vector2(170, 160)
+
+[node name="PlayerStats" type="VBoxContainer" parent="RightPanel"]
+
+[node name="NameLabel" type="Label" parent="RightPanel/PlayerStats"]
+text = "Kim"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="HPLabel" type="Label" parent="RightPanel/PlayerStats"]
+text = "HP: 100/100"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="ItemOptions" type="VBoxContainer" parent="RightPanel"]
+visible = false
+
+[node name="StanceOptions" type="VBoxContainer" parent="RightPanel"]
+visible = false

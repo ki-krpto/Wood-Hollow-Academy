@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://c2t2qlr48rg5g"]
+
+[ext_resource type="Script" path="res://scripts/menu/Menu.gd" id="1_4xdr5"]
+
+[node name="Menu" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_4xdr5")
+
+[node name="TitleLabel" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.2
+anchor_right = 0.8
+anchor_top = 0.1
+anchor_bottom = 0.3
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.35
+anchor_right = 0.65
+anchor_top = 0.4
+anchor_bottom = 0.6
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+text = "Start Game"
+theme_override_font_sizes/font_size = 24
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+text = "Quit"
+theme_override_font_sizes/font_size = 24

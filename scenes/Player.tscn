@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://d6lhpxqga7oxe"]
+
+[ext_resource type="Script" path="res://scripts/overworld/Player.gd" id="1_6v1wb"]
+[ext_resource type="Texture2D" path="res://assets/img/kim-forward.png" id="2_jnbry"]
+
+[node name="Player" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_6v1wb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_jnbry")
+scale = Vector2(0.5, 0.5)

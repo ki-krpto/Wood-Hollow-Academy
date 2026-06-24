@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4p0kghk3x6if"]
+
+[ext_resource type="Script" path="res://scripts/overworld/ChestEntity.gd" id="1_fn7qv"]
+
+[node name="ChestEntity" type="Area2D"]
+script = ExtResource("1_fn7qv")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d0ymr1b6owp4v"]
+
+[ext_resource type="Script" path="res://scripts/autoload/Main.gd" id="1_bhpcg"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_bhpcg")
