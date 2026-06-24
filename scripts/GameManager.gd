@@ -130,15 +130,15 @@ func get_attack() -> int:
 	var mult = stances.get(player_current_stance, {"atk": 1.0})["atk"]
 	return int(player_base_attack * mult)
 
-func mark_enemy_defeated(name: String, grid_x: int, grid_y: int):
+func mark_enemy_defeated(enemy_name: String, grid_x: int, grid_y: int):
 	for e in defeated_enemies:
-		if e["name"] == name:
+		if e["name"] == enemy_name:
 			return
-	defeated_enemies.append({"name": name, "grid_x": grid_x, "grid_y": grid_y})
+	defeated_enemies.append({"name": enemy_name, "grid_x": grid_x, "grid_y": grid_y})
 
-func is_enemy_defeated(name: String, grid_x: int, grid_y: int) -> bool:
+func is_enemy_defeated(enemy_name: String, grid_x: int, grid_y: int) -> bool:
 	for e in defeated_enemies:
-		if e["name"] == name and e["grid_x"] == grid_x and e["grid_y"] == grid_y:
+		if e["name"] == enemy_name and e["grid_x"] == grid_x and e["grid_y"] == grid_y:
 			return true
 	return false
 
