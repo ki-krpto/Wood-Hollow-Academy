@@ -38,20 +38,8 @@ sources/1 = SubResource("TileSetAtlasSource_uyovd")
 sources/2 = SubResource("TileSetAtlasSource_cpdd1")
 sources/3 = SubResource("TileSetAtlasSource_7q8ih")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_452k7"]
-size = Vector2(631, 29)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gt21e"]
-size = Vector2(24, 608)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bfh6b"]
-size = Vector2(628, 20)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_27eaw"]
-size = Vector2(33, 626)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_geqav"]
-size = Vector2(12, 15)
+size = Vector2(10, 14)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lg6sj"]
 size = Vector2(10, 12)
@@ -76,30 +64,14 @@ texture_filter = 1
 [node name="StaticBody" type="StaticBody2D" parent="Collision" unique_id=1117768039]
 position = Vector2(5, 4)
 
-[node name="Rectangle Shape" type="CollisionShape2D" parent="Collision/StaticBody" unique_id=1884116293]
-position = Vector2(315.5, 14.5)
-shape = SubResource("RectangleShape2D_452k7")
-
 [node name="StaticBody2" type="StaticBody2D" parent="Collision" unique_id=251881822]
 position = Vector2(6, 29)
-
-[node name="Rectangle Shape" type="CollisionShape2D" parent="Collision/StaticBody2" unique_id=200860851]
-position = Vector2(316, 777)
-shape = SubResource("RectangleShape2D_gt21e")
 
 [node name="StaticBody3" type="StaticBody2D" parent="Collision" unique_id=711899203]
 position = Vector2(9, 609)
 
-[node name="Rectangle Shape" type="CollisionShape2D" parent="Collision/StaticBody3" unique_id=1744024403]
-position = Vector2(314, 10)
-shape = SubResource("RectangleShape2D_bfh6b")
-
 [node name="StaticBody4" type="StaticBody2D" parent="Collision" unique_id=565250400]
 position = Vector2(610, 10)
-
-[node name="Rectangle Shape" type="CollisionShape2D" parent="Collision/StaticBody4" unique_id=1820887255]
-position = Vector2(16.5, 313)
-shape = SubResource("RectangleShape2D_27eaw")
 
 [node name="Entities" type="Node2D" parent="." unique_id=1723577618]
 texture_filter = 1
@@ -109,14 +81,14 @@ position = Vector2(297, 105)
 metadata/dialogue = "Hello! |How is your day? |Glad to hear that! |Make sure to slay that monster!"
 
 [node name="Vivi" type="CollisionShape2D" parent="Entities/Vivi (SB)" unique_id=309669480]
-position = Vector2(6, 7.5)
+position = Vector2(3, 332)
 shape = SubResource("RectangleShape2D_geqav")
 
 [node name="Pollutabloom (SB)" type="StaticBody2D" parent="Entities" unique_id=989108386]
 position = Vector2(392, 108.5)
 
 [node name="Pollutabloom" type="CollisionShape2D" parent="Entities/Pollutabloom (SB)" unique_id=933950011]
-position = Vector2(5, 6)
+position = Vector2(-33, 325.5)
 shape = SubResource("RectangleShape2D_lg6sj")
 
 [node name="Potion Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1912139824]
@@ -124,19 +96,18 @@ position = Vector2(424, 107)
 metadata/item_name = "Basic Health Potion"
 
 [node name="Potion Chest" type="CollisionShape2D" parent="Entities/Potion Chest (SB)" unique_id=107999049]
-position = Vector2(7, 6.5)
+position = Vector2(-161, 459)
 shape = SubResource("RectangleShape2D_8qmuy")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1647955736]
+position = Vector2(70, 366)
 script = ExtResource("5_ovupq")
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=10607621]
 
 [node name="Sprite2D" type="Sprite2D" parent="Player" unique_id=157822973]
-position = Vector2(70.00003, 366)
 scale = Vector2(0.1, 0.1)
 texture = ExtResource("6_3p3c4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1981981388]
-position = Vector2(71.5, 374)
 shape = SubResource("RectangleShape2D_7yw50")

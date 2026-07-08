@@ -5,3 +5,4 @@
 [node name="Node2D" type="Node2D" unique_id=2003156474]
 
 [node name="cave_level" parent="." unique_id=840061746 instance=ExtResource("1_ulcgi")]
+position = Vector2(21, -167)
