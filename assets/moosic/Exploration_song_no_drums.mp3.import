@@ -12,7 +12,7 @@ dest_files=["res://.godot/imported/Exploration_song_no_drums.mp3-1b8c9def29d38b0
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0
 bpm=0
 beat_count=0
