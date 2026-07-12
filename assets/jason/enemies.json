@@ -1,30 +1,41 @@
 {
   "Ryan Gosling": {
-	"hp": 200,
-	"attack": 8,
-	"defense": 5,
+	"hp": 80,
+	"attack": 10,
+	"defense": 3,
 	"xp_reward": 100,
 	"image": "ryan.jpg",
-	"description": "He's just Ken (and very dangerous)."
+	"description": "He's just Ken (and very dangerous).",
+	"moves": {
+	  "Strike": 40,
+	  "Swoop": 30,
+	  "Evil Plot": 20,
+	  "Chomp": 10
+	}
   },
   "Cave Bat": {
 	"hp": 30,
-	"attack": 10,
+	"attack": 8,
 	"defense": 2,
 	"xp_reward": 50,
 	"image": "bat.png",
-	"description": "Screechy and hard to hit."
+	"description": "Screechy and hard to hit.",
+	"moves": {
+	  "Chomp": 50,
+	  "Swoop": 40,
+	  "Evil Plot": 10
+	}
   },
   "Limestone Golem": {
 	"hp": 150,
-	"attack": 20,
-	"defense": 25,
+	"attack": 12,
+	"defense": 8,
 	"xp_reward": 250,
 	"image": "golem.png",
 	"description": "A literal wall of pain.",
 	"moves": {
 	  "Stoney Punch": 50,
-	  "Iron Slam": 75,
+	  "Iron Slam": 25,
 	  "Shardy Intention": 15,
 	  "Rerocked": 10
 	}

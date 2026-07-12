@@ -4,9 +4,11 @@ var enemy_data: Dictionary = {}
 var enemy_hp: int = 0
 var enemy_max_hp: int = 0
 var enemy_attack_buff: int = 0
+var player_attack_buff: int = 0
 var player_poison_turns: int = 0
 
 var enemy_poison_turns: int = 0
+var player_extra_turns: int = 0
 
 var state: String = "player_choice"
 var move_selected: String = ""
@@ -231,31 +233,10 @@ func build_bottom_bar():
 	var player_bar = ColorRect.new()
 	player_bar.color = Color(0.15, 0.8, 0.15, 1)
 	player_bar.position = Vector2(info_x, bar_y + 48)
-	player_bar.size = Vector2(200, 14)
+	var player_pct = float(GameManager.player_data.get("hp", 0)) / float(GameManager.player_data.get("max_hp", 100))
+	player_bar.size = Vector2(200 * player_pct, 14)
 	player_bar.name = "PlayerHPBar"
 	add_child(player_bar)
-
-	# Player MP label + bar
-	var player_mp_label = Label.new()
-	player_mp_label.text = "MP: " + str(GameManager.player_data.get("mp", 0)) + "/" + str(GameManager.player_data.get("max_mp", 20))
-	player_mp_label.add_theme_font_size_override("font_size", 13)
-	player_mp_label.add_theme_color_override("font_color", Color.WHITE)
-	player_mp_label.position = Vector2(info_x, bar_y + 68)
-	player_mp_label.name = "PlayerMPLabel"
-	add_child(player_mp_label)
-
-	var mp_bar_bg = ColorRect.new()
-	mp_bar_bg.color = Color(0.2, 0.2, 0.2, 1)
-	mp_bar_bg.position = Vector2(info_x, bar_y + 86)
-	mp_bar_bg.size = Vector2(200, 14)
-	add_child(mp_bar_bg)
-
-	var mp_bar = ColorRect.new()
-	mp_bar.color = Color(0.15, 0.4, 0.8, 1)
-	mp_bar.position = Vector2(info_x, bar_y + 86)
-	mp_bar.size = Vector2(200, 14)
-	mp_bar.name = "PlayerMPBar"
-	add_child(mp_bar)
 
 	# Detail info (right side)
 	var detail_bg = ColorRect.new()
@@ -334,7 +315,8 @@ func show_move_selection():
 	var bar_y = screen_size.y * 0.72
 	var bar_height = screen_size.y * 0.28
 	var btn_x = 15
-	var btn_y = bar_y + 10
+	var start_y = bar_y + bar_height * 0.42
+	var btn_y = start_y
 
 	for move_name in moves:
 		var btn = Button.new()
@@ -379,7 +361,7 @@ func show_item_selection():
 	var usable: Array[Dictionary] = []
 	for entry in inv:
 		var item_data = GameManager.get_item_data(entry.get("name", ""))
-		if item_data.get("type") == "healing":
+		if item_data.get("type") == "healing" or item_data.get("type") == "combat_buff":
 			usable.append(entry)
 	if usable.is_empty():
 		show_message("No usable items!")
@@ -389,7 +371,8 @@ func show_item_selection():
 	var bar_y = screen_size.y * 0.72
 	var bar_height = screen_size.y * 0.28
 	var btn_x = 15
-	var btn_y = bar_y + 10
+	var start_y = bar_y + bar_height * 0.42
+	var btn_y = start_y
 	for entry in usable:
 		var btn = Button.new()
 		btn.text = entry.get("name", "???") + " x" + str(entry.get("count", 1))
@@ -422,7 +405,16 @@ func _on_item_selected(item_name: String):
 	for child in get_children():
 		if child is Button and child.name.begins_with("ItemBtn"):
 			child.queue_free()
+	var item_data = GameManager.get_item_data(item_name)
 	GameManager.use_item(item_name)
+	if item_data.get("type") == "combat_buff":
+		if item_data.get("attribute") == "extra_turns":
+			player_extra_turns += int(item_data.get("value", 1))
+			show_message("Used " + item_name + "! You can attack again!")
+			await get_tree().create_timer(1.0).timeout
+			state = "player_choice"
+			show_action_buttons()
+			return
 	update_player_hp_bar()
 	show_message("Used " + item_name + "!")
 	await get_tree().create_timer(1.0).timeout
@@ -457,7 +449,7 @@ func execute_run():
 
 func execute_player_attack(move_name: String):
 	var attack_data = GameManager.get_attack_data(move_name)
-	var atk = GameManager.player_data.get("attack", 10)
+	var atk = GameManager.player_data.get("attack", 10) + player_attack_buff
 	var def = enemy_data.get("defense", 0)
 	var power = attack_data.get("power", 0)
 	var dmg = GameManager.calculate_damage(atk, power, def)
@@ -484,7 +476,12 @@ func execute_player_attack(move_name: String):
 			victory()
 			return
 
-	execute_enemy_turn(1.0)
+	if player_extra_turns > 0:
+		player_extra_turns -= 1
+		state = "player_choice"
+		show_action_buttons()
+	else:
+		execute_enemy_turn(1.0)
 
 func execute_enemy_turn(damage_mult: float = 1.0):
 	state = "enemy_turn"
@@ -550,9 +547,10 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 		match effect:
 			"raise_attack":
 				if is_player:
-					show_message("Nothing happens!")
+					player_attack_buff += 8
+					show_message("You focus your mind! Attack rose!")
 				else:
-					enemy_attack_buff += 3
+					enemy_attack_buff += 5
 					show_message(enemy_data.get("name", "Enemy") + " plots evilly! Attack rose!")
 			"heal_self":
 				if is_player:
@@ -610,14 +608,6 @@ func update_player_hp_bar():
 	var label = get_node_or_null("PlayerHPLabel")
 	if label:
 		label.text = "HP: " + str(GameManager.player_data["hp"]) + "/" + str(GameManager.player_data["max_hp"])
-	var mp_bar = get_node_or_null("PlayerMPBar")
-	if mp_bar:
-		var max_mp = GameManager.player_data.get("max_mp", 20)
-		var mp = GameManager.player_data.get("mp", 20)
-		mp_bar.size.x = 200 * (float(mp) / float(max_mp))
-	var mp_label = get_node_or_null("PlayerMPLabel")
-	if mp_label:
-		mp_label.text = "MP: " + str(GameManager.player_data["mp"]) + "/" + str(GameManager.player_data["max_mp"])
 
 func show_message(text: String):
 	var msg = get_node_or_null("MessageLabel")
@@ -626,14 +616,66 @@ func show_message(text: String):
 
 func victory():
 	state = "victory"
+	var old_level = int(GameManager.player_data.get("level", 1))
 	var xp = enemy_data.get("xp_reward", 50)
-	show_message("Victory! Gained " + str(xp) + " XP!")
 	GameManager.add_xp(xp)
+	var new_level = int(GameManager.player_data.get("level", 1))
+	if new_level > old_level:
+		show_level_up(new_level)
+		await get_tree().create_timer(3.0).timeout
+	show_message("Victory! Gained " + str(xp) + " XP!")
 	if not GameManager.defeated_enemies.has(GameManager.current_enemy):
 		GameManager.defeated_enemies.append(GameManager.current_enemy)
 	GameManager.current_enemy = ""
 	await get_tree().create_timer(2.0).timeout
 	return_to_overworld()
+
+func show_level_up(new_level: int):
+	var overlay = CanvasLayer.new()
+	overlay.layer = 20
+	get_tree().current_scene.add_child(overlay)
+
+	var bg = ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.6)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(bg)
+
+	var panel = PanelContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.offset_left = -200
+	panel.offset_top = -60
+	panel.offset_right = 200
+	panel.offset_bottom = 60
+	overlay.add_child(panel)
+
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.9, 0.8, 0.55, 1.0)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(8)
+	style.set_content_margin_all(20)
+	panel.add_theme_stylebox_override("panel", style)
+
+	var vbox = VBoxContainer.new()
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(vbox)
+
+	var title = Label.new()
+	title.text = "LEVEL UP!"
+	title.add_theme_font_size_override("font_size", 28)
+	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	var level_label = Label.new()
+	level_label.text = "You are now Level " + str(new_level) + "!"
+	level_label.add_theme_font_size_override("font_size", 16)
+	level_label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
+	level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(level_label)
+
+	var timer = get_tree().create_timer(3.0)
+	timer.timeout.connect(overlay.queue_free)
 
 func defeat():
 	state = "defeat"
@@ -644,4 +686,4 @@ func defeat():
 	return_to_overworld()
 
 func return_to_overworld():
-	get_tree().change_scene_to_file("res://scene.tscn")
+	GameManager.change_scene("res://scene.tscn")

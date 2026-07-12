@@ -1,6 +1,7 @@
 extends StaticBody2D
 
 @export var item_name: String = ""
+@export var item_count: int = 1
 var opened: bool = false
 var notification_ui: CanvasLayer = null
 var chest_body: ColorRect = null
@@ -40,8 +41,9 @@ func interact():
 		_show_notification("Found nothing useful...")
 		opened = true
 		return
-	GameManager.add_item(item_name)
-	_show_notification("Obtained: " + item_name + "!")
+	for i in item_count:
+		GameManager.add_item(item_name)
+	_show_notification("Obtained: " + item_name + " x" + str(item_count) + "!")
 	opened = true
 	_change_appearance()
 
@@ -69,9 +71,9 @@ func _show_notification(text: String):
 	notification_ui.add_child(panel)
 
 	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.1, 0.15, 0.1, 0.95)
-	style.border_color = Color(0.4, 0.8, 0.4, 1.0)
-	style.set_border_width_all(2)
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.45, 0.32, 0.18, 1.0)
+	style.set_border_width_all(4)
 	style.set_corner_radius_all(6)
 	style.set_content_margin_all(12)
 	panel.add_theme_stylebox_override("panel", style)
@@ -79,7 +81,7 @@ func _show_notification(text: String):
 	var label = Label.new()
 	label.text = text
 	label.add_theme_font_size_override("font_size", 15)
-	label.add_theme_color_override("font_color", Color(0.9, 1.0, 0.8))
+	label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	panel.add_child(label)
 

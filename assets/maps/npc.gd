@@ -38,17 +38,17 @@ func _show_dialogue_ui():
 	var panel = PanelContainer.new()
 	panel.name = "DialoguePanel"
 	panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	panel.offset_top = -120
+	panel.offset_top = -150
 	panel.offset_left = 40
 	panel.offset_right = -40
-	panel.offset_bottom = -20
+	panel.offset_bottom = -80
 	dialogue_ui.add_child(panel)
 
 	var style = StyleBoxFlat.new()
-	style.bg_color = Color(0.08, 0.06, 0.15, 0.95)
-	style.border_color = Color(0.6, 0.45, 0.8, 1.0)
-	style.set_border_width_all(3)
-	style.set_corner_radius_all(8)
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.45, 0.32, 0.18, 1.0)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(6)
 	style.set_content_margin_all(16)
 	panel.add_theme_stylebox_override("panel", style)
 
@@ -59,7 +59,7 @@ func _show_dialogue_ui():
 	var name_label = Label.new()
 	name_label.text = "Vivi"
 	name_label.add_theme_font_size_override("font_size", 16)
-	name_label.add_theme_color_override("font_color", Color(0.8, 0.6, 1.0))
+	name_label.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
 	vbox.add_child(name_label)
 
 	var text_label = Label.new()
@@ -75,7 +75,7 @@ func _show_dialogue_ui():
 	hint_label.name = "HintLabel"
 	hint_label.text = "[E] to continue"
 	hint_label.add_theme_font_size_override("font_size", 11)
-	hint_label.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6))
+	hint_label.add_theme_color_override("font_color", Color(0.5, 0.45, 0.4))
 	vbox.add_child(hint_label)
 
 func _update_dialogue_text():

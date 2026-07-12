@@ -23,7 +23,12 @@ var desc_name: Label = null
 var desc_text: Label = null
 var use_button: Button = null
 var hp_value_label: Label = null
-var mp_value_label: Label = null
+var pause_open: bool = false
+var pause_ui: CanvasLayer = null
+var pause_settings_panel: PanelContainer = null
+var pause_res_label: Label = null
+var pause_fs_label: Label = null
+var pause_vol_label: Label = null
 
 func _ready() -> void:
 	add_to_group("player")
@@ -32,6 +37,13 @@ func _ready() -> void:
 	target = position
 
 func _physics_process(delta: float) -> void:
+	if Input.is_action_just_pressed("pause_menu"):
+		_toggle_pause()
+		return
+
+	if pause_open:
+		return
+
 	if Input.is_action_just_pressed("stats_menu"):
 		_toggle_stats()
 		return
@@ -238,7 +250,7 @@ func _open_stats() -> void:
 	_build_description_bar(main_vbox)
 
 	var close_hint := Label.new()
-	close_hint.text = "[Tab] to close"
+	close_hint.text = "[C] to close"
 	close_hint.add_theme_font_size_override("font_size", 11)
 	close_hint.add_theme_color_override("font_color", Color(0.5, 0.45, 0.4))
 	close_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -279,9 +291,6 @@ func _build_character_panel(parent: Control) -> void:
 	hp_value_label = _add_stat_line(vbox, "HP", str(pd.get("hp", 0)) + " / " + str(pd.get("max_hp", 100)))
 	_add_bar(vbox, float(pd.get("hp", 0)) / float(pd.get("max_hp", 100)), Color(0.8, 0.2, 0.2))
 
-	mp_value_label = _add_stat_line(vbox, "MP", str(pd.get("mp", 0)) + " / " + str(pd.get("max_mp", 20)))
-	_add_bar(vbox, float(pd.get("mp", 0)) / float(pd.get("max_mp", 20)), Color(0.2, 0.4, 0.9))
-
 	vbox.add_child(HSeparator.new())
 
 	_add_stat_line(vbox, "STR", str(pd.get("attack", 10)))
@@ -320,7 +329,8 @@ func _add_bar(parent: Control, pct: float, bar_color: Color) -> void:
 
 	var fill := ColorRect.new()
 	fill.color = bar_color
-	fill.custom_minimum_size = Vector2(160 * clampf(pct, 0.0, 1.0), 6)
+	fill.size = Vector2(160 * clampf(pct, 0.0, 1.0), 6)
+	fill.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
 	parent.add_child(fill)
 
 func _build_inventory_panel(parent: Control) -> void:
@@ -511,7 +521,6 @@ func _on_use_pressed() -> void:
 		return
 
 	var heal_amount: int = item_data.get("value", 0)
-	GameManager.heal_player(heal_amount)
 	GameManager.use_item(item_name)
 
 	_refresh_inventory_grid()
@@ -548,8 +557,6 @@ func _refresh_stats_display() -> void:
 	var pd := GameManager.player_data
 	if hp_value_label:
 		hp_value_label.text = str(pd.get("hp", 0)) + " / " + str(pd.get("max_hp", 100))
-	if mp_value_label:
-		mp_value_label.text = str(pd.get("mp", 0)) + " / " + str(pd.get("max_mp", 20))
 
 func _close_stats() -> void:
 	stats_open = false
@@ -560,3 +567,272 @@ func _close_stats() -> void:
 
 func _ease_in_out(t: float) -> float:
 	return t * t * (3.0 - 2.0 * t)
+
+func _toggle_pause() -> void:
+	if pause_open:
+		_close_pause()
+	else:
+		_open_pause()
+
+func _open_pause() -> void:
+	pause_open = true
+	moving = false
+	move_dir = Vector2.ZERO
+	buffered_dir = Vector2.ZERO
+
+	pause_ui = CanvasLayer.new()
+	pause_ui.layer = 15
+	get_tree().current_scene.add_child(pause_ui)
+
+	var bg := ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.75)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_ui.add_child(bg)
+
+	var outer_panel := PanelContainer.new()
+	outer_panel.set_anchors_preset(Control.PRESET_CENTER)
+	outer_panel.offset_left = -160
+	outer_panel.offset_top = -140
+	outer_panel.offset_right = 160
+	outer_panel.offset_bottom = 140
+	pause_ui.add_child(outer_panel)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.45, 0.32, 0.18, 1.0)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(6)
+	style.set_content_margin_all(20)
+	outer_panel.add_theme_stylebox_override("panel", style)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	outer_panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = "Paused"
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	vbox.add_child(HSeparator.new())
+
+	var resume_btn := Button.new()
+	resume_btn.text = "Resume"
+	resume_btn.custom_minimum_size = Vector2(200, 36)
+	resume_btn.focus_mode = Control.FOCUS_NONE
+	resume_btn.pressed.connect(_close_pause)
+	vbox.add_child(resume_btn)
+
+	var settings_btn := Button.new()
+	settings_btn.text = "Settings"
+	settings_btn.custom_minimum_size = Vector2(200, 36)
+	settings_btn.focus_mode = Control.FOCUS_NONE
+	settings_btn.pressed.connect(_open_pause_settings)
+	vbox.add_child(settings_btn)
+
+	var quit_btn := Button.new()
+	quit_btn.text = "Quit to Menu"
+	quit_btn.custom_minimum_size = Vector2(200, 36)
+	quit_btn.focus_mode = Control.FOCUS_NONE
+	quit_btn.pressed.connect(_quit_to_menu)
+	vbox.add_child(quit_btn)
+
+	pause_settings_panel = null
+
+func _close_pause() -> void:
+	pause_open = false
+	if pause_ui:
+		pause_ui.queue_free()
+		pause_ui = null
+	pause_settings_panel = null
+
+func _open_pause_settings() -> void:
+	if pause_ui:
+		pause_ui.queue_free()
+		pause_ui = null
+
+	pause_ui = CanvasLayer.new()
+	pause_ui.layer = 15
+	get_tree().current_scene.add_child(pause_ui)
+
+	var bg := ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.75)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	pause_ui.add_child(bg)
+
+	pause_settings_panel = PanelContainer.new()
+	pause_settings_panel.set_anchors_preset(Control.PRESET_CENTER)
+	pause_settings_panel.offset_left = -200
+	pause_settings_panel.offset_top = -160
+	pause_settings_panel.offset_right = 200
+	pause_settings_panel.offset_bottom = 160
+	pause_ui.add_child(pause_settings_panel)
+
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.45, 0.32, 0.18, 1.0)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(6)
+	style.set_content_margin_all(20)
+	pause_settings_panel.add_theme_stylebox_override("panel", style)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 14)
+	pause_settings_panel.add_child(vbox)
+
+	var title := Label.new()
+	title.text = "Settings"
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	vbox.add_child(HSeparator.new())
+
+	var res_row := HBoxContainer.new()
+	res_row.add_theme_constant_override("separation", 12)
+	vbox.add_child(res_row)
+
+	var res_title := Label.new()
+	res_title.text = "Resolution"
+	res_title.add_theme_font_size_override("font_size", 15)
+	res_title.add_theme_color_override("font_color", Color(0.7, 0.65, 0.55))
+	res_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	res_row.add_child(res_title)
+
+	var res_left := Button.new()
+	res_left.text = "<"
+	res_left.custom_minimum_size = Vector2(36, 28)
+	res_left.focus_mode = Control.FOCUS_NONE
+	res_left.pressed.connect(_on_pause_res_left)
+	res_row.add_child(res_left)
+
+	pause_res_label = Label.new()
+	pause_res_label.text = ScreenManager.get_resolution_text()
+	pause_res_label.add_theme_font_size_override("font_size", 15)
+	pause_res_label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
+	pause_res_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pause_res_label.custom_minimum_size = Vector2(120, 0)
+	res_row.add_child(pause_res_label)
+
+	var res_right := Button.new()
+	res_right.text = ">"
+	res_right.custom_minimum_size = Vector2(36, 28)
+	res_right.focus_mode = Control.FOCUS_NONE
+	res_right.pressed.connect(_on_pause_res_right)
+	res_row.add_child(res_right)
+
+	var fs_row := HBoxContainer.new()
+	fs_row.add_theme_constant_override("separation", 12)
+	vbox.add_child(fs_row)
+
+	var fs_title := Label.new()
+	fs_title.text = "Fullscreen"
+	fs_title.add_theme_font_size_override("font_size", 15)
+	fs_title.add_theme_color_override("font_color", Color(0.7, 0.65, 0.55))
+	fs_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fs_row.add_child(fs_title)
+
+	var fs_left := Button.new()
+	fs_left.text = "<"
+	fs_left.custom_minimum_size = Vector2(36, 28)
+	fs_left.focus_mode = Control.FOCUS_NONE
+	fs_left.pressed.connect(_on_pause_fs_left)
+	fs_row.add_child(fs_left)
+
+	pause_fs_label = Label.new()
+	pause_fs_label.text = "On" if ScreenManager.fullscreen else "Off"
+	pause_fs_label.add_theme_font_size_override("font_size", 15)
+	pause_fs_label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
+	pause_fs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	pause_fs_label.custom_minimum_size = Vector2(120, 0)
+	fs_row.add_child(pause_fs_label)
+
+	var fs_right := Button.new()
+	fs_right.text = ">"
+	fs_right.custom_minimum_size = Vector2(36, 28)
+	fs_right.focus_mode = Control.FOCUS_NONE
+	fs_right.pressed.connect(_on_pause_fs_right)
+	fs_row.add_child(fs_right)
+
+	var vol_row := HBoxContainer.new()
+	vol_row.add_theme_constant_override("separation", 12)
+	vbox.add_child(vol_row)
+
+	var vol_title := Label.new()
+	vol_title.text = "Music"
+	vol_title.add_theme_font_size_override("font_size", 15)
+	vol_title.add_theme_color_override("font_color", Color(0.7, 0.65, 0.55))
+	vol_title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vol_row.add_child(vol_title)
+
+	var vol_slider := HSlider.new()
+	vol_slider.min_value = 0.0
+	vol_slider.max_value = 1.0
+	vol_slider.step = 0.05
+	vol_slider.value = MusicManager.music_volume
+	vol_slider.custom_minimum_size = Vector2(140, 0)
+	vol_slider.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vol_slider.focus_mode = Control.FOCUS_NONE
+	vol_row.add_child(vol_slider)
+
+	pause_vol_label = Label.new()
+	pause_vol_label.text = str(int(MusicManager.music_volume * 100)) + "%"
+	pause_vol_label.add_theme_font_size_override("font_size", 15)
+	pause_vol_label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
+	pause_vol_label.custom_minimum_size = Vector2(40, 0)
+	vol_row.add_child(pause_vol_label)
+
+	vol_slider.value_changed.connect(_on_pause_vol_changed)
+
+	vbox.add_child(HSeparator.new())
+
+	var btn_row := HBoxContainer.new()
+	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_row.add_theme_constant_override("separation", 16)
+	vbox.add_child(btn_row)
+
+	var back_btn := Button.new()
+	back_btn.text = "Back"
+	back_btn.custom_minimum_size = Vector2(100, 32)
+	back_btn.focus_mode = Control.FOCUS_NONE
+	back_btn.pressed.connect(_close_pause_settings)
+	btn_row.add_child(back_btn)
+
+func _close_pause_settings() -> void:
+	_close_pause()
+	_open_pause()
+
+func _on_pause_res_left() -> void:
+	ScreenManager.cycle_resolution(-1)
+	pause_res_label.text = ScreenManager.get_resolution_text()
+
+func _on_pause_res_right() -> void:
+	ScreenManager.cycle_resolution(1)
+	pause_res_label.text = ScreenManager.get_resolution_text()
+
+func _on_pause_fs_left() -> void:
+	ScreenManager.fullscreen = not ScreenManager.fullscreen
+	ScreenManager.apply_settings()
+	ScreenManager.save_settings()
+	pause_fs_label.text = "On" if ScreenManager.fullscreen else "Off"
+
+func _on_pause_fs_right() -> void:
+	ScreenManager.fullscreen = not ScreenManager.fullscreen
+	ScreenManager.apply_settings()
+	ScreenManager.save_settings()
+	pause_fs_label.text = "On" if ScreenManager.fullscreen else "Off"
+
+func _on_pause_vol_changed(value: float) -> void:
+	MusicManager.set_volume(value)
+	pause_vol_label.text = str(int(value * 100)) + "%"
+
+func _quit_to_menu() -> void:
+	pause_open = false
+	if pause_ui:
+		pause_ui.queue_free()
+		pause_ui = null
+	GameManager.overworld_position = Vector2.ZERO
+	GameManager.change_scene("res://main_menu.tscn")

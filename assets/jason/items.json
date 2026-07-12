@@ -8,16 +8,16 @@
 		"attribute": "extra_turns",
 		"value": 1
 	},
-	"Heavy Gauntlet": {
-		"description": "Required to move heavy boulders",
-		"type": "world_ability",
-		"attribute": "can_push",
-		"value": true
-	},
 	"Basic Health Potion": {
 		"description": "Restores 20 health",
 		"type": "healing",
 		"attribute": "health_restore",
 		"value": 20
+	},
+	"Super Health Potion": {
+		"description": "Restores 50 health",
+		"type": "healing",
+		"attribute": "health_restore",
+		"value": 50
 	}
 }

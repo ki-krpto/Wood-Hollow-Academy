@@ -46,18 +46,17 @@ func add_xp(amount: int):
 	player_data["xp"] += amount
 	var level_up_data = load_json("res://assets/jason/levelUpXp.json", {})
 	while true:
-		var needed = level_up_data.get(str(player_data["level"]), -1)
+		var needed = level_up_data.get(str(int(player_data["level"])), -1)
 		if needed == -1 or player_data["xp"] < needed:
 			break
 		player_data["xp"] -= needed
 		level_up()
+	save_player_data()
 
 func level_up():
 	player_data["level"] += 1
 	player_data["max_hp"] += 10
 	player_data["hp"] = player_data["max_hp"]
-	player_data["max_mp"] += 5
-	player_data["mp"] = player_data["max_mp"]
 	player_data["attack"] += 2
 	player_data["defense"] += 1
 	player_data["xp_to_next"] = _get_xp_for_next_level()
@@ -66,7 +65,7 @@ func level_up():
 func _get_xp_for_next_level() -> int:
 	var level_up_data = {}
 	load_json("res://assets/jason/levelUpXp.json", level_up_data)
-	return level_up_data.get(str(player_data["level"]), player_data["xp_to_next"] * 2)
+	return level_up_data.get(str(int(player_data["level"])), player_data["xp_to_next"] * 2)
 
 func get_enemy_data(enemy_name: String) -> Dictionary:
 	return enemies_data.get(enemy_name, {})
@@ -82,10 +81,15 @@ func enter_battle(enemy_name: String) -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player:
 		overworld_position = player.position
-	get_tree().change_scene_to_file("res://battle/battle.tscn")
+	change_scene("res://battle/battle.tscn")
+
+func change_scene(path: String) -> void:
+	get_tree().change_scene_to_file(path)
 
 func calculate_damage(attacker_attack: int, move_power: int, defender_defense: int) -> int:
-	return max(1, attacker_attack + move_power - defender_defense)
+	var base = max(1, attacker_attack + move_power - defender_defense)
+	var multiplier = randf_range(0.9, 1.05)
+	return int(roundi(base * multiplier))
 
 func add_item(item_name: String) -> bool:
 	var item_data = get_item_data(item_name)

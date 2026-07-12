@@ -56,13 +56,13 @@ size = Vector2(628, 20)
 size = Vector2(33, 626)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_geqav"]
-size = Vector2(10, 14)
+size = Vector2(18, 22)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lg6sj"]
-size = Vector2(26, 22.75)
+size = Vector2(24, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qmuy"]
-size = Vector2(14, 13)
+size = Vector2(20, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7yw50"]
 size = Vector2(25, 30)
@@ -118,8 +118,8 @@ position = Vector2(6, 7.5)
 shape = SubResource("RectangleShape2D_geqav")
 
 [node name="Sprite2D" type="Sprite2D" parent="Entities/Vivi (SB)"]
-position = Vector2(6, 0)
-scale = Vector2(0.08, 0.08)
+position = Vector2(6, -2)
+scale = Vector2(0.12, 0.12)
 texture = ExtResource("11_vivipng")
 
 [node name="Pollutabloom (SB)" type="StaticBody2D" parent="Entities" unique_id=989108386]
@@ -131,18 +131,87 @@ position = Vector2(8, 4.125)
 shape = SubResource("RectangleShape2D_lg6sj")
 
 [node name="Sprite2D" type="Sprite2D" parent="Entities/Pollutabloom (SB)" unique_id=1735070433]
-position = Vector2(16.000025, -1.7812526)
-scale = Vector2(0.036666654, 0.032135416)
+position = Vector2(16, -4)
+scale = Vector2(0.055, 0.05)
 texture = ExtResource("8_3q4p7")
 
 [node name="Potion Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1912139824]
 position = Vector2(424, 235)
 script = ExtResource("10_chestgd")
 item_name = "Basic Health Potion"
+item_count = 5
 
 [node name="Potion Chest" type="CollisionShape2D" parent="Entities/Potion Chest (SB)" unique_id=107999049]
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
+
+[node name="Super Potion Chest (SB)" type="StaticBody2D" parent="Entities"]
+position = Vector2(300, 235)
+script = ExtResource("10_chestgd")
+item_name = "Super Health Potion"
+item_count = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Super Potion Chest (SB)"]
+position = Vector2(7, 6.5)
+shape = SubResource("RectangleShape2D_8qmuy")
+
+[node name="Quick Sheath Chest (SB)" type="StaticBody2D" parent="Entities"]
+position = Vector2(360, 300)
+script = ExtResource("10_chestgd")
+item_name = "Quick Sheath"
+item_count = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Quick Sheath Chest (SB)"]
+position = Vector2(7, 6.5)
+shape = SubResource("RectangleShape2D_8qmuy")
+
+[node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities"]
+position = Vector2(450, 108)
+script = ExtResource("7_p07kv")
+enemy_id = "Ryan Gosling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Ryan Gosling (SB)"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_lg6sj")
+
+[node name="Visual" type="ColorRect" parent="Entities/Ryan Gosling (SB)"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 28.0
+offset_bottom = 28.0
+color = Color(0.8, 0.4, 0.6, 1)
+
+[node name="Cave Bat (SB)" type="StaticBody2D" parent="Entities"]
+position = Vector2(392, 170)
+script = ExtResource("7_p07kv")
+enemy_id = "Cave Bat"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Cave Bat (SB)"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_lg6sj")
+
+[node name="Visual" type="ColorRect" parent="Entities/Cave Bat (SB)"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 28.0
+offset_bottom = 28.0
+color = Color(0.3, 0.2, 0.5, 1)
+
+[node name="Limestone Golem (SB)" type="StaticBody2D" parent="Entities"]
+position = Vector2(450, 170)
+script = ExtResource("7_p07kv")
+enemy_id = "Limestone Golem"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Limestone Golem (SB)"]
+position = Vector2(16, 16)
+shape = SubResource("RectangleShape2D_lg6sj")
+
+[node name="Visual" type="ColorRect" parent="Entities/Limestone Golem (SB)"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 28.0
+offset_bottom = 28.0
+color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1647955736]
 position = Vector2(64, 352)

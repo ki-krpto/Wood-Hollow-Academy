@@ -11,6 +11,12 @@
 	"description": "Focus your mind, raising your attack.",
 	"effects": ["raise_attack"]
   },
+  "Swoop": {
+	"power": 8,
+	"type": "physical",
+	"description": "A quick swooping attack.",
+	"effects": []
+  },
   "Chomp": {
 	"power": 10,
 	"type": "physical",
