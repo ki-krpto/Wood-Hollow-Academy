@@ -1,0 +1,62 @@
+{
+  "Strike": {
+	"power": 10,
+	"type": "physical",
+	"description": "A swift physical strike.",
+	"effects": []
+  },
+  "Focus": {
+	"power": 0,
+	"type": "status",
+	"description": "Focus your mind, raising your attack.",
+	"effects": ["raise_attack"]
+  },
+  "Chomp": {
+	"power": 10,
+	"type": "physical",
+	"description": "The enemy chomps down hard.",
+	"effects": []
+  },
+  "Pollutinate": {
+	"power": 6,
+	"type": "physical",
+	"description": "Releases toxic pollen that poisons.",
+	"effects": ["poison"]
+  },
+  "Evil Plot": {
+	"power": 0,
+	"type": "status",
+	"description": "The enemy schemes, raising its attack.",
+	"effects": ["raise_attack"]
+  },
+  "Bloom Swap": {
+	"power": 8,
+	"type": "physical",
+	"description": "The enemy drains your life force.",
+	"effects": ["heal_self"]
+  },
+  "Stoney Punch": {
+	"power": 15,
+	"type": "physical",
+	"description": "A heavy punch made of stone.",
+	"effects": []
+  },
+  "Iron Slam": {
+	"power": 20,
+	"type": "physical",
+	"description": "A powerful slam attack.",
+	"effects": []
+  },
+  "Shardy Intention": {
+	"power": 12,
+	"type": "physical",
+	"description": "Sharp shards fly at you.",
+	"effects": []
+  },
+  "Rerocked": {
+	"power": 0,
+	"type": "status",
+	"description": "The golem repairs itself.",
+	"effects": ["heal_self"]
+  }
+}

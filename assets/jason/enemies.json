@@ -1,46 +1,46 @@
 {
   "Ryan Gosling": {
-    "hp": 200,
-    "attack": 8,
-    "defense": 5,
-    "xp_reward": 100,
-    "image": "ryan.jpg",
-    "description": "He's just Ken (and very dangerous)."
+	"hp": 200,
+	"attack": 8,
+	"defense": 5,
+	"xp_reward": 100,
+	"image": "ryan.jpg",
+	"description": "He's just Ken (and very dangerous)."
   },
   "Cave Bat": {
-    "hp": 30,
-    "attack": 10,
-    "defense": 2,
-    "xp_reward": 50,
-    "image": "bat.png",
-    "description": "Screechy and hard to hit."
+	"hp": 30,
+	"attack": 10,
+	"defense": 2,
+	"xp_reward": 50,
+	"image": "bat.png",
+	"description": "Screechy and hard to hit."
   },
   "Limestone Golem": {
-    "hp": 150,
-    "attack": 20,
-    "defense": 25,
-    "xp_reward": 250,
-    "image": "golem.png",
-    "description": "A literal wall of pain.",
-    "moves": {
-      "Stoney Punch": 50,
-      "Iron Slam": 75,
-      "Shardy Intention": 15,
-      "Rerocked": 10
-    }
+	"hp": 150,
+	"attack": 20,
+	"defense": 25,
+	"xp_reward": 250,
+	"image": "golem.png",
+	"description": "A literal wall of pain.",
+	"moves": {
+	  "Stoney Punch": 50,
+	  "Iron Slam": 75,
+	  "Shardy Intention": 15,
+	  "Rerocked": 10
+	}
   },
   "Pollutabloom": {
-    "hp": 50,
-    "attack": 6,
-    "defense": 4,
-    "xp_reward": 50,
-    "image": "Pollutabloom.png",
-    "description": "A toxic plant that can poison you.",
-    "moves": {
-      "Chomp": 50,
-      "Pollutinate": 25,
-      "Evil Plot": 15,
-      "Bloom Swap": 10
-    }
+	"hp": 50,
+	"attack": 6,
+	"defense": 4,
+	"xp_reward": 50,
+	"image": "Pollutabloom.png",
+	"description": "A toxic plant that can poison you.",
+	"moves": {
+	  "Chomp": 50,
+	  "Pollutinate": 25,
+	  "Evil Plot": 15,
+	  "Bloom Swap": 10
+	}
   }
 }

@@ -1,0 +1,14 @@
+{
+  "name": "Kara",
+  "level": 1,
+  "max_hp": 100,
+  "hp": 100,
+  "max_mp": 20,
+  "mp": 20,
+  "attack": 10,
+  "defense": 5,
+  "xp": 0,
+  "xp_to_next": 100,
+  "moves": ["Strike", "Focus"],
+  "gold": 0
+}

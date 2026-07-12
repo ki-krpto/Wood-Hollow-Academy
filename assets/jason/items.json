@@ -1,23 +1,23 @@
 {
-    "Types of Items": {
-        "Types": "weapon, armor, healing"
-    },
-    "Quick Sheath": {
-        "description": "Lets you attack twice in one turn",
-        "type": "combat_buff",
-        "attribute": "extra_turns",
-        "value": 1
-    },
-    "Heavy Gauntlet": {
-        "description": "Required to move heavy boulders",
-        "type": "world_ability",
-        "attribute": "can_push",
-        "value": true
-    },
-    "Basic Health Potion": {
-        "description": "Restores 20 health",
-        "type": "healing",
-        "attribute": "health_restore",
-        "value": 20
-    }
+	"Types of Items": {
+		"Types": "weapon, armor, healing"
+	},
+	"Quick Sheath": {
+		"description": "Lets you attack twice in one turn",
+		"type": "combat_buff",
+		"attribute": "extra_turns",
+		"value": 1
+	},
+	"Heavy Gauntlet": {
+		"description": "Required to move heavy boulders",
+		"type": "world_ability",
+		"attribute": "can_push",
+		"value": true
+	},
+	"Basic Health Potion": {
+		"description": "Restores 20 health",
+		"type": "healing",
+		"attribute": "health_restore",
+		"value": 20
+	}
 }
