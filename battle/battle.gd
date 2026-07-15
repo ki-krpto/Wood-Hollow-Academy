@@ -343,9 +343,9 @@ func show_move_selection():
 	state = "selecting_move"
 	hide_action_buttons()
 	var moves = GameManager.player_data.get("moves", [])
-	var btn_x = right_menu_rect.position.x + 14
-	var btn_y = right_menu_rect.position.y + 8
-	var btn_w = right_menu_rect.size.x - 28
+	var btn_x = left_menu_rect.position.x
+	var btn_y = left_menu_rect.position.y + 8
+	var btn_w = left_menu_rect.size.x
 	var btn_h = 34
 	var row_gap = 6
 
@@ -359,12 +359,12 @@ func show_move_selection():
 		btn.pressed.connect(_on_move_selected.bind(move_name))
 		add_child(btn)
 		btn_y += btn_h + row_gap
-		if btn_y > right_menu_rect.end.y - 80:
+		if btn_y > left_menu_rect.end.y - 80:
 			break
 
 	var back_btn = Button.new()
 	back_btn.text = "BACK"
-	back_btn.position = Vector2(btn_x, right_menu_rect.end.y - 44)
+	back_btn.position = Vector2(btn_x, left_menu_rect.end.y - 44)
 	back_btn.size = Vector2(btn_w, 34)
 	back_btn.name = "MoveBtn_Back"
 	apply_wood_button_style(back_btn)
