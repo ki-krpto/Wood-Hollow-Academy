@@ -1,15 +1,15 @@
 {
-	"attack": 14.0,
-	"defense": 7.0,
-	"gold": 0.0,
-	"hp": 110.0,
-	"level": 3.0,
-	"max_hp": 120.0,
+	"name": "Kara",
+	"level": 1,
+	"xp": 0,
+	"xp_to_next": 100,
+	"hp": 100,
+	"max_hp": 100,
+	"attack": 10,
+	"defense": 5,
+	"gold": 0,
 	"moves": [
 		"Strike",
 		"Focus"
-	],
-	"name": "Kara",
-	"xp": 100.0,
-	"xp_to_next": 500.0
+	]
 }
