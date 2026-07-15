@@ -9,6 +9,7 @@ var items_data: Dictionary = {}
 var current_enemy: String = ""
 var defeated_enemies: Array[String] = []
 var inventory: Array[Dictionary] = []
+var opened_chests: Array[String] = []
 var overworld_position: Vector2 = Vector2.ZERO
 var active_save_slot: int = -1
 var _default_player_data: Dictionary = {}
@@ -203,6 +204,7 @@ func create_new_save(slot: int) -> bool:
 	current_enemy = ""
 	defeated_enemies.clear()
 	inventory.clear()
+	opened_chests.clear()
 	overworld_position = Vector2.ZERO
 	active_save_slot = slot
 	inventory_changed.emit()
@@ -283,12 +285,24 @@ func save_current_slot() -> bool:
 		"player_data": player_data,
 		"inventory": inventory,
 		"defeated_enemies": defeated_enemies,
+		"opened_chests": opened_chests,
 		"overworld_position": {
 			"x": overworld_position.x,
 			"y": overworld_position.y
 		}
 	}
 	return _write_save_file(active_save_slot, save_data)
+
+func is_chest_opened(chest_key: String) -> bool:
+	if chest_key.is_empty():
+		return false
+	return opened_chests.has(chest_key)
+
+func mark_chest_opened(chest_key: String) -> void:
+	if chest_key.is_empty():
+		return
+	if not opened_chests.has(chest_key):
+		opened_chests.append(chest_key)
 
 func _read_save_file(slot: int) -> Dictionary:
 	var file = FileAccess.open(get_save_slot_path(slot), FileAccess.READ)
@@ -326,6 +340,12 @@ func _apply_save_data(save_data: Dictionary) -> void:
 	if typeof(saved_defeated) == TYPE_ARRAY:
 		for enemy_id in saved_defeated:
 			defeated_enemies.append(str(enemy_id))
+
+	var saved_opened_chests = save_data.get("opened_chests", [])
+	opened_chests.clear()
+	if typeof(saved_opened_chests) == TYPE_ARRAY:
+		for chest_key in saved_opened_chests:
+			opened_chests.append(str(chest_key))
 
 	var saved_pos = save_data.get("overworld_position", {})
 	if typeof(saved_pos) == TYPE_DICTIONARY:

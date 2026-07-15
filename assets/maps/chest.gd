@@ -2,7 +2,9 @@ extends StaticBody2D
 
 @export var item_name: String = ""
 @export var item_count: int = 1
+@export var chest_id: String = ""
 var opened: bool = false
+var chest_key: String = ""
 var notification_ui: CanvasLayer = null
 var chest_body: ColorRect = null
 var chest_lid: ColorRect = null
@@ -13,6 +15,10 @@ func _ready() -> void:
 	if item_name == "":
 		item_name = str(get_meta("item_name", "Unknown Item"))
 	_build_visual()
+	_resolve_chest_key()
+	if GameManager.is_chest_opened(chest_key):
+		opened = true
+		_change_appearance()
 
 func _build_visual() -> void:
 	chest_body = ColorRect.new()
@@ -39,13 +45,12 @@ func interact():
 	var item_data = GameManager.get_item_data(item_name)
 	if item_data.is_empty():
 		_show_notification("Found nothing useful...")
-		opened = true
+		_mark_opened()
 		return
 	for i in item_count:
 		GameManager.add_item(item_name)
 	_show_notification("Obtained: " + item_name + " x" + str(item_count) + "!")
-	opened = true
-	_change_appearance()
+	_mark_opened()
 
 func _change_appearance() -> void:
 	if chest_body:
@@ -92,3 +97,23 @@ func _remove_notification():
 	if notification_ui:
 		notification_ui.queue_free()
 		notification_ui = null
+
+func _resolve_chest_key() -> void:
+	var custom_id := chest_id.strip_edges()
+	if not custom_id.is_empty():
+		chest_key = custom_id
+		return
+	var scene_path := ""
+	if owner and owner.scene_file_path != "":
+		scene_path = owner.scene_file_path
+	elif get_tree().current_scene and get_tree().current_scene.scene_file_path != "":
+		scene_path = get_tree().current_scene.scene_file_path
+	else:
+		scene_path = "runtime_scene"
+	chest_key = scene_path + ":" + str(get_path())
+
+func _mark_opened() -> void:
+	opened = true
+	_change_appearance()
+	GameManager.mark_chest_opened(chest_key)
+	GameManager.save_current_slot()
