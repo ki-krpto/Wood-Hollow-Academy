@@ -668,6 +668,7 @@ func victory():
 	if not GameManager.defeated_enemies.has(GameManager.current_enemy):
 		GameManager.defeated_enemies.append(GameManager.current_enemy)
 	GameManager.current_enemy = ""
+	GameManager.save_current_slot()
 	await get_tree().create_timer(2.0).timeout
 	return_to_overworld()
 
@@ -723,6 +724,7 @@ func defeat():
 	show_message("You were defeated...")
 	GameManager.player_data["hp"] = GameManager.player_data.get("max_hp", 100)
 	GameManager.current_enemy = ""
+	GameManager.save_current_slot()
 	await get_tree().create_timer(2.0).timeout
 	return_to_overworld()
 

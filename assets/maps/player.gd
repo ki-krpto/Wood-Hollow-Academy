@@ -92,6 +92,7 @@ func _physics_process(delta: float) -> void:
 		move_progress += delta * (SPEED / TILE_SIZE)
 		if move_progress >= 1.0:
 			position = target
+			GameManager.overworld_position = position
 			moving = false
 			move_timer = MOVE_DELAY
 		else:
@@ -834,5 +835,6 @@ func _quit_to_menu() -> void:
 	if pause_ui:
 		pause_ui.queue_free()
 		pause_ui = null
-	GameManager.overworld_position = Vector2.ZERO
+	GameManager.overworld_position = position
+	GameManager.save_current_slot()
 	GameManager.change_scene("res://main_menu.tscn")
