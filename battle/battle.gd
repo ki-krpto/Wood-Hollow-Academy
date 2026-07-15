@@ -452,7 +452,8 @@ func _on_item_selected(item_name: String):
 			return
 		if item_data.get("attribute") == "status_effect":
 			var effect_name = str(item_data.get("effect", ""))
-			var effect_turns = int(item_data.get("turns", 3))
+			var effect_data = GameManager.get_magic_effect_data(effect_name)
+			var effect_turns = int(item_data.get("turns", effect_data.get("default_turns", 3)))
 			_apply_enemy_magic_effect(effect_name, effect_turns)
 			await get_tree().create_timer(1.0).timeout
 			execute_enemy_turn(1.0)
@@ -530,34 +531,40 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 	var wait_time := 1.0
 	var attack_count := 1
 	var skip_attack := false
+	var caffeiene_active := enemy_caffeiene_turns > 0
+	var caffeiene_data := {}
 
 	if enemy_jolt_turns > 0:
-		var jolt_dmg = max(1, int(enemy_max_hp * 0.08))
+		var jolt_data = GameManager.get_magic_effect_data("jolt")
+		var jolt_dmg = max(1, int(enemy_max_hp * float(jolt_data.get("self_damage_pct", 0.08))))
 		enemy_hp = max(0, enemy_hp - jolt_dmg)
 		update_enemy_hp_bar()
 		enemy_jolt_turns -= 1
-		show_message(enemy_data.get("name", "Enemy") + " jolts violently and takes " + str(jolt_dmg) + " damage!")
-		await get_tree().create_timer(0.8).timeout
+		show_message(str(jolt_data.get("damage_message", enemy_data.get("name", "Enemy") + " jolts violently and takes " + str(jolt_dmg) + " damage!")).replace("{enemy}", enemy_data.get("name", "Enemy")).replace("{damage}", str(jolt_dmg)))
+		await get_tree().create_timer(float(jolt_data.get("damage_delay", 0.8))).timeout
 		if enemy_hp <= 0:
 			victory()
 			return
 		var jolt_roll = randf()
-		if jolt_roll < 0.3:
+		var skip_chance = float(jolt_data.get("skip_attack_chance", 0.3))
+		var double_chance = float(jolt_data.get("double_attack_chance", 0.25))
+		if jolt_roll < skip_chance:
 			skip_attack = true
-			show_message(enemy_data.get("name", "Enemy") + " is too jittery to act!")
-			await get_tree().create_timer(0.8).timeout
-		elif jolt_roll < 0.55:
+			show_message(str(jolt_data.get("skip_message", enemy_data.get("name", "Enemy") + " is too jittery to act!")).replace("{enemy}", enemy_data.get("name", "Enemy")))
+			await get_tree().create_timer(float(jolt_data.get("skip_delay", 0.8))).timeout
+		elif jolt_roll < skip_chance + double_chance:
 			attack_count = 2
-			show_message(enemy_data.get("name", "Enemy") + " jolts into a second attack!")
-			await get_tree().create_timer(0.6).timeout
+			show_message(str(jolt_data.get("double_message", enemy_data.get("name", "Enemy") + " jolts into a second attack!")).replace("{enemy}", enemy_data.get("name", "Enemy")))
+			await get_tree().create_timer(float(jolt_data.get("double_delay", 0.6))).timeout
 
-	if enemy_caffeiene_turns > 0:
+	if caffeiene_active:
+		caffeiene_data = GameManager.get_magic_effect_data("caffeiene")
 		enemy_caffeiene_turns -= 1
-		wait_time = 0.55
+		wait_time = float(caffeiene_data.get("turn_delay", 0.55))
 		if not skip_attack:
-			show_message(enemy_data.get("name", "Enemy") + " is caffeiened and moving fast!")
-			await get_tree().create_timer(0.45).timeout
-			if attack_count < 2 and randf() < 0.35:
+			show_message(str(caffeiene_data.get("start_message", enemy_data.get("name", "Enemy") + " is caffeiened and moving fast!")).replace("{enemy}", enemy_data.get("name", "Enemy")))
+			await get_tree().create_timer(float(caffeiene_data.get("start_delay", 0.45))).timeout
+			if attack_count < 2 and randf() < float(caffeiene_data.get("double_attack_chance", 0.35)):
 				attack_count = 2
 
 	if not skip_attack:
@@ -567,7 +574,10 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 				defeat()
 				return
 			if i < attack_count - 1:
-				await get_tree().create_timer(0.35).timeout
+				var followup_delay = 0.35
+				if caffeiene_active:
+					followup_delay = float(caffeiene_data.get("followup_delay", 0.2))
+				await get_tree().create_timer(followup_delay).timeout
 		await get_tree().create_timer(wait_time).timeout
 
 	if GameManager.player_data.get("hp", 0) <= 0:
@@ -602,13 +612,17 @@ func _execute_single_enemy_attack(damage_mult: float) -> void:
 			handle_status_effect(["poison"], true)
 
 func _apply_enemy_magic_effect(effect_name: String, turns: int) -> void:
+	var effect_data = GameManager.get_magic_effect_data(effect_name)
+	var applied_turns = max(1, turns)
+	if effect_data.has("default_turns"):
+		applied_turns = max(1, turns if turns > 0 else int(effect_data.get("default_turns", 3)))
 	match effect_name:
 		"jolt":
-			enemy_jolt_turns += max(1, turns)
-			show_message("Used Jolt! Enemy is jittery, unstable, and taking shock damage.")
+			enemy_jolt_turns += applied_turns
+			show_message(str(effect_data.get("apply_message", "Used Jolt! Enemy is jittery, unstable, and taking shock damage.")).replace("{turns}", str(applied_turns)))
 		"caffeiene":
-			enemy_caffeiene_turns += max(1, turns)
-			show_message("Used Caffeiene! Enemy goes hyper and attacks rapidly.")
+			enemy_caffeiene_turns += applied_turns
+			show_message(str(effect_data.get("apply_message", "Used Caffeiene! Enemy goes hyper and attacks rapidly.")).replace("{turns}", str(applied_turns)))
 		_:
 			show_message("Used item, but nothing happened.")
 

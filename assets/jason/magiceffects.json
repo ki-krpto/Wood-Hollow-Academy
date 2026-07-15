@@ -1,23 +1,24 @@
 {
-	"Types of Items": {
-		"Types": "weapon, armor, healing"
+	"jolt": {
+		"default_turns": 3,
+		"self_damage_pct": 0.08,
+		"skip_attack_chance": 0.3,
+		"double_attack_chance": 0.25,
+		"apply_message": "Jolt surges through the enemy for {turns} turns!",
+		"damage_message": "{enemy} jolts violently and takes {damage} damage!",
+		"skip_message": "{enemy} is too jittery to act!",
+		"double_message": "{enemy} jolts into a second attack!",
+		"damage_delay": 0.8,
+		"skip_delay": 0.8,
+		"double_delay": 0.6
 	},
-	"Quick Sheath": {
-		"description": "Lets you attack twice in one turn",
-		"type": "combat_buff",
-		"attribute": "extra_turns",
-		"value": 1
-	},
-	"Basic Health Potion": {
-		"description": "Restores 20 health",
-		"type": "healing",
-		"attribute": "health_restore",
-		"value": 20
-	},
-	"Super Health Potion": {
-		"description": "Restores 50 health",
-		"type": "healing",
-		"attribute": "health_restore",
-		"value": 50
+	"caffeiene": {
+		"default_turns": 3,
+		"double_attack_chance": 0.35,
+		"turn_delay": 0.55,
+		"start_delay": 0.45,
+		"followup_delay": 0.2,
+		"apply_message": "Caffeiene spikes the enemy for {turns} turns!",
+		"start_message": "{enemy} is caffeiened and moving fast!"
 	}
 }

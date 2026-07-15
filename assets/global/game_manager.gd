@@ -6,6 +6,7 @@ var player_data: Dictionary = {}
 var attacks_data: Dictionary = {}
 var enemies_data: Dictionary = {}
 var items_data: Dictionary = {}
+var magic_effects_data: Dictionary = {}
 var current_enemy: String = ""
 var defeated_enemies: Array[String] = []
 var inventory: Array[Dictionary] = []
@@ -27,10 +28,12 @@ func load_all_data():
 	attacks_data.clear()
 	enemies_data.clear()
 	items_data.clear()
+	magic_effects_data.clear()
 	load_json("res://assets/jason/player.json", player_data)
 	load_json("res://assets/jason/attacks.json", attacks_data)
 	load_json("res://assets/jason/enemies.json", enemies_data)
 	load_json("res://assets/jason/items.json", items_data)
+	load_json("res://assets/jason/magiceffects.json", magic_effects_data)
 
 func load_json(path: String, target: Dictionary) -> Dictionary:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -83,6 +86,9 @@ func get_attack_data(attack_name: String) -> Dictionary:
 
 func get_item_data(item_name: String) -> Dictionary:
 	return items_data.get(item_name, {})
+
+func get_magic_effect_data(effect_name: String) -> Dictionary:
+	return magic_effects_data.get(effect_name, {})
 
 func enter_battle(enemy_name: String) -> void:
 	current_enemy = enemy_name
