@@ -1,6 +1,6 @@
 {
 	"Types of Items": {
-		"Types": "weapon, armor, healing"
+		"Types": "weapon, armor, healing, combat_buff"
 	},
 	"Quick Sheath": {
 		"description": "Lets you attack twice in one turn",
@@ -19,5 +19,21 @@
 		"type": "healing",
 		"attribute": "health_restore",
 		"value": 50
+	},
+	"Jolt Flask": {
+		"description": "Shocks the enemy: jittery actions, possible double turns, and chip damage each turn.",
+		"type": "combat_buff",
+		"attribute": "status_effect",
+		"effect": "jolt",
+		"turns": 3,
+		"value": 0
+	},
+	"Caffeiene Capsule": {
+		"description": "Overloads the enemy with caffeiene so it attacks in a fast frenzy.",
+		"type": "combat_buff",
+		"attribute": "status_effect",
+		"effect": "caffeiene",
+		"turns": 3,
+		"value": 0
 	}
 }

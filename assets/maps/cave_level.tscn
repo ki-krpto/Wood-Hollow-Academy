@@ -145,23 +145,23 @@ item_count = 5
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 
-[node name="Super Potion Chest (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities"]
 position = Vector2(300, 235)
 script = ExtResource("10_chestgd")
-item_name = "Super Health Potion"
+item_name = "Jolt Flask"
 item_count = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Super Potion Chest (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Jolt Chest (SB)"]
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 
-[node name="Quick Sheath Chest (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities"]
 position = Vector2(360, 300)
 script = ExtResource("10_chestgd")
-item_name = "Quick Sheath"
+item_name = "Caffeiene Capsule"
 item_count = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Quick Sheath Chest (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Caffeiene Chest (SB)"]
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 

@@ -20,6 +20,8 @@ var player_poison_turns: int = 0
 
 var enemy_poison_turns: int = 0
 var player_extra_turns: int = 0
+var enemy_jolt_turns: int = 0
+var enemy_caffeiene_turns: int = 0
 
 var state: String = "player_choice"
 var move_selected: String = ""
@@ -448,6 +450,13 @@ func _on_item_selected(item_name: String):
 			state = "player_choice"
 			show_action_buttons()
 			return
+		if item_data.get("attribute") == "status_effect":
+			var effect_name = str(item_data.get("effect", ""))
+			var effect_turns = int(item_data.get("turns", 3))
+			_apply_enemy_magic_effect(effect_name, effect_turns)
+			await get_tree().create_timer(1.0).timeout
+			execute_enemy_turn(1.0)
+			return
 	update_player_hp_bar()
 	show_message("Used " + item_name + "!")
 	await get_tree().create_timer(1.0).timeout
@@ -518,6 +527,61 @@ func execute_player_attack(move_name: String):
 
 func execute_enemy_turn(damage_mult: float = 1.0):
 	state = "enemy_turn"
+	var wait_time := 1.0
+	var attack_count := 1
+	var skip_attack := false
+
+	if enemy_jolt_turns > 0:
+		var jolt_dmg = max(1, int(enemy_max_hp * 0.08))
+		enemy_hp = max(0, enemy_hp - jolt_dmg)
+		update_enemy_hp_bar()
+		enemy_jolt_turns -= 1
+		show_message(enemy_data.get("name", "Enemy") + " jolts violently and takes " + str(jolt_dmg) + " damage!")
+		await get_tree().create_timer(0.8).timeout
+		if enemy_hp <= 0:
+			victory()
+			return
+		var jolt_roll = randf()
+		if jolt_roll < 0.3:
+			skip_attack = true
+			show_message(enemy_data.get("name", "Enemy") + " is too jittery to act!")
+			await get_tree().create_timer(0.8).timeout
+		elif jolt_roll < 0.55:
+			attack_count = 2
+			show_message(enemy_data.get("name", "Enemy") + " jolts into a second attack!")
+			await get_tree().create_timer(0.6).timeout
+
+	if enemy_caffeiene_turns > 0:
+		enemy_caffeiene_turns -= 1
+		wait_time = 0.55
+		if not skip_attack:
+			show_message(enemy_data.get("name", "Enemy") + " is caffeiened and moving fast!")
+			await get_tree().create_timer(0.45).timeout
+			if attack_count < 2 and randf() < 0.35:
+				attack_count = 2
+
+	if not skip_attack:
+		for i in attack_count:
+			_execute_single_enemy_attack(damage_mult)
+			if GameManager.player_data.get("hp", 0) <= 0:
+				defeat()
+				return
+			if i < attack_count - 1:
+				await get_tree().create_timer(0.35).timeout
+		await get_tree().create_timer(wait_time).timeout
+
+	if GameManager.player_data.get("hp", 0) <= 0:
+		defeat()
+		return
+
+	if player_poison_turns > 0:
+		execute_poison_tick()
+		return
+
+	state = "player_choice"
+	show_action_buttons()
+
+func _execute_single_enemy_attack(damage_mult: float) -> void:
 	var move_name = pick_enemy_move()
 	var attack_data = GameManager.get_attack_data(move_name)
 	var atk = enemy_data.get("attack", 5) + enemy_attack_buff
@@ -537,18 +601,16 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 		if attack_data.get("effects", []).has("poison"):
 			handle_status_effect(["poison"], true)
 
-	await get_tree().create_timer(1.0).timeout
-
-	if GameManager.player_data.get("hp", 0) <= 0:
-		defeat()
-		return
-
-	if player_poison_turns > 0:
-		execute_poison_tick()
-		return
-
-	state = "player_choice"
-	show_action_buttons()
+func _apply_enemy_magic_effect(effect_name: String, turns: int) -> void:
+	match effect_name:
+		"jolt":
+			enemy_jolt_turns += max(1, turns)
+			show_message("Used Jolt! Enemy is jittery, unstable, and taking shock damage.")
+		"caffeiene":
+			enemy_caffeiene_turns += max(1, turns)
+			show_message("Used Caffeiene! Enemy goes hyper and attacks rapidly.")
+		_:
+			show_message("Used item, but nothing happened.")
 
 func execute_poison_tick():
 	var poison_dmg = max(1, GameManager.player_data.get("max_hp", 100) / 10)
