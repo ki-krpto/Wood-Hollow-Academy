@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctiopsbhv4x71"
-path="res://.godot/imported/Limestone_floor.png-817d5a74a6017609418f3fcf3fe0b798.ctex"
+uid="uid://coqp0ydimtlep"
+path="res://.godot/imported/Stone_wall.png-e95bc9c9f5548bc42e44b775f772214b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/maps/Limestone_floor.png"
-dest_files=["res://.godot/imported/Limestone_floor.png-817d5a74a6017609418f3fcf3fe0b798.ctex"]
+source_file="res://assets/img/tiles/Stone_wall.png"
+dest_files=["res://.godot/imported/Stone_wall.png-e95bc9c9f5548bc42e44b775f772214b.ctex"]
 
 [params]
 

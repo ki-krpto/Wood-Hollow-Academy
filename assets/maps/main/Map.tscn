@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://map"]
+
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_0_0.tscn" id="layer_1_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_1_0.tscn" id="layer_2_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_2_0.tscn" id="layer_3_id"]
+
+[node name="map" type="Node2D" unique_id=1651424195]
+
+[node name="path" parent="." unique_id=1338129418 instance=ExtResource("layer_1_id")]
+
+[node name="walls" parent="." unique_id=25005779 instance=ExtResource("layer_2_id")]
+
+[node name="blocked pathway (cutscene trigger)" parent="." unique_id=1796380708 instance=ExtResource("layer_3_id")]
