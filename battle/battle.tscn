@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ct21u2nqq08m0"]
 
 [ext_resource type="Script" uid="uid://cuks8yr7ncf5v" path="res://battle/battle.gd" id="1"]
+[ext_resource type="FontFile" uid="uid://cndg24hn8d687" path="res://assets/fonts/Rockboxcond12.ttf" id="2_tiqy5"]
 
 [node name="Battle" type="Control" unique_id=508460754]
 layout_mode = 3
@@ -39,6 +40,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("2_tiqy5")
 theme_override_font_sizes/font_size = 26
 text = "Enemy"
 horizontal_alignment = 1
@@ -50,6 +52,7 @@ offset_top = 213.0
 offset_right = 770.0
 offset_bottom = 233.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_tiqy5")
 theme_override_font_sizes/font_size = 14
 text = "HP: 50/50"
 horizontal_alignment = 1
@@ -186,7 +189,8 @@ offset_top = 518.0
 offset_right = 541.0
 offset_bottom = 556.0
 focus_mode = 0
-text = "FIGHT"
+theme_override_fonts/font = ExtResource("2_tiqy5")
+text = "Fight"
 
 [node name="BtnItems" type="Button" parent="." unique_id=1021495436]
 layout_mode = 0
@@ -195,7 +199,9 @@ offset_top = 564.0
 offset_right = 541.0
 offset_bottom = 602.0
 focus_mode = 0
-text = "ITEMS"
+theme_override_fonts/font = ExtResource("2_tiqy5")
+text = "Items
+"
 
 [node name="BtnDefend" type="Button" parent="." unique_id=1615908528]
 layout_mode = 0
@@ -204,7 +210,8 @@ offset_top = 610.0
 offset_right = 541.0
 offset_bottom = 648.0
 focus_mode = 0
-text = "DEFEND"
+theme_override_fonts/font = ExtResource("2_tiqy5")
+text = "Defend"
 
 [node name="BtnRun" type="Button" parent="." unique_id=1049569495]
 layout_mode = 0
@@ -213,7 +220,8 @@ offset_top = 656.0
 offset_right = 541.0
 offset_bottom = 694.0
 focus_mode = 0
-text = "RUN"
+theme_override_fonts/font = ExtResource("2_tiqy5")
+text = "Flee"
 
 [node name="MessageLabel" type="Label" parent="." unique_id=416701095]
 layout_mode = 0
