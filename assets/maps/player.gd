@@ -32,9 +32,25 @@ var pause_vol_label: Label = null
 
 func _ready() -> void:
 	add_to_group("player")
+	MusicManager.play_overworld()
 	if GameManager.overworld_position == Vector2.ZERO:
 		position = position.snapped(Vector2(TILE_SIZE, TILE_SIZE))
 	target = position
+	if GameManager.overworld_position != Vector2.ZERO:
+		await get_tree().process_frame
+		moving = false
+		move_dir = Vector2.ZERO
+		buffered_dir = Vector2.ZERO
+		move_progress = 0.0
+		move_timer = 0.0
+		interacting = false
+		stats_open = false
+		position = GameManager.overworld_position
+		target = GameManager.overworld_position
+		var cam := get_node_or_null("Camera2D") as Camera2D
+		if cam:
+			cam.position = Vector2(50, -274)
+			cam.zoom = Vector2(1.7, 1.7)
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause_menu"):

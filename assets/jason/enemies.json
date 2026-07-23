@@ -17,7 +17,7 @@
 	"hp": 30,
 	"attack": 8,
 	"defense": 2,
-	"xp_reward": 50,
+	"xp_reward": 15,
 	"image": "bat.png",
 	"description": "Screechy and hard to hit.",
 	"moves": {
@@ -31,7 +31,7 @@
 	"attack": 12,
 	"defense": 8,
 	"xp_reward": 250,
-	"image": "golem.png",
+	"image": "Limestone_golem.webp",
 	"description": "A literal wall of pain.",
 	"moves": {
 	  "Stoney Punch": 50,
@@ -53,5 +53,18 @@
 	  "Evil Plot": 15,
 	  "Bloom Swap": 10
 	}
-  }
+  },
+  "Cave Spider": {
+	"hp": 35,
+	"attack": 8,
+	"defense": 4,
+	"xp_reward": 20,
+	"image": "cave_spider.webp",
+	"description": "A very scary spider",
+	"moves": {
+	  	"Venomous Bite": 30,
+		"Toxic Lash": 20,
+		"Strike": 50
+ 		}
+	}
 }

@@ -661,6 +661,13 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 				else:
 					enemy_attack_buff += 5
 					show_message(enemy_data.get("name", "Enemy") + " plots evilly! Attack rose!")
+			"lower_attack":
+				if is_player:
+					player_attack_buff -= 5
+					show_message("Your attack was lowered!")
+				else:
+					enemy_attack_buff -= 3
+					show_message(enemy_data.get("name", "Enemy") + " weakened!")
 			"heal_self":
 				if is_player:
 					GameManager.heal_player(15)

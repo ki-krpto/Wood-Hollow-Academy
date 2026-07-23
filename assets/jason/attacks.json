@@ -64,5 +64,29 @@
 	"type": "status",
 	"description": "The golem repairs itself.",
 	"effects": ["heal_self"]
+  },
+  "Shriek": {
+	"power": 0,
+	"type": "status",
+	"description": "A piercing cry that weakens your resolve.",
+	"effects": ["lower_attack"]
+  },
+  "Venomous Bite": {
+	"power": 7,
+	"type": "physical",
+	"description": "A venomous fang sinks into you.",
+	"effects": ["poison"]
+  },
+  "Toxic Lash": {
+	"power": 6,
+	"type": "physical",
+	"description": "A toxic strike that drains your life.",
+	"effects": ["poison", "heal_self"]
+  },
+  "Necrotic Venom": {
+	"power": 14,
+	"type": "physical",
+	"description": "Corrosive venom that devours and restores.",
+	"effects": ["poison", "heal_self"]
   }
 }
