@@ -31,6 +31,10 @@ mouse_filter = 2
 
 [node name="EnemyName" type="Label" parent="."]
 layout_mode = 0
+offset_left = 540.0
+offset_top = 43.0
+offset_right = 740.0
+offset_bottom = 73.0
 text = "Enemy"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -41,6 +45,10 @@ theme_override_font_sizes/font_size = 26
 
 [node name="EnemyHPLabel" type="Label" parent="."]
 layout_mode = 0
+offset_left = 510.0
+offset_top = 213.0
+offset_right = 770.0
+offset_bottom = 233.0
 text = "HP: 50/50"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -48,92 +56,173 @@ theme_override_font_sizes/font_size = 14
 
 [node name="EnemyHPBarBg" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 530.0
+offset_top = 237.0
+offset_right = 750.0
+offset_bottom = 257.0
 color = Color(0.31, 0.2, 0.08, 1)
 
 [node name="EnemyHPBar" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 530.0
+offset_top = 237.0
+offset_right = 750.0
+offset_bottom = 257.0
 color = Color(0.2, 0.95, 0.35, 1)
 
 [node name="EnemySprite" type="Sprite2D" parent="."]
+position = Vector2(640, 130)
 scale = Vector2(0.24, 0.24)
 
 [node name="BottomBar" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 496.0
+offset_right = 1280.0
+offset_bottom = 720.0
 color = Color(0.47, 0.31, 0.16, 1)
 
 [node name="BottomBarBorder" type="Panel" parent="."]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 496.0
+offset_right = 1280.0
+offset_bottom = 720.0
 mouse_filter = 2
 
 [node name="CenterEmblem" type="Panel" parent="."]
 layout_mode = 0
+offset_left = 555.0
+offset_top = 523.0
+offset_right = 725.0
+offset_bottom = 693.0
 mouse_filter = 2
 
 [node name="Ring1" type="Panel" parent="CenterEmblem"]
 layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 160.0
+offset_bottom = 160.0
 mouse_filter = 2
 
 [node name="Ring2" type="Panel" parent="CenterEmblem"]
 layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 146.0
+offset_bottom = 146.0
 mouse_filter = 2
 
 [node name="Ring3" type="Panel" parent="CenterEmblem"]
 layout_mode = 0
+offset_left = 38.0
+offset_top = 38.0
+offset_right = 132.0
+offset_bottom = 132.0
 mouse_filter = 2
 
 [node name="Ring4" type="Panel" parent="CenterEmblem"]
 layout_mode = 0
+offset_left = 52.0
+offset_top = 52.0
+offset_right = 118.0
+offset_bottom = 118.0
 mouse_filter = 2
 
 [node name="RightPanelBg" type="Panel" parent="."]
 layout_mode = 0
+offset_left = 739.0
+offset_top = 510.0
+offset_right = 1266.0
+offset_bottom = 705.0
 mouse_filter = 2
 
 [node name="PlayerNameLabel" type="Label" parent="."]
 layout_mode = 0
+offset_left = 753.0
+offset_top = 520.0
+offset_right = 953.0
+offset_bottom = 540.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
 
 [node name="PlayerHPLabel" type="Label" parent="."]
 layout_mode = 0
+offset_left = 753.0
+offset_top = 546.0
+offset_right = 953.0
+offset_bottom = 560.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 13
 
 [node name="PlayerHPBarBg" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 753.0
+offset_top = 566.0
+offset_right = 953.0
+offset_bottom = 580.0
 color = Color(0.31, 0.2, 0.08, 1)
 
 [node name="PlayerHPBar" type="ColorRect" parent="."]
 layout_mode = 0
+offset_left = 753.0
+offset_top = 566.0
+offset_right = 953.0
+offset_bottom = 580.0
 color = Color(0.2, 0.95, 0.35, 1)
 
 [node name="PlayerDetailLabel" type="Label" parent="."]
 layout_mode = 0
+offset_left = 969.0
+offset_top = 522.0
+offset_right = 1249.0
+offset_bottom = 582.0
 theme_override_colors/font_color = Color(0.95, 0.92, 0.82, 1)
 theme_override_font_sizes/font_size = 12
 
 [node name="BtnFight" type="Button" parent="."]
 layout_mode = 0
+offset_left = 14.0
+offset_top = 518.0
+offset_right = 541.0
+offset_bottom = 556.0
 text = "FIGHT"
 focus_mode = 0
 
 [node name="BtnItems" type="Button" parent="."]
 layout_mode = 0
+offset_left = 14.0
+offset_top = 564.0
+offset_right = 541.0
+offset_bottom = 602.0
 text = "ITEMS"
 focus_mode = 0
 
 [node name="BtnDefend" type="Button" parent="."]
 layout_mode = 0
+offset_left = 14.0
+offset_top = 610.0
+offset_right = 541.0
+offset_bottom = 648.0
 text = "DEFEND"
 focus_mode = 0
 
 [node name="BtnRun" type="Button" parent="."]
 layout_mode = 0
+offset_left = 14.0
+offset_top = 656.0
+offset_right = 541.0
+offset_bottom = 694.0
 text = "RUN"
 focus_mode = 0
 
 [node name="MessageLabel" type="Label" parent="."]
 layout_mode = 0
+offset_left = 569.0
+offset_top = 539.0
+offset_right = 711.0
+offset_bottom = 677.0
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
