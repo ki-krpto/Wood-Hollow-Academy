@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://d2tb7eeyt2com"]
 
-[ext_resource type="Script" path="res://scene.gd" id="2_b7t5i"]
 [ext_resource type="PackedScene" uid="uid://map" path="res://assets/maps/main/Map.tscn" id="1_map"]
+[ext_resource type="Script" path="res://scene.gd" id="2_b7t5i"]
 
 [node name="Node2D" type="Node2D" unique_id=2003156474]
 script = ExtResource("2_b7t5i")
 
-[node name="Map" parent="." instance=ExtResource("1_map")]
+[node name="Map" parent="." unique_id=1381895411 instance=ExtResource("1_map")]

@@ -37,17 +37,42 @@ var right_menu_rect: Rect2 = Rect2()
 var message_circle_rect: Rect2 = Rect2()
 var bg_orbs: Array[Dictionary] = []
 
+@onready var enemy_name_label: Label = $EnemyName
+@onready var enemy_hp_label: Label = $EnemyHPLabel
+@onready var enemy_hp_bar: ColorRect = $EnemyHPBar
+@onready var enemy_sprite: Sprite2D = $EnemySprite
+@onready var bottom_bar: ColorRect = $BottomBar
+@onready var bottom_bar_border: Panel = $BottomBarBorder
+@onready var center_emblem: Panel = $CenterEmblem
+@onready var ring1: Panel = $CenterEmblem/Ring1
+@onready var ring2: Panel = $CenterEmblem/Ring2
+@onready var ring3: Panel = $CenterEmblem/Ring3
+@onready var ring4: Panel = $CenterEmblem/Ring4
+@onready var right_panel_bg: Panel = $RightPanelBg
+@onready var player_name_label: Label = $PlayerNameLabel
+@onready var player_hp_label: Label = $PlayerHPLabel
+@onready var player_hp_bar: ColorRect = $PlayerHPBar
+@onready var player_detail_label: Label = $PlayerDetailLabel
+@onready var btn_fight: Button = $BtnFight
+@onready var btn_items: Button = $BtnItems
+@onready var btn_defend: Button = $BtnDefend
+@onready var btn_run: Button = $BtnRun
+@onready var message_label: Label = $MessageLabel
+@onready var orbs_container: Control = $OrbsContainer
+
 func _ready():
 	randomize()
 	screen_size = size
 	if screen_size == Vector2.ZERO:
 		screen_size = Vector2(1152, 648)
 	load_enemy()
-	build_background()
-	build_enemy_display()
-	build_bottom_bar()
-	build_action_buttons()
-	build_message_label()
+	_create_background_orbs()
+	_layout_enemy_display()
+	_layout_bottom_bar()
+	_layout_action_buttons()
+	_layout_message_label()
+	_layout_player_info()
+	_connect_buttons()
 	show_message("A wild " + enemy_data.get("name", "enemy") + " appeared!")
 
 func load_enemy():
@@ -57,15 +82,7 @@ func load_enemy():
 	enemy_hp = enemy_data.get("hp", 50)
 	enemy_max_hp = enemy_hp
 
-func build_background():
-	var bg = ColorRect.new()
-	bg.color = COLOR_DARK_BLUE
-	bg.anchor_left = 0.0
-	bg.anchor_top = 0.0
-	bg.anchor_right = 1.0
-	bg.anchor_bottom = 1.0
-	add_child(bg)
-
+func _create_background_orbs():
 	bg_orbs.clear()
 	var battle_area_height = screen_size.y * 0.7
 	for x in range(0, int(screen_size.x), 40):
@@ -79,7 +96,7 @@ func build_background():
 			orb_style.set_corner_radius_all(32)
 			orb.add_theme_stylebox_override("panel", orb_style)
 			orb.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			add_child(orb)
+			orbs_container.add_child(orb)
 			bg_orbs.append({
 				"node": orb,
 				"phase": randf_range(0.0, TAU)
@@ -92,55 +109,27 @@ func _process(_delta):
 		var phase: float = orb_data["phase"]
 		orb_node.modulate.a = 0.2 + 0.3 * (0.5 + 0.5 * sin(t * 1.8 + phase))
 
-func build_enemy_display():
-	var enemy_name = enemy_data.get("name", "???")
-	var name_label = Label.new()
-	name_label.text = enemy_name
-	name_label.add_theme_font_size_override("font_size", 26)
-	name_label.add_theme_color_override("font_color", COLOR_WHITE)
-	name_label.add_theme_color_override("font_shadow_color", Color.BLACK)
-	name_label.add_theme_constant_override("shadow_offset_x", 2)
-	name_label.add_theme_constant_override("shadow_offset_y", 2)
-	name_label.position = Vector2(screen_size.x * 0.5 - 100, screen_size.y * 0.06)
-	name_label.size = Vector2(200, 30)
-	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.name = "EnemyName"
-	add_child(name_label)
+func _layout_enemy_display():
+	enemy_name_label.text = enemy_data.get("name", "???")
+	enemy_name_label.position = Vector2(screen_size.x * 0.5 - 100, screen_size.y * 0.06)
+	enemy_name_label.size = Vector2(200, 30)
 
-	var hp_label = Label.new()
-	hp_label.text = "HP: " + str(enemy_hp) + "/" + str(enemy_max_hp)
-	hp_label.add_theme_font_size_override("font_size", 14)
-	hp_label.add_theme_color_override("font_color", COLOR_WHITE)
-	hp_label.position = Vector2(screen_size.x * 0.5 - 130, screen_size.y * 0.33 - 24)
-	hp_label.size = Vector2(260, 20)
-	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hp_label.name = "EnemyHPLabel"
-	add_child(hp_label)
+	enemy_hp_label.text = "HP: " + str(enemy_hp) + "/" + str(enemy_max_hp)
+	enemy_hp_label.position = Vector2(screen_size.x * 0.5 - 130, screen_size.y * 0.33 - 24)
+	enemy_hp_label.size = Vector2(260, 20)
 
-	var bar_bg = ColorRect.new()
-	bar_bg.color = COLOR_WOOD_DARK
-	bar_bg.position = Vector2(screen_size.x * 0.5 - 110, screen_size.y * 0.33)
-	bar_bg.size = Vector2(220, 20)
-	bar_bg.name = "EnemyHPBarBg"
-	add_child(bar_bg)
+	$EnemyHPBarBg.position = Vector2(screen_size.x * 0.5 - 110, screen_size.y * 0.33)
+	$EnemyHPBarBg.size = Vector2(220, 20)
 
-	var bar = ColorRect.new()
-	bar.color = COLOR_HP_GOOD
-	bar.position = bar_bg.position
-	bar.size = bar_bg.size
-	bar.name = "EnemyHPBar"
-	add_child(bar)
+	enemy_hp_bar.position = $EnemyHPBarBg.position
+	enemy_hp_bar.size = $EnemyHPBarBg.size
 
-	var sprite = Sprite2D.new()
 	var tex_path = "res://assets/img/" + enemy_data.get("image", "")
 	if ResourceLoader.exists(tex_path):
-		sprite.texture = load(tex_path)
-	sprite.scale = Vector2(0.24, 0.24)
-	sprite.position = Vector2(screen_size.x * 0.5, screen_size.y * 0.18)
-	sprite.name = "EnemySprite"
-	add_child(sprite)
+		enemy_sprite.texture = load(tex_path)
+	enemy_sprite.position = Vector2(screen_size.x * 0.5, screen_size.y * 0.18)
 
-func build_bottom_bar():
+func _layout_bottom_bar():
 	var bar_y = screen_size.y * 0.69
 	var bar_height = screen_size.y - bar_y
 	bottom_bar_rect = Rect2(0, bar_y, screen_size.x, bar_height)
@@ -163,101 +152,65 @@ func build_bottom_bar():
 		bar_height - 28.0
 	)
 
-	var bg_bar = ColorRect.new()
-	bg_bar.color = COLOR_WOOD_BASE
-	bg_bar.position = bottom_bar_rect.position
-	bg_bar.size = bottom_bar_rect.size
-	bg_bar.name = "BottomBar"
-	add_child(bg_bar)
+	bottom_bar.position = bottom_bar_rect.position
+	bottom_bar.size = bottom_bar_rect.size
 
-	var border = Panel.new()
-	border.position = bottom_bar_rect.position
-	border.size = bottom_bar_rect.size
+	bottom_bar_border.position = bottom_bar_rect.position
+	bottom_bar_border.size = bottom_bar_rect.size
 	var border_style = StyleBoxFlat.new()
 	border_style.bg_color = Color(0, 0, 0, 0)
 	border_style.border_color = COLOR_WOOD_DARK
 	border_style.set_border_width_all(8)
-	border.add_theme_stylebox_override("panel", border_style)
-	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(border)
+	bottom_bar_border.add_theme_stylebox_override("panel", border_style)
 
-	var emblem = Panel.new()
-	emblem.position = message_circle_rect.position
-	emblem.size = message_circle_rect.size
+	center_emblem.position = message_circle_rect.position
+	center_emblem.size = message_circle_rect.size
 	var emblem_style = StyleBoxFlat.new()
 	emblem_style.bg_color = COLOR_WOOD_CIRCLE
 	emblem_style.border_color = COLOR_WOOD_DARK
 	emblem_style.set_border_width_all(7)
 	emblem_style.set_corner_radius_all(int(circle_size * 0.5))
-	emblem.add_theme_stylebox_override("panel", emblem_style)
-	emblem.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	emblem.name = "CenterEmblem"
-	add_child(emblem)
+	center_emblem.add_theme_stylebox_override("panel", emblem_style)
 
-	for ring in 4:
-		var ring_panel = Panel.new()
-		var inset = 10 + ring * 14
-		ring_panel.position = Vector2(message_circle_rect.position.x + inset, message_circle_rect.position.y + inset)
-		ring_panel.size = Vector2(message_circle_rect.size.x - inset * 2, message_circle_rect.size.y - inset * 2)
+	var rings := [ring1, ring2, ring3, ring4]
+	for i in 4:
+		var ring_panel: Panel = rings[i]
+		var inset = 10 + i * 14
+		ring_panel.position = Vector2(inset, inset)
+		var ring_size = Vector2(circle_size - inset * 2, circle_size - inset * 2)
+		ring_panel.size = ring_size
 		var ring_style = StyleBoxFlat.new()
 		ring_style.bg_color = Color(0, 0, 0, 0)
 		ring_style.border_color = COLOR_WOOD_GRID
 		ring_style.set_border_width_all(2)
-		ring_style.set_corner_radius_all(int(ring_panel.size.x * 0.5))
+		ring_style.set_corner_radius_all(int(ring_size.x * 0.5))
 		ring_panel.add_theme_stylebox_override("panel", ring_style)
-		ring_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		add_child(ring_panel)
 
-	var right_bg = Panel.new()
-	right_bg.position = right_menu_rect.position
-	right_bg.size = right_menu_rect.size
+	right_panel_bg.position = right_menu_rect.position
+	right_panel_bg.size = right_menu_rect.size
 	var right_style = StyleBoxFlat.new()
 	right_style.bg_color = Color(0.3, 0.2, 0.1, 0.35)
 	right_style.border_color = COLOR_WOOD_DARK
 	right_style.set_border_width_all(2)
 	right_style.set_corner_radius_all(8)
-	right_bg.add_theme_stylebox_override("panel", right_style)
-	right_bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(right_bg)
+	right_panel_bg.add_theme_stylebox_override("panel", right_style)
 
-	var player_name_label = Label.new()
+func _layout_player_info():
 	player_name_label.text = GameManager.player_data.get("name", "Kara")
-	player_name_label.add_theme_font_size_override("font_size", 18)
-	player_name_label.add_theme_color_override("font_color", COLOR_WHITE)
 	player_name_label.position = Vector2(right_menu_rect.position.x + 14, right_menu_rect.position.y + 10)
-	player_name_label.name = "PlayerNameLabel"
-	add_child(player_name_label)
 
-	var player_hp_label = Label.new()
 	player_hp_label.text = "HP: " + str(GameManager.player_data.get("hp", 0)) + "/" + str(GameManager.player_data.get("max_hp", 100))
-	player_hp_label.add_theme_font_size_override("font_size", 13)
-	player_hp_label.add_theme_color_override("font_color", COLOR_WHITE)
 	player_hp_label.position = Vector2(right_menu_rect.position.x + 14, right_menu_rect.position.y + 36)
-	player_hp_label.name = "PlayerHPLabel"
-	add_child(player_hp_label)
 
-	var player_bar_bg = ColorRect.new()
-	player_bar_bg.color = COLOR_WOOD_DARK
-	player_bar_bg.position = Vector2(right_menu_rect.position.x + 14, right_menu_rect.position.y + 56)
-	player_bar_bg.size = Vector2(200, 14)
-	player_bar_bg.name = "PlayerHPBarBg"
-	add_child(player_bar_bg)
+	$PlayerHPBarBg.position = Vector2(right_menu_rect.position.x + 14, right_menu_rect.position.y + 56)
+	$PlayerHPBarBg.size = Vector2(200, 14)
 
-	var player_bar = ColorRect.new()
-	player_bar.color = COLOR_HP_GOOD
-	player_bar.position = player_bar_bg.position
+	player_hp_bar.position = $PlayerHPBarBg.position
 	var player_pct = float(GameManager.player_data.get("hp", 0)) / float(GameManager.player_data.get("max_hp", 100))
-	player_bar.size = Vector2(200 * player_pct, 14)
-	player_bar.name = "PlayerHPBar"
-	add_child(player_bar)
+	player_hp_bar.size = Vector2(200 * player_pct, 14)
 
-	var detail_label = Label.new()
-	detail_label.text = "LV." + str(GameManager.player_data.get("level", 1)) + "\nATK: " + str(GameManager.player_data.get("attack", 10)) + "\nDEF: " + str(GameManager.player_data.get("defense", 5))
-	detail_label.add_theme_font_size_override("font_size", 12)
-	detail_label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.82, 1))
-	detail_label.position = Vector2(right_menu_rect.position.x + 230, right_menu_rect.position.y + 12)
-	detail_label.name = "PlayerDetailLabel"
-	add_child(detail_label)
+	player_detail_label.text = "LV." + str(GameManager.player_data.get("level", 1)) + "\nATK: " + str(GameManager.player_data.get("attack", 10)) + "\nDEF: " + str(GameManager.player_data.get("defense", 5))
+	player_detail_label.position = Vector2(right_menu_rect.position.x + 230, right_menu_rect.position.y + 12)
 
 func apply_wood_button_style(btn: Button):
 	var normal = StyleBoxFlat.new()
@@ -286,47 +239,29 @@ func apply_wood_button_style(btn: Button):
 	btn.add_theme_color_override("font_pressed_color", COLOR_WHITE)
 	btn.focus_mode = Control.FOCUS_NONE
 
-func build_action_buttons():
+func _layout_action_buttons():
 	var btn_w = left_menu_rect.size.x
 	var btn_h = 38
 	var gap = 8
 	var start_x = left_menu_rect.position.x
 	var start_y = left_menu_rect.position.y + 8
 
-	var actions = [
-		{"text": "FIGHT",  "action": "fight"},
-		{"text": "ITEMS", "action": "items"},
-		{"text": "DEFEND", "action": "defend"},
-		{"text": "RUN",   "action": "run"},
-	]
-
-	for i in actions.size():
-		var row = i
-		var a = actions[i]
-		var btn = Button.new()
-		btn.text = a.text
-		btn.position = Vector2(start_x, start_y + row * (btn_h + gap))
+	var buttons := [btn_fight, btn_items, btn_defend, btn_run]
+	for i in buttons.size():
+		var btn: Button = buttons[i]
+		btn.position = Vector2(start_x, start_y + i * (btn_h + gap))
 		btn.size = Vector2(btn_w, btn_h)
-		btn.name = "Btn" + a.action.capitalize()
 		apply_wood_button_style(btn)
-		btn.pressed.connect(_on_action_pressed.bind(a.action))
-		add_child(btn)
 
-func build_message_label():
-	var msg = Label.new()
-	msg.text = ""
-	msg.add_theme_font_size_override("font_size", 20)
-	msg.add_theme_color_override("font_color", COLOR_WHITE)
-	msg.add_theme_color_override("font_shadow_color", Color.BLACK)
-	msg.add_theme_constant_override("shadow_offset_x", 1)
-	msg.add_theme_constant_override("shadow_offset_y", 1)
-	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	msg.position = Vector2(message_circle_rect.position.x + 14, message_circle_rect.position.y + 16)
-	msg.size = Vector2(message_circle_rect.size.x - 28, message_circle_rect.size.y - 32)
-	msg.name = "MessageLabel"
-	add_child(msg)
+func _layout_message_label():
+	message_label.position = Vector2(message_circle_rect.position.x + 14, message_circle_rect.position.y + 16)
+	message_label.size = Vector2(message_circle_rect.size.x - 28, message_circle_rect.size.y - 32)
+
+func _connect_buttons():
+	btn_fight.pressed.connect(_on_action_pressed.bind("fight"))
+	btn_items.pressed.connect(_on_action_pressed.bind("items"))
+	btn_defend.pressed.connect(_on_action_pressed.bind("defend"))
+	btn_run.pressed.connect(_on_action_pressed.bind("run"))
 
 func _on_action_pressed(action: String):
 	if state != "player_choice" or processing_message:
@@ -702,41 +637,36 @@ func pick_enemy_move() -> String:
 	return moves.keys()[0]
 
 func update_enemy_hp_bar():
-	var bar = get_node_or_null("EnemyHPBar")
-	if bar:
+	if enemy_hp_bar:
 		var pct = float(enemy_hp) / float(enemy_max_hp)
-		bar.size.x = 220 * pct
+		enemy_hp_bar.size.x = 220 * pct
 		if pct < 0.25:
-			bar.color = COLOR_HP_DANGER
+			enemy_hp_bar.color = COLOR_HP_DANGER
 		elif pct < 0.5:
-			bar.color = COLOR_HP_WARN
+			enemy_hp_bar.color = COLOR_HP_WARN
 		else:
-			bar.color = COLOR_HP_GOOD
-	var label = get_node_or_null("EnemyHPLabel")
-	if label:
-		label.text = "HP: " + str(enemy_hp) + "/" + str(enemy_max_hp)
+			enemy_hp_bar.color = COLOR_HP_GOOD
+	if enemy_hp_label:
+		enemy_hp_label.text = "HP: " + str(enemy_hp) + "/" + str(enemy_max_hp)
 
 func update_player_hp_bar():
-	var bar = get_node_or_null("PlayerHPBar")
-	if bar:
+	if player_hp_bar:
 		var max_hp = GameManager.player_data.get("max_hp", 100)
 		var hp = GameManager.player_data.get("hp", 0)
 		var pct = float(hp) / float(max_hp)
-		bar.size.x = 200 * pct
+		player_hp_bar.size.x = 200 * pct
 		if pct < 0.25:
-			bar.color = COLOR_HP_DANGER
+			player_hp_bar.color = COLOR_HP_DANGER
 		elif pct < 0.5:
-			bar.color = COLOR_HP_WARN
+			player_hp_bar.color = COLOR_HP_WARN
 		else:
-			bar.color = COLOR_HP_GOOD
-	var label = get_node_or_null("PlayerHPLabel")
-	if label:
-		label.text = "HP: " + str(GameManager.player_data["hp"]) + "/" + str(GameManager.player_data["max_hp"])
+			player_hp_bar.color = COLOR_HP_GOOD
+	if player_hp_label:
+		player_hp_label.text = "HP: " + str(GameManager.player_data["hp"]) + "/" + str(GameManager.player_data["max_hp"])
 
 func show_message(text: String):
-	var msg = get_node_or_null("MessageLabel")
-	if msg:
-		msg.text = text
+	if message_label:
+		message_label.text = text
 
 func victory():
 	state = "victory"
