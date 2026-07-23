@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=859496098]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.08, 0.08, 0.28, 1)
 
-[node name="OrbsContainer" type="Control" parent="."]
+[node name="OrbsContainer" type="Control" parent="." unique_id=1412885069]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,32 +29,32 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="EnemyName" type="Label" parent="."]
+[node name="EnemyName" type="Label" parent="." unique_id=1158020490]
 layout_mode = 0
 offset_left = 540.0
 offset_top = 43.0
 offset_right = 740.0
 offset_bottom = 73.0
-text = "Enemy"
-horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 26
+text = "Enemy"
+horizontal_alignment = 1
 
-[node name="EnemyHPLabel" type="Label" parent="."]
+[node name="EnemyHPLabel" type="Label" parent="." unique_id=1622958684]
 layout_mode = 0
 offset_left = 510.0
 offset_top = 213.0
 offset_right = 770.0
 offset_bottom = 233.0
-text = "HP: 50/50"
-horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 14
+text = "HP: 50/50"
+horizontal_alignment = 1
 
-[node name="EnemyHPBarBg" type="ColorRect" parent="."]
+[node name="EnemyHPBarBg" type="ColorRect" parent="." unique_id=783369821]
 layout_mode = 0
 offset_left = 530.0
 offset_top = 237.0
@@ -62,7 +62,7 @@ offset_right = 750.0
 offset_bottom = 257.0
 color = Color(0.31, 0.2, 0.08, 1)
 
-[node name="EnemyHPBar" type="ColorRect" parent="."]
+[node name="EnemyHPBar" type="ColorRect" parent="." unique_id=1011574759]
 layout_mode = 0
 offset_left = 530.0
 offset_top = 237.0
@@ -70,27 +70,25 @@ offset_right = 750.0
 offset_bottom = 257.0
 color = Color(0.2, 0.95, 0.35, 1)
 
-[node name="EnemySprite" type="Sprite2D" parent="."]
+[node name="EnemySprite" type="Sprite2D" parent="." unique_id=1071844201]
 position = Vector2(640, 130)
 scale = Vector2(0.24, 0.24)
 
-[node name="BottomBar" type="ColorRect" parent="."]
+[node name="BottomBar" type="ColorRect" parent="." unique_id=1280711062]
 layout_mode = 0
-offset_left = 0.0
 offset_top = 496.0
 offset_right = 1280.0
 offset_bottom = 720.0
 color = Color(0.47, 0.31, 0.16, 1)
 
-[node name="BottomBarBorder" type="Panel" parent="."]
+[node name="BottomBarBorder" type="Panel" parent="." unique_id=1397227874]
 layout_mode = 0
-offset_left = 0.0
 offset_top = 496.0
 offset_right = 1280.0
 offset_bottom = 720.0
 mouse_filter = 2
 
-[node name="CenterEmblem" type="Panel" parent="."]
+[node name="CenterEmblem" type="Panel" parent="." unique_id=1510385215]
 layout_mode = 0
 offset_left = 555.0
 offset_top = 523.0
@@ -98,7 +96,7 @@ offset_right = 725.0
 offset_bottom = 693.0
 mouse_filter = 2
 
-[node name="Ring1" type="Panel" parent="CenterEmblem"]
+[node name="Ring1" type="Panel" parent="CenterEmblem" unique_id=1247184921]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
@@ -106,7 +104,7 @@ offset_right = 160.0
 offset_bottom = 160.0
 mouse_filter = 2
 
-[node name="Ring2" type="Panel" parent="CenterEmblem"]
+[node name="Ring2" type="Panel" parent="CenterEmblem" unique_id=1276471860]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 24.0
@@ -114,7 +112,7 @@ offset_right = 146.0
 offset_bottom = 146.0
 mouse_filter = 2
 
-[node name="Ring3" type="Panel" parent="CenterEmblem"]
+[node name="Ring3" type="Panel" parent="CenterEmblem" unique_id=1559119207]
 layout_mode = 0
 offset_left = 38.0
 offset_top = 38.0
@@ -122,7 +120,7 @@ offset_right = 132.0
 offset_bottom = 132.0
 mouse_filter = 2
 
-[node name="Ring4" type="Panel" parent="CenterEmblem"]
+[node name="Ring4" type="Panel" parent="CenterEmblem" unique_id=1574416853]
 layout_mode = 0
 offset_left = 52.0
 offset_top = 52.0
@@ -130,7 +128,7 @@ offset_right = 118.0
 offset_bottom = 118.0
 mouse_filter = 2
 
-[node name="RightPanelBg" type="Panel" parent="."]
+[node name="RightPanelBg" type="Panel" parent="." unique_id=1094551155]
 layout_mode = 0
 offset_left = 739.0
 offset_top = 510.0
@@ -138,7 +136,7 @@ offset_right = 1266.0
 offset_bottom = 705.0
 mouse_filter = 2
 
-[node name="PlayerNameLabel" type="Label" parent="."]
+[node name="PlayerNameLabel" type="Label" parent="." unique_id=326644396]
 layout_mode = 0
 offset_left = 753.0
 offset_top = 520.0
@@ -147,7 +145,7 @@ offset_bottom = 540.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
 
-[node name="PlayerHPLabel" type="Label" parent="."]
+[node name="PlayerHPLabel" type="Label" parent="." unique_id=1725630583]
 layout_mode = 0
 offset_left = 753.0
 offset_top = 546.0
@@ -156,7 +154,7 @@ offset_bottom = 560.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 13
 
-[node name="PlayerHPBarBg" type="ColorRect" parent="."]
+[node name="PlayerHPBarBg" type="ColorRect" parent="." unique_id=1518981927]
 layout_mode = 0
 offset_left = 753.0
 offset_top = 566.0
@@ -164,7 +162,7 @@ offset_right = 953.0
 offset_bottom = 580.0
 color = Color(0.31, 0.2, 0.08, 1)
 
-[node name="PlayerHPBar" type="ColorRect" parent="."]
+[node name="PlayerHPBar" type="ColorRect" parent="." unique_id=1061299179]
 layout_mode = 0
 offset_left = 753.0
 offset_top = 566.0
@@ -172,7 +170,7 @@ offset_right = 953.0
 offset_bottom = 580.0
 color = Color(0.2, 0.95, 0.35, 1)
 
-[node name="PlayerDetailLabel" type="Label" parent="."]
+[node name="PlayerDetailLabel" type="Label" parent="." unique_id=361261335]
 layout_mode = 0
 offset_left = 969.0
 offset_top = 522.0
@@ -181,53 +179,53 @@ offset_bottom = 582.0
 theme_override_colors/font_color = Color(0.95, 0.92, 0.82, 1)
 theme_override_font_sizes/font_size = 12
 
-[node name="BtnFight" type="Button" parent="."]
+[node name="BtnFight" type="Button" parent="." unique_id=542483290]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 518.0
 offset_right = 541.0
 offset_bottom = 556.0
-text = "FIGHT"
 focus_mode = 0
+text = "FIGHT"
 
-[node name="BtnItems" type="Button" parent="."]
+[node name="BtnItems" type="Button" parent="." unique_id=1021495436]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 564.0
 offset_right = 541.0
 offset_bottom = 602.0
-text = "ITEMS"
 focus_mode = 0
+text = "ITEMS"
 
-[node name="BtnDefend" type="Button" parent="."]
+[node name="BtnDefend" type="Button" parent="." unique_id=1615908528]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 610.0
 offset_right = 541.0
 offset_bottom = 648.0
-text = "DEFEND"
 focus_mode = 0
+text = "DEFEND"
 
-[node name="BtnRun" type="Button" parent="."]
+[node name="BtnRun" type="Button" parent="." unique_id=1049569495]
 layout_mode = 0
 offset_left = 14.0
 offset_top = 656.0
 offset_right = 541.0
 offset_bottom = 694.0
-text = "RUN"
 focus_mode = 0
+text = "RUN"
 
-[node name="MessageLabel" type="Label" parent="."]
+[node name="MessageLabel" type="Label" parent="." unique_id=416701095]
 layout_mode = 0
 offset_left = 569.0
 offset_top = 539.0
 offset_right = 711.0
 offset_bottom = 677.0
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2

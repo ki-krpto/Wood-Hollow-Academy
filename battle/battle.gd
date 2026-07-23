@@ -127,6 +127,8 @@ func _layout_enemy_display():
 	var tex_path = "res://assets/img/" + enemy_data.get("image", "")
 	if ResourceLoader.exists(tex_path):
 		enemy_sprite.texture = load(tex_path)
+	if enemy_data.get("name", "") == "Cave Spider":
+		enemy_sprite.scale = Vector2(2, 2)
 	enemy_sprite.position = Vector2(screen_size.x * 0.5, screen_size.y * 0.18)
 
 func _layout_bottom_bar():
