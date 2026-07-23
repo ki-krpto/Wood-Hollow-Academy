@@ -41,7 +41,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 41
 text = "Enemy"
 horizontal_alignment = 1
 
@@ -53,7 +53,7 @@ offset_right = 770.0
 offset_bottom = 233.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 22
 text = "HP: 50/50"
 horizontal_alignment = 1
 
@@ -147,7 +147,7 @@ offset_right = 953.0
 offset_bottom = 540.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 
 [node name="PlayerHPLabel" type="Label" parent="." unique_id=1725630583]
 layout_mode = 0
@@ -157,7 +157,7 @@ offset_right = 953.0
 offset_bottom = 560.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 22
 
 [node name="PlayerHPBarBg" type="ColorRect" parent="." unique_id=1518981927]
 layout_mode = 0
@@ -183,7 +183,7 @@ offset_right = 1249.0
 offset_bottom = 582.0
 theme_override_colors/font_color = Color(0.95, 0.92, 0.82, 1)
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 22
 
 [node name="BtnFight" type="Button" parent="." unique_id=542483290]
 layout_mode = 0
@@ -193,6 +193,7 @@ offset_right = 541.0
 offset_bottom = 556.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_tiqy5")
+theme_override_font_sizes/font_size = 30
 text = "Fight"
 
 [node name="BtnItems" type="Button" parent="." unique_id=1021495436]
@@ -203,6 +204,7 @@ offset_right = 541.0
 offset_bottom = 602.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_tiqy5")
+theme_override_font_sizes/font_size = 30
 text = "Items
 "
 
@@ -214,6 +216,7 @@ offset_right = 541.0
 offset_bottom = 648.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_tiqy5")
+theme_override_font_sizes/font_size = 30
 text = "Defend"
 
 [node name="BtnRun" type="Button" parent="." unique_id=1049569495]
@@ -224,6 +227,7 @@ offset_right = 541.0
 offset_bottom = 694.0
 focus_mode = 0
 theme_override_fonts/font = ExtResource("2_tiqy5")
+theme_override_font_sizes/font_size = 30
 text = "Flee"
 
 [node name="MessageLabel" type="Label" parent="." unique_id=416701095]
@@ -237,7 +241,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_fonts/font = ExtResource("2_tiqy5")
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 34
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
