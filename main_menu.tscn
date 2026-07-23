@@ -1,8 +1,10 @@
-[gd_scene format=4 uid="uid://b3a5p0bdhx1nf"]
+[gd_scene format=3 uid="uid://b3a5p0bdhx1nf"]
 
 [ext_resource type="Script" path="res://main_menu.gd" id="1_5i2wa"]
+[ext_resource type="FontFile" uid="uid://cndg24hn8d687" path="res://assets/fonts/Rockboxcond12.ttf" id="2_7vrkn"]
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1081758522]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,16 +12,16 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_5i2wa")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 15
+[node name="ColorRect" type="ColorRect" parent="." unique_id=449127069]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchors_preset = 8
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=748694654]
+layout_mode = 0
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -32,24 +34,33 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="VBoxContainer"]
-horizontal_alignment = 1
+[node name="Title" type="Label" parent="VBoxContainer" unique_id=1443791171]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_font_sizes/font_size = 29
 text = "Wood Hollow Academy"
+horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="VBoxContainer"]
+[node name="StartButton" type="Button" parent="VBoxContainer" unique_id=1393540449]
 layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_font_sizes/font_size = 29
 text = "Start"
-focus_mode = 0
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=111065618]
 layout_mode = 2
+focus_mode = 0
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_font_sizes/font_size = 29
 text = "Settings"
-focus_mode = 0
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
+[node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=1489669500]
 layout_mode = 2
-text = "Quit"
 focus_mode = 0
+theme_override_fonts/font = ExtResource("2_7vrkn")
+theme_override_font_sizes/font_size = 29
+text = "Quit"
 
 [connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
