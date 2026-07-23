@@ -477,6 +477,7 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 		enemy_hp = max(0, enemy_hp - jolt_dmg)
 		update_enemy_hp_bar()
 		enemy_jolt_turns -= 1
+		spawn_magic_particles("jolt")
 		show_message(str(jolt_data.get("damage_message", enemy_data.get("name", "Enemy") + " jolts violently and takes " + str(jolt_dmg) + " damage!")).replace("{enemy}", enemy_data.get("name", "Enemy")).replace("{damage}", str(jolt_dmg)))
 		await get_tree().create_timer(float(jolt_data.get("damage_delay", 0.8))).timeout
 		if enemy_hp <= 0:
@@ -556,9 +557,11 @@ func _apply_enemy_magic_effect(effect_name: String, turns: int) -> void:
 	match effect_name:
 		"jolt":
 			enemy_jolt_turns += applied_turns
+			spawn_magic_particles("jolt")
 			show_message(str(effect_data.get("apply_message", "Used Jolt! Enemy is jittery, unstable, and taking shock damage.")).replace("{turns}", str(applied_turns)))
 		"caffeiene":
 			enemy_caffeiene_turns += applied_turns
+			spawn_magic_particles("caffeiene")
 			show_message(str(effect_data.get("apply_message", "Used Caffeiene! Enemy goes hyper and attacks rapidly.")).replace("{turns}", str(applied_turns)))
 		_:
 			show_message("Used item, but nothing happened.")
@@ -584,6 +587,7 @@ func execute_enemy_poison_tick():
 	var poison_dmg = max(1, enemy_max_hp / 10)
 	enemy_hp = max(0, enemy_hp - poison_dmg)
 	update_enemy_hp_bar()
+	spawn_magic_particles("poison")
 	enemy_poison_turns -= 1
 	show_message("Poison deals " + str(poison_dmg) + " damage to " + enemy_data.get("name", "Enemy") + "! (" + str(enemy_poison_turns) + " turns remaining)")
 	await get_tree().create_timer(1.0).timeout
@@ -621,6 +625,7 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 					show_message("You've been poisoned! You'll take damage each turn!")
 				else:
 					enemy_poison_turns += 3
+					spawn_magic_particles("poison")
 					show_message("The enemy is poisoned!")
 
 func pick_enemy_move() -> String:
@@ -669,6 +674,60 @@ func update_player_hp_bar():
 func show_message(text: String):
 	if message_label:
 		message_label.text = text
+
+func spawn_magic_particles(effect_type: String) -> void:
+	var particles = CPUParticles2D.new()
+	particles.position = enemy_sprite.position
+	particles.one_shot = true
+	particles.emitting = true
+	particles.finished.connect(particles.queue_free)
+	match effect_type:
+		"jolt":
+			particles.amount = 30
+			particles.lifetime = 0.6
+			particles.explosiveness = 0.9
+			particles.spread = 180.0
+			particles.gravity = Vector2(0, 0)
+			particles.initial_velocity_min = 150.0
+			particles.initial_velocity_max = 300.0
+			particles.scale_amount_min = 2.0
+			particles.scale_amount_max = 5.0
+			particles.color = Color(0.3, 0.8, 1.0, 1.0)
+			var ramp = Gradient.new()
+			ramp.set_color(0, Color(0.3, 0.8, 1.0, 1.0))
+			ramp.set_color(1, Color(1.0, 1.0, 0.4, 0.0))
+			particles.color_ramp = ramp
+		"caffeiene":
+			particles.amount = 25
+			particles.lifetime = 0.5
+			particles.explosiveness = 0.85
+			particles.spread = 60.0
+			particles.gravity = Vector2(0, 0)
+			particles.initial_velocity_min = 200.0
+			particles.initial_velocity_max = 350.0
+			particles.scale_amount_min = 2.0
+			particles.scale_amount_max = 4.0
+			particles.color = Color(1.0, 0.3, 0.1, 1.0)
+			var ramp = Gradient.new()
+			ramp.set_color(0, Color(1.0, 0.5, 0.1, 1.0))
+			ramp.set_color(1, Color(1.0, 0.2, 0.1, 0.0))
+			particles.color_ramp = ramp
+		"poison":
+			particles.amount = 20
+			particles.lifetime = 0.8
+			particles.explosiveness = 0.7
+			particles.spread = 120.0
+			particles.gravity = Vector2(0, -40)
+			particles.initial_velocity_min = 40.0
+			particles.initial_velocity_max = 100.0
+			particles.scale_amount_min = 3.0
+			particles.scale_amount_max = 7.0
+			particles.color = Color(0.4, 0.9, 0.2, 1.0)
+			var ramp = Gradient.new()
+			ramp.set_color(0, Color(0.4, 0.9, 0.2, 1.0))
+			ramp.set_color(1, Color(0.6, 0.1, 0.8, 0.0))
+			particles.color_ramp = ramp
+	add_child(particles)
 
 func victory():
 	state = "victory"
