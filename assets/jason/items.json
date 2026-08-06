@@ -1,24 +1,28 @@
 {
 	"Types of Items": {
-		"Types": "weapon, armor, healing, combat_buff"
+		"Types": "weapon, armor, healing, combat_buff",
+		"image": "filename of an image in assets/img/items/ or assets/img/ (optional)"
 	},
 	"Quick Sheath": {
 		"description": "Lets you attack twice in one turn",
 		"type": "combat_buff",
 		"attribute": "extra_turns",
-		"value": 1
+		"value": 1,
+		"image": "quick_sheath.png"
 	},
 	"Basic Health Potion": {
 		"description": "Restores 20 health",
 		"type": "healing",
 		"attribute": "health_restore",
-		"value": 20
+		"value": 20,
+		"image": "healthPot.webp"
 	},
 	"Super Health Potion": {
 		"description": "Restores 50 health",
 		"type": "healing",
 		"attribute": "health_restore",
-		"value": 50
+		"value": 50,
+		"image": "healthPot.webp"
 	},
 	"Jolt Flask": {
 		"description": "Shocks the enemy: jittery actions, possible double turns, and chip damage each turn.",
@@ -26,7 +30,8 @@
 		"attribute": "status_effect",
 		"effect": "jolt",
 		"turns": 3,
-		"value": 0
+		"value": 0,
+		"image": "jolt_flask.png"
 	},
 	"Caffeiene Capsule": {
 		"description": "Overloads the enemy with caffeiene so it attacks in a fast frenzy.",
@@ -34,6 +39,13 @@
 		"attribute": "status_effect",
 		"effect": "caffeiene",
 		"turns": 3,
-		"value": 0
+		"value": 0,
+		"image": "caffeiene_capsule.png"
+	},
+	"The Scroll": {
+		"description": "A weathered scroll written in the Legend's own hand, describing the path through the deep caverns.",
+		"type": "story",
+		"value": 0,
+		"image": "scroll.png"
 	}
 }

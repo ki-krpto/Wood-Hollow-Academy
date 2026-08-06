@@ -350,6 +350,12 @@ func show_item_selection():
 		btn.position = Vector2(btn_x, btn_y)
 		btn.size = Vector2(btn_w, btn_h)
 		btn.name = "ItemBtn_" + entry.get("name", "")
+		var item_texture = GameManager.get_item_texture(entry.get("name", ""))
+		if item_texture:
+			btn.icon = item_texture
+			btn.expand_icon = true
+			btn.icon_alignment = HORIZONTAL_ALIGNMENT_LEFT
+			btn.add_theme_constant_override("icon_max_width", 28)
 		apply_wood_button_style(btn)
 		btn.pressed.connect(_on_item_selected.bind(entry.get("name", "")))
 		add_child(btn)

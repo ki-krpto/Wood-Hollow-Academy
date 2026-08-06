@@ -49,7 +49,7 @@ func interact():
 		return
 	for i in item_count:
 		GameManager.add_item(item_name)
-	_show_notification("Obtained: " + item_name + " x" + str(item_count) + "!")
+	_show_notification("Obtained: " + item_name + " x" + str(item_count) + "!", item_name)
 	_mark_opened()
 
 func _change_appearance() -> void:
@@ -60,7 +60,7 @@ func _change_appearance() -> void:
 	if chest_latch:
 		chest_latch.color = Color(0.5, 0.45, 0.2, 1.0)
 
-func _show_notification(text: String):
+func _show_notification(text: String, item_name: String = ""):
 	if notification_ui:
 		notification_ui.queue_free()
 	notification_ui = CanvasLayer.new()
@@ -83,12 +83,27 @@ func _show_notification(text: String):
 	style.set_content_margin_all(12)
 	panel.add_theme_stylebox_override("panel", style)
 
+	var hbox = HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 12)
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(hbox)
+
+	var item_texture = GameManager.get_item_texture(item_name)
+	if item_texture:
+		var item_icon = TextureRect.new()
+		item_icon.texture = item_texture
+		item_icon.custom_minimum_size = Vector2(40, 40)
+		item_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		item_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		hbox.add_child(item_icon)
+
 	var label = Label.new()
 	label.text = text
 	label.add_theme_font_size_override("font_size", 15)
 	label.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	panel.add_child(label)
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	hbox.add_child(label)
 
 	var timer = get_tree().create_timer(2.0)
 	timer.timeout.connect(_remove_notification)

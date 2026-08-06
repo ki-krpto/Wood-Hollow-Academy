@@ -14,11 +14,12 @@ var move_start = Vector2.ZERO
 var move_progress = 0.0
 var interacting = false
 var current_interactable = null
+var cutscene_lock = false
 var stats_open = false
 var stats_ui: CanvasLayer = null
 var selected_slot: int = -1
 var inv_slot_panels: Array[PanelContainer] = []
-var inv_slot_icons: Array[Label] = []
+var inv_slot_icons: Array[TextureRect] = []
 var desc_name: Label = null
 var desc_text: Label = null
 var use_button: Button = null
@@ -53,6 +54,9 @@ func _ready() -> void:
 			cam.zoom = Vector2(1.7, 1.7)
 
 func _physics_process(delta: float) -> void:
+	if cutscene_lock:
+		return
+
 	if Input.is_action_just_pressed("pause_menu"):
 		_toggle_pause()
 		return
@@ -151,36 +155,53 @@ func _try_interact() -> void:
 	var col := get_node_or_null("CollisionShape2D") as CollisionShape2D
 	if col == null:
 		return
-	var player_center: Vector2 = col.global_position
+	var player_shape := col.shape as RectangleShape2D
+	var player_rect := Rect2(col.global_position - player_shape.size * 0.5, player_shape.size)
 	var closest_body: Node2D = null
 	var closest_dist: float = TILE_SIZE * 1.5
 
 	for npc in get_tree().get_nodes_in_group("npcs"):
-		var npc_col := npc.get_node_or_null("CollisionShape2D") as CollisionShape2D
-		var npc_center: Vector2 = npc_col.global_position if npc_col else npc.global_position
-		var dist: float = player_center.distance_to(npc_center)
-		if dist < closest_dist:
-			closest_dist = dist
+		var gap := _interact_gap(npc, player_rect)
+		if gap < closest_dist:
+			closest_dist = gap
 			closest_body = npc
 
 	for chest in get_tree().get_nodes_in_group("chests"):
-		var chest_col := chest.get_node_or_null("CollisionShape2D") as CollisionShape2D
-		var chest_center: Vector2 = chest_col.global_position if chest_col else chest.global_position
-		var dist: float = player_center.distance_to(chest_center)
-		if dist < closest_dist:
-			closest_dist = dist
+		var gap := _interact_gap(chest, player_rect)
+		if gap < closest_dist:
+			closest_dist = gap
 			closest_body = chest
+
+	for interactable in get_tree().get_nodes_in_group("interactables"):
+		var gap := _interact_gap(interactable, player_rect)
+		if gap < closest_dist:
+			closest_dist = gap
+			closest_body = interactable
 
 	if closest_body:
 		interacting = true
 		current_interactable = closest_body
 		closest_body.interact()
-		if closest_body.is_in_group("npcs"):
+		if closest_body.is_in_group("npcs") or closest_body.is_in_group("interactables"):
 			await GameManager.dialogue_finished
 		else:
 			await get_tree().create_timer(1.5).timeout
 		interacting = false
 		current_interactable = null
+
+func _interact_gap(body: Node2D, player_rect: Rect2) -> float:
+	var body_col := body.get_node_or_null("CollisionShape2D") as CollisionShape2D
+	if body_col == null:
+		return INF
+	var body_shape := body_col.shape as RectangleShape2D
+	if body_shape == null:
+		return INF
+	var body_rect := Rect2(body_col.global_position - body_shape.size * 0.5, body_shape.size)
+	if player_rect.intersects(body_rect):
+		return 0.0
+	var dx := maxf(0.0, maxf(player_rect.position.x - body_rect.end.x, body_rect.position.x - player_rect.end.x))
+	var dy := maxf(0.0, maxf(player_rect.position.y - body_rect.end.y, body_rect.position.y - player_rect.end.y))
+	return Vector2(dx, dy).length()
 
 func _advance_current_interaction() -> void:
 	if current_interactable and current_interactable.has_method("interact"):
@@ -394,21 +415,17 @@ func _build_inventory_panel(parent: Control) -> void:
 		ss.set_content_margin_all(4)
 		slot_panel.add_theme_stylebox_override("panel", ss)
 
-		var icon := Label.new()
-		icon.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		icon.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		var icon := TextureRect.new()
+		icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.custom_minimum_size = Vector2(44, 44)
 		icon.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		icon.size_flags_vertical = Control.SIZE_EXPAND_FILL
 
 		if i < inv.size():
 			var entry: Dictionary = inv[i]
-			var item_data: Dictionary = GameManager.get_item_data(entry.get("name", ""))
-			icon.text = _get_item_icon(item_data.get("type", ""))
-			icon.add_theme_font_size_override("font_size", 22)
-			icon.add_theme_color_override("font_color", Color.WHITE)
-		else:
-			icon.text = ""
-			icon.add_theme_font_size_override("font_size", 22)
+			var item_texture: Texture2D = GameManager.get_item_texture(entry.get("name", ""))
+			icon.texture = item_texture
 
 		slot_panel.add_child(icon)
 		grid.add_child(slot_panel)
@@ -423,17 +440,6 @@ func _build_inventory_panel(parent: Control) -> void:
 		btn.modulate.a = 0.01
 		btn.pressed.connect(_on_slot_pressed.bind(idx))
 		slot_panel.add_child(btn)
-
-func _get_item_icon(item_type: String) -> String:
-	match item_type:
-		"healing":
-			return "+"
-		"combat_buff":
-			return "!"
-		"world_ability":
-			return "?"
-		_:
-			return "~"
 
 func _build_description_bar(parent: Control) -> void:
 	var panel := PanelContainer.new()
@@ -557,15 +563,13 @@ func _refresh_inventory_grid() -> void:
 	for i in 16:
 		if i >= inv_slot_icons.size():
 			break
-		var icon: Label = inv_slot_icons[i]
+		var icon: TextureRect = inv_slot_icons[i]
 		var panel: PanelContainer = inv_slot_panels[i]
 		if i < inv.size():
 			var entry: Dictionary = inv[i]
-			var item_data: Dictionary = GameManager.get_item_data(entry.get("name", ""))
-			icon.text = _get_item_icon(item_data.get("type", ""))
-			icon.add_theme_color_override("font_color", Color.WHITE)
+			icon.texture = GameManager.get_item_texture(entry.get("name", ""))
 		else:
-			icon.text = ""
+			icon.texture = null
 		var ss: StyleBoxFlat = panel.get_theme_stylebox("panel") as StyleBoxFlat
 		if ss:
 			ss.bg_color = Color(0.08, 0.07, 0.05, 0.8)

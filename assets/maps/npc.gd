@@ -1,6 +1,7 @@
 extends StaticBody2D
 
 @export var dialogue_text: String = ""
+@export var display_name: String = ""
 var dialogue_lines: PackedStringArray = PackedStringArray()
 var is_talking: bool = false
 var current_line: int = 0
@@ -57,7 +58,7 @@ func _show_dialogue_ui():
 	panel.add_child(vbox)
 
 	var name_label = Label.new()
-	name_label.text = "Vivi"
+	name_label.text = display_name if display_name != "" else "Vivi"
 	name_label.add_theme_font_size_override("font_size", 16)
 	name_label.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
 	vbox.add_child(name_label)

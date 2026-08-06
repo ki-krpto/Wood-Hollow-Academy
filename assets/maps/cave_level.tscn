@@ -1,38 +1,30 @@
-[gd_scene format=4 uid="uid://d4ion4k585l3g"]
+[gd_scene format=4 uid="uid://b5d63aaioqnnt"]
 
-[ext_resource type="Texture2D" uid="uid://co23fphcpoxpj" path="res://assets/maps/Stone_frame.png" id="1_ggl21"]
-[ext_resource type="Texture2D" uid="uid://ctgpxqshaadjg" path="res://assets/maps/Stone_wall.png" id="2_3bqyl"]
-[ext_resource type="Texture2D" uid="uid://baev0j8qdrs30" path="res://assets/maps/Limestone_frame.png" id="3_7g1wy"]
-[ext_resource type="Texture2D" uid="uid://ctiopsbhv4x71" path="res://assets/maps/Limestone_floor.png" id="4_sssxc"]
-[ext_resource type="Script" uid="uid://dlu0pdqurr2et" path="res://assets/maps/player.gd" id="5_ovupq"]
+[ext_resource type="Script" uid="uid://br7j6emduvp5d" path="res://assets/maps/player.gd" id="5_ovupq"]
 [ext_resource type="Texture2D" uid="uid://h6c6xak66caq" path="res://assets/img/kim-forward.png" id="6_3p3c4"]
 [ext_resource type="Script" uid="uid://cbewvbpxfbsyc" path="res://assets/maps/enemy_spawner.gd" id="7_p07kv"]
 [ext_resource type="Texture2D" uid="uid://d4nyv5v87kgv0" path="res://assets/img/Pollutabloom.png" id="8_3q4p7"]
-[ext_resource type="Script" path="res://assets/maps/npc.gd" id="9_npcgd"]
-[ext_resource type="Script" path="res://assets/maps/chest.gd" id="10_chestgd"]
-[ext_resource type="Texture2D" uid="uid://bji3k7t4r2nq" path="res://assets/img/vivi-right.png" id="11_vivipng"]
+[ext_resource type="Script" uid="uid://cw5yl8c5vmwy" path="res://assets/maps/npc.gd" id="9_npcgd"]
+[ext_resource type="Script" uid="uid://nqpqy5cwj5ex" path="res://assets/maps/chest.gd" id="10_chestgd"]
+[ext_resource type="Texture2D" uid="uid://sjl7h310vbiu" path="res://assets/img/vivi-right.png" id="11_vivipng"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_oh77h"]
 resource_name = "Stone_frame"
-texture = ExtResource("1_ggl21")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_uyovd"]
 resource_name = "Stone_wall"
-texture = ExtResource("2_3bqyl")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cpdd1"]
 resource_name = "Limestone_frame"
-texture = ExtResource("3_7g1wy")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7q8ih"]
 resource_name = "Limestone_floor"
-texture = ExtResource("4_sssxc")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
@@ -62,7 +54,6 @@ size = Vector2(18, 22)
 size = Vector2(24, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8qmuy"]
-size = Vector2(20, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7yw50"]
 size = Vector2(25, 30)
@@ -117,7 +108,7 @@ dialogue_text = "Hello! |How is your day? |Glad to hear that! |Make sure to slay
 position = Vector2(6, 7.5)
 shape = SubResource("RectangleShape2D_geqav")
 
-[node name="Sprite2D" type="Sprite2D" parent="Entities/Vivi (SB)"]
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Vivi (SB)" unique_id=28848085]
 position = Vector2(6, -2)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("11_vivipng")
@@ -145,68 +136,66 @@ item_count = 5
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 
-[node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=2103145361]
 position = Vector2(300, 235)
 script = ExtResource("10_chestgd")
 item_name = "Jolt Flask"
-item_count = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Jolt Chest (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Jolt Chest (SB)" unique_id=883417097]
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 
-[node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1209430473]
 position = Vector2(360, 300)
 script = ExtResource("10_chestgd")
 item_name = "Caffeiene Capsule"
-item_count = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Caffeiene Chest (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Caffeiene Chest (SB)" unique_id=376082429]
 position = Vector2(7, 6.5)
 shape = SubResource("RectangleShape2D_8qmuy")
 
-[node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities" unique_id=1928816131]
 position = Vector2(450, 108)
 script = ExtResource("7_p07kv")
 enemy_id = "Ryan Gosling"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Ryan Gosling (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Ryan Gosling (SB)" unique_id=474367105]
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_lg6sj")
 
-[node name="Visual" type="ColorRect" parent="Entities/Ryan Gosling (SB)"]
+[node name="Visual" type="ColorRect" parent="Entities/Ryan Gosling (SB)" unique_id=706446803]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 28.0
 offset_bottom = 28.0
 color = Color(0.8, 0.4, 0.6, 1)
 
-[node name="Cave Bat (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Cave Bat (SB)" type="StaticBody2D" parent="Entities" unique_id=959541630]
 position = Vector2(392, 170)
 script = ExtResource("7_p07kv")
 enemy_id = "Cave Bat"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Cave Bat (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Cave Bat (SB)" unique_id=1777273775]
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_lg6sj")
 
-[node name="Visual" type="ColorRect" parent="Entities/Cave Bat (SB)"]
+[node name="Visual" type="ColorRect" parent="Entities/Cave Bat (SB)" unique_id=70500186]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 28.0
 offset_bottom = 28.0
 color = Color(0.3, 0.2, 0.5, 1)
 
-[node name="Limestone Golem (SB)" type="StaticBody2D" parent="Entities"]
+[node name="Limestone Golem (SB)" type="StaticBody2D" parent="Entities" unique_id=1962052399]
 position = Vector2(450, 170)
 script = ExtResource("7_p07kv")
 enemy_id = "Limestone Golem"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Limestone Golem (SB)"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Limestone Golem (SB)" unique_id=180352521]
 position = Vector2(16, 16)
 shape = SubResource("RectangleShape2D_lg6sj")
 
-[node name="Visual" type="ColorRect" parent="Entities/Limestone Golem (SB)"]
+[node name="Visual" type="ColorRect" parent="Entities/Limestone Golem (SB)" unique_id=1720232549]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 28.0

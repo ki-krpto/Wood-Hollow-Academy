@@ -11,6 +11,7 @@ var current_enemy: String = ""
 var defeated_enemies: Array[String] = []
 var inventory: Array[Dictionary] = []
 var opened_chests: Array[String] = []
+var story_flags: Dictionary = {}
 var overworld_position: Vector2 = Vector2.ZERO
 var active_save_slot: int = -1
 var _default_player_data: Dictionary = {}
@@ -86,6 +87,25 @@ func get_attack_data(attack_name: String) -> Dictionary:
 
 func get_item_data(item_name: String) -> Dictionary:
 	return items_data.get(item_name, {})
+
+func get_item_image_path(item_name: String) -> String:
+	var item_data = get_item_data(item_name)
+	var image = item_data.get("image", "")
+	if image.is_empty():
+		return ""
+	var items_path = "res://assets/img/items/" + image
+	if ResourceLoader.exists(items_path):
+		return items_path
+	var root_path = "res://assets/img/" + image
+	if ResourceLoader.exists(root_path):
+		return root_path
+	return items_path
+
+func get_item_texture(item_name: String) -> Texture2D:
+	var path = get_item_image_path(item_name)
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+	return load(path)
 
 func get_magic_effect_data(effect_name: String) -> Dictionary:
 	return magic_effects_data.get(effect_name, {})
@@ -163,6 +183,13 @@ func get_item_count(item_name: String) -> int:
 			return entry.get("count", 0)
 	return 0
 
+func get_story_flag(key: String) -> bool:
+	return bool(story_flags.get(key, false))
+
+func set_story_flag(key: String, value: bool = true) -> void:
+	story_flags[key] = value
+	save_current_slot()
+
 func start_dialogue(lines: Array[String]):
 	dialogue_started.emit(lines)
 
@@ -211,6 +238,7 @@ func create_new_save(slot: int) -> bool:
 	defeated_enemies.clear()
 	inventory.clear()
 	opened_chests.clear()
+	story_flags.clear()
 	overworld_position = Vector2.ZERO
 	active_save_slot = slot
 	inventory_changed.emit()
@@ -292,6 +320,7 @@ func save_current_slot() -> bool:
 		"inventory": inventory,
 		"defeated_enemies": defeated_enemies,
 		"opened_chests": opened_chests,
+		"story_flags": story_flags,
 		"overworld_position": {
 			"x": overworld_position.x,
 			"y": overworld_position.y
@@ -352,6 +381,11 @@ func _apply_save_data(save_data: Dictionary) -> void:
 	if typeof(saved_opened_chests) == TYPE_ARRAY:
 		for chest_key in saved_opened_chests:
 			opened_chests.append(str(chest_key))
+
+	var saved_story_flags = save_data.get("story_flags", {})
+	story_flags.clear()
+	if typeof(saved_story_flags) == TYPE_DICTIONARY:
+		story_flags = (saved_story_flags as Dictionary).duplicate(true)
 
 	var saved_pos = save_data.get("overworld_position", {})
 	if typeof(saved_pos) == TYPE_DICTIONARY:
