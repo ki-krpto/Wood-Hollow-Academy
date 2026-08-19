@@ -1,16 +1,16 @@
 [gd_resource type="TileSet" format=3 uid="uid://br50uh4dy8sxc"]
 
-[ext_resource type="Texture2D" uid="uid://8mxgnjw5433t" path="res://assets/maps/main/tileset.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://dhe5t6j0mkykk" path="res://assets/maps/main/tileset.png" id="1"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cZiJKsPq0Qw"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c3ixkrOP_Rs"]
 texture = ExtResource("1")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
-2:0/0 = 0
+3:0/0 = 0
 
 [resource]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 2
-sources/0 = SubResource("TileSetAtlasSource_cZiJKsPq0Qw")
+sources/0 = SubResource("TileSetAtlasSource_c3ixkrOP_Rs")
