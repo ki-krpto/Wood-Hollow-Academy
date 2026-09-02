@@ -48,14 +48,14 @@ position = Vector2(264, 3193)
 position = Vector2(311, 1498)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2044596599]
-position = Vector2(4, -352)
+position = Vector2(2009, -607)
 shape = SubResource("RectangleShape2D_4tne8")
 
 [node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1732655013]
 position = Vector2(524, 351)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=672841534]
-position = Vector2(454, 21)
+position = Vector2(420, 955)
 shape = SubResource("RectangleShape2D_q4um7")
 
 [node name="Entities" type="Node2D" parent="." unique_id=756541664]
