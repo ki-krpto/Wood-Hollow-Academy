@@ -42,7 +42,7 @@ size = Vector2(48, 48)
 [node name="Layer_tile_s0_3_0" parent="." unique_id=634100281 instance=ExtResource("layer_15_id")]
 
 [node name="Player" parent="." unique_id=1721419700 instance=ExtResource("player_id")]
-position = Vector2(264, 3193)
+position = Vector2(433, 3312)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1068578122]
 position = Vector2(311, 1498)
@@ -62,7 +62,7 @@ shape = SubResource("RectangleShape2D_q4um7")
 position = Vector2(-19, 1201)
 
 [node name="Vivi (SB)" type="StaticBody2D" parent="Entities" unique_id=1777594368]
-position = Vector2(616, 1744)
+position = Vector2(116, 2192)
 script = ExtResource("npc_id")
 dialogue_text = "Hello! |How is your day? |Glad to hear that! |Make sure to slay that monster!"
 
@@ -151,7 +151,7 @@ scale = Vector2(0.7, 0.7)
 texture = ExtResource("villager_tex")
 
 [node name="Pollutabloom (SB)" type="StaticBody2D" parent="Entities" unique_id=519602950]
-position = Vector2(1133, 1970)
+position = Vector2(868, 1036)
 script = ExtResource("enemy_spawner_id")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Pollutabloom (SB)" unique_id=1783506585]
@@ -163,8 +163,28 @@ position = Vector2(4.0000153, -6)
 scale = Vector2(0.03000002, 0.029166667)
 texture = ExtResource("pollutabloom_tex")
 
+[node name="Potion Chest (SB)3" type="StaticBody2D" parent="Entities" unique_id=1884194246]
+position = Vector2(1872, 1220)
+script = ExtResource("chest_id")
+item_name = "Basic Health Potion"
+item_count = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)3" unique_id=1264966790]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Potion Chest (SB)2" type="StaticBody2D" parent="Entities" unique_id=1649657893]
+position = Vector2(1251, 1219)
+script = ExtResource("chest_id")
+item_name = "Basic Health Potion"
+item_count = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)2" unique_id=1352389346]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_chest_col")
+
 [node name="Potion Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1758509867]
-position = Vector2(436, 1743)
+position = Vector2(1428, -985)
 script = ExtResource("chest_id")
 item_name = "Basic Health Potion"
 item_count = 5
@@ -174,7 +194,7 @@ position = Vector2(-2, 1)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=319061261]
-position = Vector2(502, 1744)
+position = Vector2(1497, 919)
 script = ExtResource("chest_id")
 item_name = "Jolt Flask"
 
@@ -183,7 +203,7 @@ position = Vector2(-2, -2)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=946943564]
-position = Vector2(466, 1746)
+position = Vector2(1574, 1223)
 script = ExtResource("chest_id")
 item_name = "Caffeiene Capsule"
 
@@ -192,7 +212,7 @@ position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities" unique_id=570882598]
-position = Vector2(943, 2093)
+position = Vector2(-266, 1870)
 script = ExtResource("enemy_spawner_id")
 enemy_id = "Ryan Gosling"
 
@@ -209,7 +229,7 @@ color = Color(0.8, 0.4, 0.6, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Cave Spider (SB)" type="StaticBody2D" parent="Entities" unique_id=438897187]
-position = Vector2(945, 1966)
+position = Vector2(1586, 1795)
 script = ExtResource("enemy_spawner_id")
 enemy_id = "Cave Spider"
 
@@ -223,7 +243,7 @@ scale = Vector2(0.46, 0.48)
 texture = ExtResource("10_o6gis")
 
 [node name="Limestone Golem (SB)" type="StaticBody2D" parent="Entities" unique_id=249854796]
-position = Vector2(1043, 1972)
+position = Vector2(-781, 2066)
 script = ExtResource("enemy_spawner_id")
 enemy_id = "Limestone Golem"
 
