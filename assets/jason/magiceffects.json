@@ -2,8 +2,8 @@
 	"jolt": {
 		"default_turns": 3,
 		"self_damage_pct": 0.08,
-		"skip_attack_chance": 0.3,
-		"double_attack_chance": 0.25,
+		"skip_attack_chance": 0.4,
+		"double_attack_chance": 0.2,
 		"apply_message": "Jolt surges through the enemy for {turns} turns!",
 		"damage_message": "{enemy} jolts violently and takes {damage} damage!",
 		"skip_message": "{enemy} is too jittery to act!",

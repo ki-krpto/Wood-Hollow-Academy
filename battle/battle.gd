@@ -502,6 +502,7 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 			await get_tree().create_timer(float(jolt_data.get("double_delay", 0.6))).timeout
 
 	if caffeiene_active:
+		enemy_attack_buff = 0.5
 		caffeiene_data = GameManager.get_magic_effect_data("caffeiene")
 		enemy_caffeiene_turns -= 1
 		wait_time = float(caffeiene_data.get("turn_delay", 0.55))
@@ -538,7 +539,7 @@ func execute_enemy_turn(damage_mult: float = 1.0):
 func _execute_single_enemy_attack(damage_mult: float) -> void:
 	var move_name = pick_enemy_move()
 	var attack_data = GameManager.get_attack_data(move_name)
-	var atk = enemy_data.get("attack", 5) + enemy_attack_buff
+	var atk = enemy_data.get("attack", 5) * enemy_attack_buff
 	var def = GameManager.player_data.get("defense", 5)
 	var power = attack_data.get("power", 0)
 	var dmg = GameManager.calculate_damage(atk, power, def)
@@ -606,14 +607,14 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 					player_attack_buff += 8
 					show_message("You focus your mind! Attack rose!")
 				else:
-					enemy_attack_buff += 5
+					enemy_attack_buff *= 1.25
 					show_message(enemy_data.get("name", "Enemy") + " plots evilly! Attack rose!")
 			"lower_attack":
 				if is_player:
 					player_attack_buff -= 5
 					show_message("Your attack was lowered!")
 				else:
-					enemy_attack_buff -= 3
+					enemy_attack_buff *= 0.75
 					show_message(enemy_data.get("name", "Enemy") + " weakened!")
 			"heal_self":
 				if is_player:
