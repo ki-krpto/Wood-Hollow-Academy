@@ -1,0 +1,270 @@
+[gd_scene format=3 uid="uid://map"]
+
+[ext_resource type="Texture2D" uid="uid://ccm6ws667itau" path="res://assets/img/cave_spider.webp" id="10_o6gis"]
+[ext_resource type="Texture2D" uid="uid://8f1s5f4m8hfv" path="res://assets/img/Limestone_golem.webp" id="11_a5uyu"]
+[ext_resource type="Texture2D" uid="uid://c0dfjn6dwq70l" path="res://assets/img/altar.webp" id="12_a5uyu"]
+[ext_resource type="Script" uid="uid://dl1kkeo4ak7cj" path="res://assets/maps/altar.gd" id="altar_id"]
+[ext_resource type="Script" uid="uid://nqpqy5cwj5ex" path="res://assets/maps/chest.gd" id="chest_id"]
+[ext_resource type="Script" path="res://assets/maps/enemy_spawner.gd" id="enemy_spawner_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_0_0.tscn" id="layer_1_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_1_0.tscn" id="layer_2_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_3_0.tscn" id="layer_15_id"]
+[ext_resource type="Script" uid="uid://cw5yl8c5vmwy" path="res://assets/maps/npc.gd" id="npc_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/player.tscn" id="player_id"]
+[ext_resource type="Texture2D" uid="uid://d4nyv5v87kgv0" path="res://assets/img/Pollutabloom.png" id="pollutabloom_tex"]
+[ext_resource type="Texture2D" uid="uid://cur3lcmdiqqbn" path="res://assets/img/villager.webp" id="villager_tex"]
+[ext_resource type="Texture2D" uid="uid://sjl7h310vbiu" path="res://assets/img/vivi-right.png" id="vivi_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4tne8"]
+size = Vector2(933, 30.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q4um7"]
+size = Vector2(22, 722)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vivi_col"]
+size = Vector2(18, 23.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy_col"]
+size = Vector2(24, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chest_col"]
+size = Vector2(20, 22.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a5uyu"]
+size = Vector2(48, 48)
+
+[node name="map" type="Node2D" unique_id=1651424195]
+
+[node name="path" parent="." unique_id=1338129418 instance=ExtResource("layer_1_id")]
+
+[node name="walls" parent="." unique_id=25005779 instance=ExtResource("layer_2_id")]
+
+[node name="Layer_tile_s0_3_0" parent="." unique_id=634100281 instance=ExtResource("layer_15_id")]
+
+[node name="Player" parent="." unique_id=1721419700 instance=ExtResource("player_id")]
+position = Vector2(433, 3312)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1068578122]
+position = Vector2(311, 1498)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2044596599]
+position = Vector2(2009, -607)
+shape = SubResource("RectangleShape2D_4tne8")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="." unique_id=1732655013]
+position = Vector2(524, 351)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D2" unique_id=672841534]
+position = Vector2(420, 955)
+shape = SubResource("RectangleShape2D_q4um7")
+
+[node name="Entities" type="Node2D" parent="." unique_id=756541664]
+position = Vector2(-19, 1201)
+
+[node name="Vivi (SB)" type="StaticBody2D" parent="Entities" unique_id=1777594368]
+position = Vector2(116, 2192)
+script = ExtResource("npc_id")
+dialogue_text = "Hello! |How is your day? |Glad to hear that! |Make sure to slay that monster!"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Vivi (SB)" unique_id=1802193135]
+position = Vector2(4, 0)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Vivi (SB)" unique_id=683894395]
+position = Vector2(4, -11)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("vivi_tex")
+
+[node name="Scholar Orin (SB)" type="StaticBody2D" parent="Entities" unique_id=2123456701]
+position = Vector2(430, 1936)
+script = ExtResource("npc_id")
+dialogue_text = "These Sanctuary Altars were raised by the Legend long ago. |Their magic is the only thing keeping the acid dragons at bay. |Every altar we know of still hums with that same faint light. |Some say the Legend's own soul is bound into the stones."
+display_name = "Scholar Orin"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Scholar Orin (SB)" unique_id=2123456702]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Scholar Orin (SB)" unique_id=2123456703]
+position = Vector2(-0.9999981, -10)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("villager_tex")
+
+[node name="Apprentice Lena (SB)" type="StaticBody2D" parent="Entities" unique_id=2123456704]
+position = Vector2(566, 1905)
+script = ExtResource("npc_id")
+dialogue_text = "I'm learning to read the old scrolls. |Woodhollow Academy teaches history, swords, and a little magic. |Mostly we learn how to survive down here. |The surface used to be so much more than ash and ruin."
+display_name = "Apprentice Lena"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Apprentice Lena (SB)" unique_id=2123456705]
+position = Vector2(4, -2)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Apprentice Lena (SB)" unique_id=2123456706]
+position = Vector2(4, -11)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("villager_tex")
+
+[node name="Survivor Bram (SB)" type="StaticBody2D" parent="Entities" unique_id=2123456707]
+position = Vector2(452, 1995)
+script = ExtResource("npc_id")
+dialogue_text = "I fled from the WoodHollow Sovereignty when the dragons came. |My whole village turned to glass and acid in a single night. |We built everything we have around these altars. |The barrier kept the worst of it out."
+display_name = "Survivor Bram"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Survivor Bram (SB)" unique_id=2123456708]
+position = Vector2(4, -2)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Survivor Bram (SB)" unique_id=2123456709]
+position = Vector2(4, -11)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("villager_tex")
+
+[node name="Sentinel Kael (SB)" type="StaticBody2D" parent="Entities" unique_id=2123456710]
+position = Vector2(566, 1995)
+script = ExtResource("npc_id")
+dialogue_text = "Don't touch the altar's core. That's the first law. |It's said to unleash wild magic no one can control. |I've guarded this sanctuary for twenty years. |Only the Legend ever dared to speak to it directly."
+display_name = "Sentinel Kael"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Sentinel Kael (SB)" unique_id=2123456711]
+position = Vector2(4, -2)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Sentinel Kael (SB)" unique_id=2123456712]
+position = Vector2(4, -11)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("villager_tex")
+
+[node name="Novice Rian (SB)" type="StaticBody2D" parent="Entities" unique_id=2123456713]
+position = Vector2(649, 1937)
+script = ExtResource("npc_id")
+dialogue_text = "The altar glows a little brighter when people are near. |I bet it likes us! |One day I'll be a great scholar and understand it. |But first, the master says I have to learn to hold a sword."
+display_name = "Novice Rian"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Novice Rian (SB)" unique_id=2123456714]
+position = Vector2(3, -1)
+shape = SubResource("RectangleShape2D_vivi_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Novice Rian (SB)" unique_id=2123456715]
+position = Vector2(3.0000305, -11)
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("villager_tex")
+
+[node name="Pollutabloom (SB)" type="StaticBody2D" parent="Entities" unique_id=519602950]
+position = Vector2(868, 1036)
+script = ExtResource("enemy_spawner_id")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Pollutabloom (SB)" unique_id=1783506585]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Pollutabloom (SB)" unique_id=334377907]
+position = Vector2(4.0000153, -6)
+scale = Vector2(0.03000002, 0.029166667)
+texture = ExtResource("pollutabloom_tex")
+
+[node name="Potion Chest (SB)3" type="StaticBody2D" parent="Entities" unique_id=1884194246]
+position = Vector2(1872, 1220)
+script = ExtResource("chest_id")
+item_name = "Basic Health Potion"
+item_count = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)3" unique_id=1264966790]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Potion Chest (SB)2" type="StaticBody2D" parent="Entities" unique_id=1649657893]
+position = Vector2(1251, 1219)
+script = ExtResource("chest_id")
+item_name = "Basic Health Potion"
+item_count = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)2" unique_id=1352389346]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Potion Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1758509867]
+position = Vector2(1428, -985)
+script = ExtResource("chest_id")
+item_name = "Basic Health Potion"
+item_count = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)" unique_id=1388353018]
+position = Vector2(-2, 1)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=319061261]
+position = Vector2(1497, 919)
+script = ExtResource("chest_id")
+item_name = "Jolt Flask"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Jolt Chest (SB)" unique_id=39096392]
+position = Vector2(-2, -2)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=946943564]
+position = Vector2(1574, 1223)
+script = ExtResource("chest_id")
+item_name = "Caffeiene Capsule"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Caffeiene Chest (SB)" unique_id=1294550745]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_chest_col")
+
+[node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities" unique_id=570882598]
+position = Vector2(-266, 1870)
+script = ExtResource("enemy_spawner_id")
+enemy_id = "Ryan Gosling"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Ryan Gosling (SB)" unique_id=1349520989]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Visual" type="ColorRect" parent="Entities/Ryan Gosling (SB)" unique_id=793624200]
+offset_left = -11.0
+offset_top = -11.0
+offset_right = 13.0
+offset_bottom = 13.0
+color = Color(0.8, 0.4, 0.6, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Cave Spider (SB)" type="StaticBody2D" parent="Entities" unique_id=438897187]
+position = Vector2(1586, 1795)
+script = ExtResource("enemy_spawner_id")
+enemy_id = "Cave Spider"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Cave Spider (SB)" unique_id=556595064]
+position = Vector2(1, 0)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Cave Spider (SB)" unique_id=152106]
+position = Vector2(-1, -2.999999)
+scale = Vector2(0.46, 0.48)
+texture = ExtResource("10_o6gis")
+
+[node name="Limestone Golem (SB)" type="StaticBody2D" parent="Entities" unique_id=249854796]
+position = Vector2(-781, 2066)
+script = ExtResource("enemy_spawner_id")
+enemy_id = "Limestone Golem"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Limestone Golem (SB)" unique_id=648534381]
+position = Vector2(1, -3)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/Limestone Golem (SB)" unique_id=430273037]
+position = Vector2(2.2888184e-05, -12.000001)
+scale = Vector2(0.034667924, 0.041503906)
+texture = ExtResource("11_a5uyu")
+
+[node name="Altar (SB)" type="StaticBody2D" parent="." unique_id=544587576]
+position = Vector2(489, 3144)
+script = ExtResource("altar_id")
+
+[node name="Sprite2D" type="Sprite2D" parent="Altar (SB)" unique_id=1729093769]
+position = Vector2(1.0000153, 7.6293945e-06)
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("12_a5uyu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Altar (SB)" unique_id=22687662]
+position = Vector2(-3.5, 10)
+shape = SubResource("RectangleShape2D_a5uyu")
