@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 const TILE_SIZE = 32
-const SPEED = 100.0
-const MOVE_DELAY = 0.1
+const SPEED = 130
+const MOVE_DELAY = 0
 
 var moving = false
 var target = Vector2.ZERO
@@ -85,71 +85,88 @@ func _physics_process(delta: float) -> void:
 		_try_interact()
 		return
 
-	var held = Vector2.ZERO
-	if Input.is_action_pressed("right"):
-		held = Vector2.RIGHT
-	elif Input.is_action_pressed("left"):
-		held = Vector2.LEFT
-	elif Input.is_action_pressed("up"):
-		held = Vector2.UP
-	elif Input.is_action_pressed("down"):
-		held = Vector2.DOWN
+	var held = _held_dir()
+	var tapped = _tapped_dir()
+	if tapped != Vector2.ZERO:
+		buffered_dir = tapped
 
-	if moving:
-		var tapped = Vector2.ZERO
-		if Input.is_action_just_pressed("right"):
-			tapped = Vector2.RIGHT
-		elif Input.is_action_just_pressed("left"):
-			tapped = Vector2.LEFT
-		elif Input.is_action_just_pressed("up"):
-			tapped = Vector2.UP
-		elif Input.is_action_just_pressed("down"):
-			tapped = Vector2.DOWN
+	# Spend the frame's travel budget one tile at a time. Chaining steps within
+	# the same frame keeps a held direction from pausing on a tile boundary, and
+	# rolling the leftover into the next tile means no travel is lost to a step
+	# that happens to finish mid-frame.
+	var budget := SPEED * delta
 
-		if tapped != Vector2.ZERO:
-			buffered_dir = tapped
+	while budget > 0.0001:
+		if not moving:
+			if move_timer > 0.0:
+				break
+			if not _begin_step(held):
+				break
 
-		move_progress += delta * (SPEED / TILE_SIZE)
-		if move_progress >= 1.0:
+		var advance := minf(budget, TILE_SIZE * (1.0 - move_progress))
+		budget -= advance
+		move_progress += advance / TILE_SIZE
+
+		if move_progress >= 0.99999:
 			position = target
-			GameManager.overworld_position = position
+			move_progress = 0.0
 			moving = false
+			move_dir = Vector2.ZERO
 			move_timer = MOVE_DELAY
+			GameManager.overworld_position = position
 		else:
-			var eased = _ease_in_out(move_progress)
-			var desired = move_start.lerp(target, eased)
-			var step = desired - position
-			if move_and_collide(step):
-				moving = false
-				move_dir = Vector2.ZERO
-				buffered_dir = Vector2.ZERO
-				move_timer = MOVE_DELAY
+			position = move_start.lerp(target, move_progress)
 
-	if not moving and move_timer <= 0.0:
-		var next = Vector2.ZERO
+func _begin_step(held: Vector2) -> bool:
+	var next = Vector2.ZERO
+	if buffered_dir != Vector2.ZERO:
+		next = buffered_dir
+		buffered_dir = Vector2.ZERO
+	elif held != Vector2.ZERO:
+		next = held
 
-		if buffered_dir != Vector2.ZERO:
-			next = buffered_dir
-			buffered_dir = Vector2.ZERO
-		elif held != Vector2.ZERO:
-			next = held
+	if next == Vector2.ZERO:
+		return false
 
-		if next != Vector2.ZERO:
-			facing_dir = next
-			var collision = move_and_collide(next * TILE_SIZE, true)
-			if not collision:
-				move_dir = next
-				target = position + move_dir * TILE_SIZE
-				move_start = position
-				move_progress = 0.0
-				moving = true
-			else:
-				var collider = collision.get_collider()
-				if collider and collider.is_in_group("enemies"):
-					var raw_id = collider.get("enemy_id")
-					var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
-					_start_battle_transition(enemy_id, collider)
-				move_dir = Vector2.ZERO
+	facing_dir = next
+	var collision = move_and_collide(next * TILE_SIZE, true)
+	if collision:
+		move_dir = Vector2.ZERO
+		var collider = collision.get_collider()
+		if collider and collider.is_in_group("enemies"):
+			var raw_id = collider.get("enemy_id")
+			var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
+			_start_battle_transition(enemy_id, collider)
+		return false
+
+	move_dir = next
+	move_start = position
+	target = position + next * TILE_SIZE
+	move_progress = 0.0
+	moving = true
+	return true
+
+func _held_dir() -> Vector2:
+	if Input.is_action_pressed("right"):
+		return Vector2.RIGHT
+	if Input.is_action_pressed("left"):
+		return Vector2.LEFT
+	if Input.is_action_pressed("up"):
+		return Vector2.UP
+	if Input.is_action_pressed("down"):
+		return Vector2.DOWN
+	return Vector2.ZERO
+
+func _tapped_dir() -> Vector2:
+	if Input.is_action_just_pressed("right"):
+		return Vector2.RIGHT
+	if Input.is_action_just_pressed("left"):
+		return Vector2.LEFT
+	if Input.is_action_just_pressed("up"):
+		return Vector2.UP
+	if Input.is_action_just_pressed("down"):
+		return Vector2.DOWN
+	return Vector2.ZERO
 
 func _try_interact() -> void:
 	var col := get_node_or_null("CollisionShape2D") as CollisionShape2D
