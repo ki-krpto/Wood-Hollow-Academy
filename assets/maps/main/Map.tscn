@@ -3,17 +3,17 @@
 [ext_resource type="Texture2D" uid="uid://ccm6ws667itau" path="res://assets/img/cave_spider.webp" id="10_o6gis"]
 [ext_resource type="Texture2D" uid="uid://8f1s5f4m8hfv" path="res://assets/img/Limestone_golem.webp" id="11_a5uyu"]
 [ext_resource type="Texture2D" uid="uid://c0dfjn6dwq70l" path="res://assets/img/altar.webp" id="12_a5uyu"]
-[ext_resource type="Script" path="res://assets/maps/altar.gd" id="altar_id"]
+[ext_resource type="Script" uid="uid://dl1kkeo4ak7cj" path="res://assets/maps/altar.gd" id="altar_id"]
 [ext_resource type="Script" uid="uid://nqpqy5cwj5ex" path="res://assets/maps/chest.gd" id="chest_id"]
-[ext_resource type="Script" uid="uid://cbewvbpxfbsyc" path="res://assets/maps/enemy_spawner.gd" id="enemy_spawner_id"]
+[ext_resource type="Script" path="res://assets/maps/enemy_spawner.gd" id="enemy_spawner_id"]
 [ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_0_0.tscn" id="layer_1_id"]
 [ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_1_0.tscn" id="layer_2_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_3_0.tscn" id="layer_15_id"]
 [ext_resource type="Script" uid="uid://cw5yl8c5vmwy" path="res://assets/maps/npc.gd" id="npc_id"]
 [ext_resource type="PackedScene" path="res://assets/maps/player.tscn" id="player_id"]
 [ext_resource type="Texture2D" uid="uid://d4nyv5v87kgv0" path="res://assets/img/Pollutabloom.png" id="pollutabloom_tex"]
 [ext_resource type="Texture2D" uid="uid://cur3lcmdiqqbn" path="res://assets/img/villager.webp" id="villager_tex"]
 [ext_resource type="Texture2D" uid="uid://sjl7h310vbiu" path="res://assets/img/vivi-right.png" id="vivi_tex"]
-[ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_3_0.tscn" id="layer_15_id"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4tne8"]
 size = Vector2(933, 30.5)
@@ -39,13 +39,13 @@ size = Vector2(48, 48)
 
 [node name="walls" parent="." unique_id=25005779 instance=ExtResource("layer_2_id")]
 
-[node name="Layer_tile_s0_3_0" parent="." instance=ExtResource("layer_15_id")]
+[node name="Layer_tile_s0_3_0" parent="." unique_id=634100281 instance=ExtResource("layer_15_id")]
 
 [node name="Player" parent="." unique_id=1721419700 instance=ExtResource("player_id")]
-position = Vector2(477, 2046)
+position = Vector2(264, 3193)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=1068578122]
-position = Vector2(524, 351)
+position = Vector2(311, 1498)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=2044596599]
 position = Vector2(4, -352)
@@ -59,6 +59,7 @@ position = Vector2(454, 21)
 shape = SubResource("RectangleShape2D_q4um7")
 
 [node name="Entities" type="Node2D" parent="." unique_id=756541664]
+position = Vector2(-19, 1201)
 
 [node name="Vivi (SB)" type="StaticBody2D" parent="Entities" unique_id=1777594368]
 position = Vector2(616, 1744)
@@ -205,6 +206,7 @@ offset_top = -11.0
 offset_right = 13.0
 offset_bottom = 13.0
 color = Color(0.8, 0.4, 0.6, 1)
+metadata/_edit_use_anchors_ = true
 
 [node name="Cave Spider (SB)" type="StaticBody2D" parent="Entities" unique_id=438897187]
 position = Vector2(945, 1966)
@@ -235,7 +237,7 @@ scale = Vector2(0.034667924, 0.041503906)
 texture = ExtResource("11_a5uyu")
 
 [node name="Altar (SB)" type="StaticBody2D" parent="." unique_id=544587576]
-position = Vector2(508, 1943)
+position = Vector2(489, 3144)
 script = ExtResource("altar_id")
 
 [node name="Sprite2D" type="Sprite2D" parent="Altar (SB)" unique_id=1729093769]
