@@ -1,16 +1,27 @@
 [gd_resource type="TileSet" format=3 uid="uid://br50uh4dy8sxc"]
 
-[ext_resource type="Texture2D" uid="uid://dhe5t6j0mkykk" path="res://assets/maps/main/tileset.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://c3ps7fap2j2sp" path="res://assets/img/SmallerWater.jpg" id="1_ihv6w"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8yegx"]
+load_path = "res://.godot/imported/tileset.png-8167248f568e563a58c41ebac516fb37.ctex"
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_c3ixkrOP_Rs"]
-texture = ExtResource("1")
+texture = SubResource("CompressedTexture2D_8yegx")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 3:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ft6o4"]
+texture = ExtResource("1_ihv6w")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [resource]
 tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
-physics_layer_0/collision_mask = 2
 sources/0 = SubResource("TileSetAtlasSource_c3ixkrOP_Rs")
+sources/4 = SubResource("TileSetAtlasSource_ft6o4")
