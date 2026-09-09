@@ -8,6 +8,7 @@ var enemies_data: Dictionary = {}
 var items_data: Dictionary = {}
 var magic_effects_data: Dictionary = {}
 var current_enemy: String = ""
+var current_enemy_key: String = ""
 var defeated_enemies: Array[String] = []
 var inventory: Array[Dictionary] = []
 var opened_chests: Array[String] = []
@@ -110,8 +111,9 @@ func get_item_texture(item_name: String) -> Texture2D:
 func get_magic_effect_data(effect_name: String) -> Dictionary:
 	return magic_effects_data.get(effect_name, {})
 
-func enter_battle(enemy_name: String) -> void:
+func enter_battle(enemy_name: String, enemy_key: String = "") -> void:
 	current_enemy = enemy_name
+	current_enemy_key = enemy_key if not enemy_key.is_empty() else enemy_name
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player:
 		overworld_position = player.position
@@ -235,6 +237,7 @@ func create_new_save(slot: int) -> bool:
 		return false
 	player_data = _default_player_data.duplicate(true)
 	current_enemy = ""
+	current_enemy_key = ""
 	defeated_enemies.clear()
 	inventory.clear()
 	opened_chests.clear()
@@ -396,3 +399,4 @@ func _apply_save_data(save_data: Dictionary) -> void:
 	else:
 		overworld_position = Vector2.ZERO
 	current_enemy = ""
+	current_enemy_key = ""

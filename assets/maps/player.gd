@@ -136,7 +136,10 @@ func _begin_step(held: Vector2) -> bool:
 		if collider and collider.is_in_group("enemies"):
 			var raw_id = collider.get("enemy_id")
 			var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
-			_start_battle_transition(enemy_id, collider)
+			var enemy_key: String = str(collider.get_path())
+			_start_battle_transition(enemy_id, enemy_key, collider)
+		elif collider and collider.is_in_group("gates") and collider.has_method("on_blocked"):
+			collider.on_blocked()
 		return false
 
 	move_dir = next
@@ -224,7 +227,7 @@ func _advance_current_interaction() -> void:
 	if current_interactable and current_interactable.has_method("interact"):
 		current_interactable.interact()
 
-func _start_battle_transition(enemy_id: String, enemy_body: Node2D) -> void:
+func _start_battle_transition(enemy_id: String, enemy_key: String, enemy_body: Node2D) -> void:
 	interacting = true
 	moving = false
 	MusicManager.play_battle()
@@ -249,7 +252,7 @@ func _start_battle_transition(enemy_id: String, enemy_body: Node2D) -> void:
 	tween.tween_property(cam, "position", desired_offset, 0.7).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(cam, "zoom", Vector2(4.0, 4.0), 0.4).set_delay(0.5).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(fade, "modulate:a", 1.0, 0.35).set_delay(0.55).set_ease(Tween.EASE_IN)
-	tween.chain().tween_callback(func() -> void: GameManager.enter_battle(enemy_id))
+	tween.chain().tween_callback(func() -> void: GameManager.enter_battle(enemy_id, enemy_key))
 
 func _toggle_stats() -> void:
 	if stats_open:

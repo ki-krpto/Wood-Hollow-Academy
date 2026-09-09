@@ -746,9 +746,10 @@ func victory():
 		show_level_up(new_level)
 		await get_tree().create_timer(3.0).timeout
 	show_message("Victory! Gained " + str(xp) + " XP!")
-	if not GameManager.defeated_enemies.has(GameManager.current_enemy):
-		GameManager.defeated_enemies.append(GameManager.current_enemy)
+	if not GameManager.defeated_enemies.has(GameManager.current_enemy_key):
+		GameManager.defeated_enemies.append(GameManager.current_enemy_key)
 	GameManager.current_enemy = ""
+	GameManager.current_enemy_key = ""
 	GameManager.save_current_slot()
 	await get_tree().create_timer(2.0).timeout
 	return_to_overworld()
@@ -805,6 +806,7 @@ func defeat():
 	show_message("You were defeated...")
 	GameManager.player_data["hp"] = GameManager.player_data.get("max_hp", 100)
 	GameManager.current_enemy = ""
+	GameManager.current_enemy_key = ""
 	GameManager.save_current_slot()
 	await get_tree().create_timer(2.0).timeout
 	return_to_overworld()
