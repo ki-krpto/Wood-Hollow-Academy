@@ -1,20 +1,20 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://c5y2hfrtidsxe"]
 
 [ext_resource type="Script" path="res://assets/maps/gate.gd" id="1_gate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(32, 32)
 
-[node name="Gate" type="StaticBody2D"]
+[node name="Gate" type="StaticBody2D" unique_id=320193156]
 script = ExtResource("1_gate")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=394710756]
 shape = SubResource("RectangleShape2D_gate")
 
-[node name="Visual" type="ColorRect" parent="."]
+[node name="Visual" type="ColorRect" parent="." unique_id=2025730599]
 offset_left = -16.0
 offset_top = -16.0
 offset_right = 16.0
 offset_bottom = 16.0
-color = Color(0.5, 0.5, 0.5, 1)
+color = Color(9.62615e-08, 0.5437159, 0.7549813, 1)
 metadata/_edit_use_anchors_ = true

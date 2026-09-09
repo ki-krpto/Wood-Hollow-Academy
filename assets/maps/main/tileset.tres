@@ -1,5 +1,6 @@
 [gd_resource type="TileSet" format=3 uid="uid://br50uh4dy8sxc"]
 
+[ext_resource type="PackedScene" uid="uid://c5y2hfrtidsxe" path="res://assets/maps/gate.tscn" id="1_8yegx"]
 [ext_resource type="Texture2D" uid="uid://c3ps7fap2j2sp" path="res://assets/img/SmallerWater.jpg" id="1_ihv6w"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8yegx"]
@@ -14,6 +15,11 @@ texture_region_size = Vector2i(32, 32)
 3:0/0 = 0
 2:0/0 = 0
 
+[sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_ft6o4"]
+resource_name = "gate"
+scenes/1/scene = ExtResource("1_8yegx")
+scenes/1/display_placeholder = true
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ft6o4"]
 texture = ExtResource("1_ihv6w")
 texture_region_size = Vector2i(32, 32)
@@ -25,3 +31,4 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_c3ixkrOP_Rs")
 sources/4 = SubResource("TileSetAtlasSource_ft6o4")
+sources/1 = SubResource("TileSetScenesCollectionSource_ft6o4")
