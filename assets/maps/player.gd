@@ -15,6 +15,9 @@ var move_progress = 0.0
 var interacting = false
 var current_interactable = null
 var cutscene_lock = false
+var pushing_rock: CharacterBody2D = null
+var rock_start := Vector2.ZERO
+var rock_target := Vector2.ZERO
 var stats_open = false
 var stats_ui: CanvasLayer = null
 var selected_slot: int = -1
@@ -113,9 +116,14 @@ func _physics_process(delta: float) -> void:
 			moving = false
 			move_dir = Vector2.ZERO
 			move_timer = MOVE_DELAY
+			if pushing_rock:
+				pushing_rock.position = rock_target
+			pushing_rock = null
 			GameManager.overworld_position = position
 		else:
 			position = move_start.lerp(target, move_progress)
+			if pushing_rock:
+				pushing_rock.position = rock_start.lerp(rock_target, move_progress)
 
 func _begin_step(held: Vector2) -> bool:
 	var next = Vector2.ZERO
@@ -133,14 +141,23 @@ func _begin_step(held: Vector2) -> bool:
 	if collision:
 		move_dir = Vector2.ZERO
 		var collider = collision.get_collider()
-		if collider and collider.is_in_group("enemies"):
-			var raw_id = collider.get("enemy_id")
-			var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
-			var enemy_key: String = str(collider.get_path())
-			_start_battle_transition(enemy_id, enemy_key, collider)
-		elif collider and collider.is_in_group("gates") and collider.has_method("on_blocked"):
-			collider.on_blocked()
-		return false
+		pushing_rock = null
+		if collider:
+			if collider.is_in_group("rocks") and collider.has_method("can_move") and collider.can_move(next):
+				pushing_rock = collider
+				rock_start = collider.position
+				rock_target = rock_start + next * TILE_SIZE
+			elif collider.is_in_group("enemies"):
+				var raw_id = collider.get("enemy_id")
+				var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
+				var enemy_key: String = str(collider.get_path())
+				_start_battle_transition(enemy_id, enemy_key, collider)
+				return false
+			elif collider.is_in_group("gates") and collider.has_method("on_blocked"):
+				collider.on_blocked()
+				return false
+		if pushing_rock == null:
+			return false
 
 	move_dir = next
 	move_start = position
