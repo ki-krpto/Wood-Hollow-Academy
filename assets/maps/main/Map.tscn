@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_1_0.tscn" id="layer_2_id"]
 [ext_resource type="PackedScene" path="res://assets/maps/main/Layer_tile_s0_3_0.tscn" id="layer_15_id"]
 [ext_resource type="Script" uid="uid://cw5yl8c5vmwy" path="res://assets/maps/npc.gd" id="npc_id"]
-[ext_resource type="PackedScene" uid="uid://du5np5t86waka" path="res://assets/maps/player.tscn" id="player_id"]
+[ext_resource type="PackedScene" path="res://assets/maps/player.tscn" id="player_id"]
 [ext_resource type="Texture2D" uid="uid://d4nyv5v87kgv0" path="res://assets/img/Pollutabloom.png" id="pollutabloom_tex"]
 [ext_resource type="Texture2D" uid="uid://cur3lcmdiqqbn" path="res://assets/img/villager.webp" id="villager_tex"]
 [ext_resource type="Texture2D" uid="uid://sjl7h310vbiu" path="res://assets/img/vivi-right.png" id="vivi_tex"]
