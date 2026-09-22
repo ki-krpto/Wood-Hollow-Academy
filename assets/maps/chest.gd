@@ -6,9 +6,10 @@ extends StaticBody2D
 var opened: bool = false
 var chest_key: String = ""
 var notification_ui: CanvasLayer = null
-var chest_body: ColorRect = null
-var chest_lid: ColorRect = null
-var chest_latch: ColorRect = null
+var chest_sprite: Sprite2D = null
+
+const CHEST_UNOPENED_TEXTURE: Texture2D = preload("res://assets/img/chestUnopened.png")
+const CHEST_OPENED_TEXTURE: Texture2D = preload("res://assets/img/chestOpenend.png")
 
 func _ready() -> void:
 	add_to_group("chests")
@@ -21,23 +22,9 @@ func _ready() -> void:
 		_change_appearance()
 
 func _build_visual() -> void:
-	chest_body = ColorRect.new()
-	chest_body.color = Color(0.55, 0.3, 0.12, 1.0)
-	chest_body.position = Vector2(0, 5)
-	chest_body.size = Vector2(14, 10)
-	add_child(chest_body)
-
-	chest_lid = ColorRect.new()
-	chest_lid.color = Color(0.65, 0.38, 0.15, 1.0)
-	chest_lid.position = Vector2(0, 1)
-	chest_lid.size = Vector2(14, 4)
-	add_child(chest_lid)
-
-	chest_latch = ColorRect.new()
-	chest_latch.color = Color(0.85, 0.75, 0.3, 1.0)
-	chest_latch.position = Vector2(5, 2)
-	chest_latch.size = Vector2(4, 3)
-	add_child(chest_latch)
+	chest_sprite = Sprite2D.new()
+	chest_sprite.texture = CHEST_UNOPENED_TEXTURE
+	add_child(chest_sprite)
 
 func interact():
 	if opened:
@@ -53,12 +40,8 @@ func interact():
 	_mark_opened()
 
 func _change_appearance() -> void:
-	if chest_body:
-		chest_body.color = Color(0.35, 0.2, 0.08, 1.0)
-	if chest_lid:
-		chest_lid.color = Color(0.4, 0.25, 0.1, 1.0)
-	if chest_latch:
-		chest_latch.color = Color(0.5, 0.45, 0.2, 1.0)
+	if chest_sprite:
+		chest_sprite.texture = CHEST_OPENED_TEXTURE
 
 func _show_notification(text: String, item_name: String = ""):
 	if notification_ui:
@@ -131,4 +114,3 @@ func _mark_opened() -> void:
 	opened = true
 	_change_appearance()
 	GameManager.mark_chest_opened(chest_key)
-	GameManager.save_current_slot()

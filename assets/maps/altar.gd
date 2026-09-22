@@ -36,7 +36,6 @@ func _start_legend_dialogue() -> void:
 
 func _rest() -> void:
 	GameManager.player_data["hp"] = GameManager.player_data.get("max_hp", 100)
-	GameManager.save_current_slot()
 	_show_toast("The altar's warmth washes over you. HP fully restored.")
 	GameManager.end_dialogue()
 

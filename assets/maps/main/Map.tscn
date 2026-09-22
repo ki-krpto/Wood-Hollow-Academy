@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://8f1s5f4m8hfv" path="res://assets/img/Limestone_golem.webp" id="11_a5uyu"]
 [ext_resource type="Texture2D" uid="uid://c0dfjn6dwq70l" path="res://assets/img/altar.webp" id="12_a5uyu"]
 [ext_resource type="Texture2D" uid="uid://b6xf13yo7ypay" path="res://assets/img/BigSpider.png" id="14_w8v24"]
-[ext_resource type="PackedScene" path="res://assets/maps/gate.tscn" id="15_acojt"]
+[ext_resource type="PackedScene" uid="uid://c5y2hfrtidsxe" path="res://assets/maps/gate.tscn" id="15_acojt"]
 [ext_resource type="Script" uid="uid://dl1kkeo4ak7cj" path="res://assets/maps/altar.gd" id="altar_id"]
 [ext_resource type="Script" uid="uid://nqpqy5cwj5ex" path="res://assets/maps/chest.gd" id="chest_id"]
 [ext_resource type="Script" uid="uid://cbewvbpxfbsyc" path="res://assets/maps/enemy_spawner.gd" id="enemy_spawner_id"]
@@ -22,7 +22,7 @@
 size = Vector2(18, 23.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_enemy_col"]
-size = Vector2(24, 24)
+size = Vector2(87, 85)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chest_col"]
 size = Vector2(20, 22.5)
@@ -237,32 +237,31 @@ position = Vector2(868, 1036)
 script = ExtResource("enemy_spawner_id")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Pollutabloom (SB)" unique_id=1783506585]
-position = Vector2(0, 1)
+position = Vector2(-0.5, -10.5)
 shape = SubResource("RectangleShape2D_enemy_col")
 
 [node name="Sprite2D" type="Sprite2D" parent="Entities/Pollutabloom (SB)" unique_id=334377907]
-position = Vector2(4.0000153, -6)
-scale = Vector2(0.03000002, 0.029166667)
+position = Vector2(13.000013, -27.000046)
+scale = Vector2(0.07333335, 0.08374992)
 texture = ExtResource("pollutabloom_tex")
 
 [node name="Potion Chest (SB)3" type="StaticBody2D" parent="Entities" unique_id=1884194246]
-position = Vector2(1872, 1220)
+position = Vector2(1891, 1215)
 script = ExtResource("chest_id")
 item_name = "Basic Health Potion"
 item_count = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)3" unique_id=1264966790]
-position = Vector2(-2, 1)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Potion Chest (SB)2" type="StaticBody2D" parent="Entities" unique_id=1649657893]
-position = Vector2(1251, 1219)
+position = Vector2(1251, 1214)
 script = ExtResource("chest_id")
 item_name = "Basic Health Potion"
 item_count = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Potion Chest (SB)2" unique_id=1352389346]
-position = Vector2(-2, 1)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Potion Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=1758509867]
@@ -276,21 +275,21 @@ position = Vector2(-2, 1)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Jolt Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=319061261]
-position = Vector2(1497, 919)
+position = Vector2(1509, 894)
 script = ExtResource("chest_id")
 item_name = "Jolt Flask"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Jolt Chest (SB)" unique_id=39096392]
-position = Vector2(-2, -2)
+position = Vector2(-2, 0)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Caffeiene Chest (SB)" type="StaticBody2D" parent="Entities" unique_id=946943564]
-position = Vector2(1574, 1223)
+position = Vector2(1573, 1214)
 script = ExtResource("chest_id")
 item_name = "Caffeiene Capsule"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/Caffeiene Chest (SB)" unique_id=1294550745]
-position = Vector2(0, -4)
+position = Vector2(-1, 1)
 shape = SubResource("RectangleShape2D_chest_col")
 
 [node name="Ryan Gosling (SB)" type="StaticBody2D" parent="Entities" unique_id=570882598]

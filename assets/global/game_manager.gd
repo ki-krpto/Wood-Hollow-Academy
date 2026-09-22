@@ -49,9 +49,6 @@ func load_json(path: String, target: Dictionary) -> Dictionary:
 			return data
 	return {}
 
-func save_player_data():
-	save_current_slot()
-
 func heal_player(amount: int):
 	player_data["hp"] = min(player_data["hp"] + amount, player_data["max_hp"])
 
@@ -64,7 +61,6 @@ func add_xp(amount: int):
 			break
 		player_data["xp"] -= needed
 		level_up()
-	save_player_data()
 
 func level_up():
 	player_data["level"] += 1
@@ -73,7 +69,6 @@ func level_up():
 	player_data["attack"] += 2
 	player_data["defense"] += 1
 	player_data["xp_to_next"] = _get_xp_for_next_level()
-	save_player_data()
 
 func _get_xp_for_next_level() -> int:
 	var level_up_data = {}
@@ -117,7 +112,6 @@ func enter_battle(enemy_name: String, enemy_key: String = "") -> void:
 	var player := get_tree().get_first_node_in_group("player") as Node2D
 	if player:
 		overworld_position = player.position
-	save_current_slot()
 	change_scene("res://battle/battle.tscn")
 
 func change_scene(path: String) -> void:
@@ -136,11 +130,9 @@ func add_item(item_name: String) -> bool:
 		if entry.get("name") == item_name:
 			entry["count"] = entry.get("count", 1) + 1
 			inventory_changed.emit()
-			save_current_slot()
 			return true
 	inventory.append({"name": item_name, "count": 1})
 	inventory_changed.emit()
-	save_current_slot()
 	return true
 
 func use_item(item_name: String) -> bool:
@@ -153,7 +145,6 @@ func use_item(item_name: String) -> bool:
 				if inventory[i]["count"] <= 0:
 					inventory.remove_at(i)
 				inventory_changed.emit()
-				save_current_slot()
 			return success
 	return false
 
@@ -190,7 +181,6 @@ func get_story_flag(key: String) -> bool:
 
 func set_story_flag(key: String, value: bool = true) -> void:
 	story_flags[key] = value
-	save_current_slot()
 
 func start_dialogue(lines: Array[String]):
 	dialogue_started.emit(lines)

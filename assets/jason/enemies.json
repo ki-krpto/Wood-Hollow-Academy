@@ -41,10 +41,10 @@
 	}
   },
   "Pollutabloom": {
-	"hp": 50,
-	"attack": 6,
-	"defense": 4,
-	"xp_reward": 50,
+	"hp": 75,
+	"attack": 12,
+	"defense": 6,
+	"xp_reward": 60,
 	"image": "Pollutabloom.png",
 	"description": "A toxic plant that can poison you.",
 	"moves": {
