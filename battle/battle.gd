@@ -14,7 +14,7 @@ const COLOR_HP_DANGER := Color(0.95, 0.25, 0.25, 1)
 var enemy_data: Dictionary = {}
 var enemy_hp: int = 0
 var enemy_max_hp: int = 0
-var enemy_attack_buff: int = 0
+var enemy_attack_buff: float = 1.0
 var player_attack_buff: int = 0
 var player_poison_turns: int = 0
 

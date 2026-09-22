@@ -118,9 +118,9 @@ func change_scene(path: String) -> void:
 	get_tree().change_scene_to_file(path)
 
 func calculate_damage(attacker_attack: int, move_power: int, defender_defense: int) -> int:
-	var base = max(1, attacker_attack + move_power - defender_defense)
+	var base = float(move_power * attacker_attack) / float(max(1, defender_defense) * 3) + 1.0
 	var multiplier = randf_range(0.9, 1.05)
-	return int(roundi(base * multiplier))
+	return max(1, int(roundi(base * multiplier)))
 
 func add_item(item_name: String) -> bool:
 	var item_data = get_item_data(item_name)

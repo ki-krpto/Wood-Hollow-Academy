@@ -1,8 +1,8 @@
 {
   "Ryan Gosling": {
-	"hp": 80,
-	"attack": 10,
-	"defense": 3,
+	"hp": 100,
+	"attack": 16,
+	"defense": 6,
 	"xp_reward": 100,
 	"image": "ryan.jpg",
 	"description": "He's just Ken (and very dangerous).",
@@ -14,7 +14,7 @@
 	}
   },
   "Cave Bat": {
-	"hp": 30,
+	"hp": 40,
 	"attack": 8,
 	"defense": 2,
 	"xp_reward": 15,
@@ -27,8 +27,8 @@
 	}
   },
   "Limestone Golem": {
-	"hp": 150,
-	"attack": 12,
+	"hp": 130,
+	"attack": 20,
 	"defense": 8,
 	"xp_reward": 250,
 	"image": "Limestone_golem.webp",
@@ -41,9 +41,9 @@
 	}
   },
   "Pollutabloom": {
-	"hp": 75,
-	"attack": 12,
-	"defense": 6,
+	"hp": 80,
+	"attack": 14,
+	"defense": 5,
 	"xp_reward": 60,
 	"image": "Pollutabloom.png",
 	"description": "A toxic plant that can poison you.",
@@ -55,9 +55,9 @@
 	}
   },
   "Cave Spider": {
-	"hp": 50,
-	"attack": 9,
-	"defense": 5,
+	"hp": 55,
+	"attack": 10,
+	"defense": 3,
 	"xp_reward": 25,
 	"image": "cave_spider.webp",
 	"description": "A very scawy spider",
@@ -69,8 +69,8 @@
 	},
   "Sewer Spider": {
 	"hp": 65,
-	"attack": 11,
-	"defense": 5,
+	"attack": 12,
+	"defense": 4,
 	"xp_reward": 40,
 	"image": "BigSpider.png",
 	"description": "A grimy spider lurking under the town. Its bite stings twice.",
