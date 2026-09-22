@@ -10,13 +10,13 @@ var _last_hint_ms: int = -10000
 func _ready() -> void:
 	add_to_group("gates")
 	GameManager.inventory_changed.connect(_check_should_open)
-	_check_should_open()
+	_check_should_open(false)
 
-func _check_should_open() -> void:
+func _check_should_open(announce: bool = true) -> void:
 	if opened:
 		return
 	if _meets_requirements():
-		open_gate()
+		open_gate(announce)
 
 func _meets_requirements() -> bool:
 	if required_items.is_empty():
@@ -26,7 +26,7 @@ func _meets_requirements() -> bool:
 			return false
 	return true
 
-func open_gate() -> void:
+func open_gate(announce: bool = true) -> void:
 	if opened:
 		return
 	opened = true
@@ -36,7 +36,8 @@ func open_gate() -> void:
 	var visual := get_node_or_null("Visual")
 	if visual:
 		visual.visible = false
-	show_toast("The gate grinds open!")
+	if announce:
+		show_toast("The gate grinds open!")
 
 func on_blocked() -> void:
 	if opened:

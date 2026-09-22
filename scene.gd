@@ -55,22 +55,22 @@ func _play_intro_cutscene() -> void:
 			{
 				"speaker": "The Altar",
 				"lines": [
-					"Welcome, child of the refugees. You have found your way to my heart.",
-					"I am the last Sanctuary Altar. The Legend bound his voice to my stone."
+					"Another child walks beneath my light...",
+					"Welcome, child of WoodHollow. You stand within the shelter of the last Sanctuary."
 				]
 			},
 			{
 				"speaker": "The Altar",
 				"lines": [
-					"At my base rests a scroll written in his own hand.",
-					"It is the only record of the road through the deep caverns... and of what the surface has become."
+					"Long ago, the one called the Legend bound his life to these stones.",
+					"His body is gone, yet his oath remains, and so too does my watch."
 				]
 			},
 			{
 				"speaker": "The Altar",
 				"lines": [
-					"Take it. Let it guide you where the others could not.",
-					"Read it well, and the way forward will reveal itself."
+					"For generations, your people have dwelt beneath the earth, knowing little of the world above.",
+					"Yet the day shall come when the old path must be walked once more."
 				]
 			}
 		])
@@ -93,22 +93,22 @@ func _play_intro_cutscene() -> void:
 		{
 			"speaker": "The Altar",
 			"lines": [
-				"Welcome, child of the refugees. You have found your way to my heart.",
-				"I am the last Sanctuary Altar. The Legend bound his voice to my stone."
+				"Another child walks beneath my light...",
+				"Welcome, child of WoodHollow. You stand within the shelter of the last Sanctuary."
 			]
 		},
 		{
 			"speaker": "The Altar",
 			"lines": [
-				"At my base rests a scroll written in his own hand.",
-				"It is the only record of the road through the deep caverns... and of what the surface has become."
+				"Long ago, the one called the Legend bound his life to these stones.",
+				"His body is gone, yet his oath remains, and so too does my watch."
 			]
 		},
 		{
 			"speaker": "The Altar",
 			"lines": [
-				"Take it. Let it guide you where the others could not.",
-				"Read it well, and the way forward will reveal itself."
+				"For generations, your people have dwelt beneath the earth, knowing little of the world above.",
+				"Yet the day shall come when the old path must be walked once more."
 			]
 		}
 	])

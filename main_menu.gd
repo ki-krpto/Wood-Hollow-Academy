@@ -5,6 +5,7 @@ var res_label: Label = null
 var fs_label: Label = null
 var vol_label: Label = null
 var save_panel: PanelContainer = null
+var quit_panel: PanelContainer = null
 var move_hint_label: Label = null
 var save_slot_labels: Array[Label] = []
 var save_slot_play_buttons: Array[Button] = []
@@ -16,6 +17,7 @@ func _ready():
 	MusicManager.play_menu()
 	_build_settings_panel()
 	_build_save_panel()
+	_build_quit_panel()
 
 func _on_start_button_pressed():
 	_open_save_menu()
@@ -25,7 +27,8 @@ func _on_settings_button_pressed():
 	get_node("VBoxContainer").visible = false
 
 func _on_quit_button_pressed():
-	get_tree().quit()
+	quit_panel.visible = true
+	get_node("VBoxContainer").visible = false
 
 func _build_settings_panel():
 	settings_panel = PanelContainer.new()
@@ -257,6 +260,68 @@ func _build_save_panel():
 	btn_row.add_child(back_btn)
 
 	_refresh_save_menu()
+
+func _build_quit_panel() -> void:
+	quit_panel = PanelContainer.new()
+	quit_panel.visible = false
+	quit_panel.set_anchors_preset(Control.PRESET_CENTER)
+	quit_panel.offset_left = -220
+	quit_panel.offset_top = -140
+	quit_panel.offset_right = 220
+	quit_panel.offset_bottom = 140
+	add_child(quit_panel)
+
+	var style = StyleBoxFlat.new()
+	style.bg_color = Color(0.15, 0.12, 0.08, 0.97)
+	style.border_color = Color(0.45, 0.32, 0.18, 1.0)
+	style.set_border_width_all(4)
+	style.set_corner_radius_all(6)
+	style.set_content_margin_all(20)
+	quit_panel.add_theme_stylebox_override("panel", style)
+
+	var vbox = VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	quit_panel.add_child(vbox)
+
+	var title = Label.new()
+	title.text = "Quit Game"
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color(0.9, 0.8, 0.55))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vbox.add_child(title)
+
+	var msg = Label.new()
+	msg.text = "Are you sure you want to quit?"
+	msg.add_theme_font_size_override("font_size", 14)
+	msg.add_theme_color_override("font_color", Color(0.95, 0.92, 0.85))
+	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	msg.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	msg.custom_minimum_size = Vector2(0, 40)
+	vbox.add_child(msg)
+
+	vbox.add_child(HSeparator.new())
+
+	var quit_btn = Button.new()
+	quit_btn.text = "Quit"
+	quit_btn.custom_minimum_size = Vector2(220, 34)
+	quit_btn.focus_mode = Control.FOCUS_NONE
+	quit_btn.pressed.connect(_on_quit_no_save)
+	vbox.add_child(quit_btn)
+
+	var cancel_btn = Button.new()
+	cancel_btn.text = "Cancel"
+	cancel_btn.custom_minimum_size = Vector2(220, 34)
+	cancel_btn.focus_mode = Control.FOCUS_NONE
+	cancel_btn.pressed.connect(_on_quit_cancel)
+	vbox.add_child(cancel_btn)
+
+func _on_quit_no_save() -> void:
+	get_tree().quit()
+
+func _on_quit_cancel() -> void:
+	quit_panel.visible = false
+	get_node("VBoxContainer").visible = true
 
 func _open_save_menu() -> void:
 	move_source_slot = -1

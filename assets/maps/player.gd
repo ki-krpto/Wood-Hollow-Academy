@@ -23,6 +23,8 @@ var stats_ui: CanvasLayer = null
 var selected_slot: int = -1
 var inv_slot_panels: Array[PanelContainer] = []
 var inv_slot_icons: Array[TextureRect] = []
+var scroll_open: bool = false
+var scroll_reader: CanvasLayer = null
 var desc_name: Label = null
 var desc_text: Label = null
 var use_button: Button = null
@@ -58,6 +60,9 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if cutscene_lock:
+		return
+
+	if scroll_open:
 		return
 
 	if Input.is_action_just_pressed("pause_menu"):
@@ -555,10 +560,16 @@ func _on_slot_pressed(index: int) -> void:
 	var item_data: Dictionary = GameManager.get_item_data(item_name)
 
 	desc_name.text = item_name + "  x" + str(entry.get("count", 1))
-	desc_text.text = item_data.get("description", "No description.")
 
 	var item_type: String = item_data.get("type", "")
-	use_button.visible = item_type == "healing"
+	var is_scroll: bool = item_type == "story" or item_data.has("pages")
+	if is_scroll:
+		desc_text.text = "A weathered scroll, wrapped in an old ribbon. Press Read to unroll it."
+	else:
+		desc_text.text = item_data.get("description", "No description.")
+
+	use_button.text = "Read" if is_scroll else "Use"
+	use_button.visible = item_type == "healing" or is_scroll
 
 	for i in inv_slot_panels.size():
 		var ss: StyleBoxFlat = inv_slot_panels[i].get_theme_stylebox("panel") as StyleBoxFlat
@@ -577,7 +588,11 @@ func _on_use_pressed() -> void:
 	var entry: Dictionary = inv[selected_slot]
 	var item_name: String = entry.get("name", "")
 	var item_data: Dictionary = GameManager.get_item_data(item_name)
-	if item_data.get("type", "") != "healing":
+	var item_type: String = item_data.get("type", "")
+	if item_type == "story" or item_data.has("pages"):
+		_open_scroll(item_name, item_data)
+		return
+	if item_type != "healing":
 		return
 
 	var heal_amount: int = item_data.get("value", 0)
@@ -594,6 +609,25 @@ func _on_use_pressed() -> void:
 		use_button.visible = false
 	else:
 		_on_slot_pressed(selected_slot)
+
+func _open_scroll(item_name: String, item_data: Dictionary) -> void:
+	if scroll_open:
+		return
+	var pages: Array = item_data.get("pages", [item_data.get("description", "")])
+	if pages.is_empty():
+		return
+	scroll_open = true
+	if stats_ui:
+		stats_ui.visible = false
+	scroll_reader = load("res://assets/maps/scroll_reader.gd").new()
+	scroll_reader.closed.connect(func() -> void:
+		scroll_open = false
+		scroll_reader = null
+		if stats_ui:
+			stats_ui.visible = true
+	)
+	get_tree().current_scene.add_child(scroll_reader)
+	scroll_reader.open(pages, item_name, GameManager.get_item_texture(item_name))
 
 func _refresh_inventory_grid() -> void:
 	var inv := GameManager.get_inventory()
@@ -691,11 +725,18 @@ func _open_pause() -> void:
 	vbox.add_child(settings_btn)
 
 	var quit_btn := Button.new()
-	quit_btn.text = "Quit to Menu"
+	quit_btn.text = "Save & Quit"
 	quit_btn.custom_minimum_size = Vector2(200, 36)
 	quit_btn.focus_mode = Control.FOCUS_NONE
 	quit_btn.pressed.connect(_quit_to_menu)
 	vbox.add_child(quit_btn)
+
+	var quit_no_save_btn := Button.new()
+	quit_no_save_btn.text = "Quit without Saving"
+	quit_no_save_btn.custom_minimum_size = Vector2(200, 36)
+	quit_no_save_btn.focus_mode = Control.FOCUS_NONE
+	quit_no_save_btn.pressed.connect(_quit_to_menu_no_save)
+	vbox.add_child(quit_no_save_btn)
 
 	pause_settings_panel = null
 
@@ -894,4 +935,11 @@ func _quit_to_menu() -> void:
 		pause_ui = null
 	GameManager.overworld_position = position
 	GameManager.save_current_slot()
+	GameManager.change_scene("res://main_menu.tscn")
+
+func _quit_to_menu_no_save() -> void:
+	pause_open = false
+	if pause_ui:
+		pause_ui.queue_free()
+		pause_ui = null
 	GameManager.change_scene("res://main_menu.tscn")

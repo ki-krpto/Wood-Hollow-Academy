@@ -66,5 +66,18 @@
 		"Toxic Lash": 20,
 		"Strike": 50
  		}
+	},
+  "Sewer Spider": {
+	"hp": 65,
+	"attack": 11,
+	"defense": 5,
+	"xp_reward": 40,
+	"image": "BigSpider.png",
+	"description": "A grimy spider lurking under the town. Its bite stings twice.",
+	"moves": {
+		"Venomous Bite": 35,
+		"Toxic Lash": 20,
+		"Strike": 45
 	}
+  }
 }

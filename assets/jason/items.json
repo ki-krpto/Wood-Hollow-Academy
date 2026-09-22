@@ -7,21 +7,21 @@
 		"description": "Lets you attack twice in one turn",
 		"type": "combat_buff",
 		"attribute": "extra_turns",
-		"value": 1,
+		"value": 1.0,
 		"image": "quick_sheath.png"
 	},
 	"Basic Health Potion": {
 		"description": "Restores 20 health",
 		"type": "healing",
 		"attribute": "health_restore",
-		"value": 20,
+		"value": 20.0,
 		"image": "healthPot.webp"
 	},
 	"Super Health Potion": {
 		"description": "Restores 50 health",
 		"type": "healing",
 		"attribute": "health_restore",
-		"value": 50,
+		"value": 50.0,
 		"image": "healthPot.webp"
 	},
 	"Jolt Flask": {
@@ -29,8 +29,8 @@
 		"type": "combat_buff",
 		"attribute": "status_effect",
 		"effect": "jolt",
-		"turns": 3,
-		"value": 0,
+		"turns": 3.0,
+		"value": 0.0,
 		"image": "jolt_flask.png"
 	},
 	"Caffeiene Capsule": {
@@ -38,14 +38,23 @@
 		"type": "combat_buff",
 		"attribute": "status_effect",
 		"effect": "caffeiene",
-		"turns": 3,
-		"value": 0,
+		"turns": 3.0,
+		"value": 0.0,
 		"image": "caffeiene_capsule.png"
 	},
 	"The Scroll": {
-		"description": "A weathered scroll written in the Legend's own hand, describing the path through the deep caverns.",
+		"description": "Follow the path laid before thee, and let thy steps carry thee onward, for within the kingdom there awaiteth peace and prosperity.",
 		"type": "story",
-		"value": 0,
-		"image": "scroll.png"
+		"value": 0.0,
+		"image": "scroll.png",
+		"pages": [
+		"Follow the path laid before thee, and let thy steps carry thee onward, for within the kingdom there lies the hope of peace and prosperity.",
+		
+		"The way shall lead thee beneath the roots of the world, where the deep caverns keep the old road in shadow. Tread lightly, and heed the stones that speak without a voice.",
+		
+		"When thou hast escaped the darkness below, turn thy face toward the peak beneath the midnight moon. There the one who remains shall await thy coming.",
+		
+		"Speak with him, and the realm may yet know a true knight once more. Let neither fear nor doubt turn thee from thy path, child of the academy."
+	]
 	}
-}
+}     

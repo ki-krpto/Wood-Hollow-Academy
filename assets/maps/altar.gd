@@ -22,11 +22,13 @@ func interact() -> void:
 
 func _start_legend_dialogue() -> void:
 	dialogue_lines = [
-		"The altar's core pulses with a soft golden light as you step close...",
-		"A deep voice echoes from the stone: \"So you are the one who found the path.\"",
-		"\"This scroll is my last testament. It holds the way through the deep caverns.\"",
-		"\"Guard it well, child. The surface cannot be reclaimed without what it describes.\""
+		"The altar's core begins to glow, and a voice long buried within the stone speaks...",
+		"\"Hear me, young knight. The hour has come at last.\"",
+		"\"The path before you leads through the deep, and beyond it lies the kingdom you have never known.\"",
+		"\"Take up the scroll. Follow its words, and when you have escaped the caverns, seek the peak beneath the midnight moon.\"",
+    	"\"There you shall speak with the one who remains... and perhaps the realm shall know a true knight once more.\""
 	]
+	
 	current_line = 0
 	on_dialogue_done = _grant_scroll
 	is_talking = true
