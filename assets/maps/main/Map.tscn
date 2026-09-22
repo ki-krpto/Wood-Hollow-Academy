@@ -44,103 +44,103 @@ tile_map_data = PackedByteArray("AAAAAFgAAAABAAAAAAABAFgAAAABAAAAAAACAFgAAAABAAA
 [node name="Rocks" type="Node2D" parent="." unique_id=-294967295]
 
 [node name="Rock5" parent="Rocks" unique_id=136679979 instance=ExtResource("rock_id")]
-position = Vector2(2992, 2992)
+position = Vector2(2805, 2841)
 
 [node name="Rock8" parent="Rocks" unique_id=940782244 instance=ExtResource("rock_id")]
-position = Vector2(2993, 2927)
+position = Vector2(2799, 2844)
 
 [node name="Rock28" parent="Rocks" unique_id=2001560728 instance=ExtResource("rock_id")]
-position = Vector2(3058, 2929)
+position = Vector2(2801, 2844)
 
 [node name="Rock29" parent="Rocks" unique_id=1102662239 instance=ExtResource("rock_id")]
-position = Vector2(3061, 2866)
+position = Vector2(2814, 2845)
 
 [node name="Rock30" parent="Rocks" unique_id=1913727379 instance=ExtResource("rock_id")]
-position = Vector2(3059, 2803)
+position = Vector2(2816, 2840)
 
 [node name="Rock31" parent="Rocks" unique_id=394214561 instance=ExtResource("rock_id")]
-position = Vector2(3061, 2738)
+position = Vector2(2807, 2853)
 
 [node name="Rock32" parent="Rocks" unique_id=915953818 instance=ExtResource("rock_id")]
-position = Vector2(3063, 2674)
+position = Vector2(2800, 2843)
 
 [node name="Rock33" parent="Rocks" unique_id=24119198 instance=ExtResource("rock_id")]
-position = Vector2(3091, 2642)
+position = Vector2(2804, 2841)
 
 [node name="Rock34" parent="Rocks" unique_id=1012950262 instance=ExtResource("rock_id")]
-position = Vector2(3093, 2709)
+position = Vector2(3026, 2833)
 
 [node name="Rock35" parent="Rocks" unique_id=571817464 instance=ExtResource("rock_id")]
-position = Vector2(3092, 2769)
+position = Vector2(3024, 2609)
 
 [node name="Rock36" parent="Rocks" unique_id=699166363 instance=ExtResource("rock_id")]
-position = Vector2(3092, 2833)
+position = Vector2(3088, 2608)
 
 [node name="Rock37" parent="Rocks" unique_id=306436132 instance=ExtResource("rock_id")]
-position = Vector2(3090, 2893)
+position = Vector2(3055, 2608)
 
 [node name="Rock38" parent="Rocks" unique_id=1530165663 instance=ExtResource("rock_id")]
-position = Vector2(3091, 2958)
+position = Vector2(2993, 2960)
 
 [node name="Rock39" parent="Rocks" unique_id=1908162168 instance=ExtResource("rock_id")]
-position = Vector2(3025, 2960)
+position = Vector2(2992, 2609)
 
 [node name="Rock14" parent="Rocks" unique_id=720341441 instance=ExtResource("rock_id")]
-position = Vector2(3024, 2895)
+position = Vector2(3058, 2673)
 
 [node name="Rock15" parent="Rocks" unique_id=1746884001 instance=ExtResource("rock_id")]
-position = Vector2(3026, 2831)
+position = Vector2(3026, 2673)
 
 [node name="Rock16" parent="Rocks" unique_id=1198006986 instance=ExtResource("rock_id")]
-position = Vector2(3028, 2768)
+position = Vector2(2961, 2671)
 
 [node name="Rock17" parent="Rocks" unique_id=1307519951 instance=ExtResource("rock_id")]
-position = Vector2(3029, 2706)
+position = Vector2(3090, 2704)
 
 [node name="Rock18" parent="Rocks" unique_id=229780682 instance=ExtResource("rock_id")]
-position = Vector2(3031, 2641)
+position = Vector2(2993, 2705)
 
 [node name="Rock19" parent="Rocks" unique_id=1124414945 instance=ExtResource("rock_id")]
-position = Vector2(2992, 2576)
+position = Vector2(3059, 2705)
 
 [node name="Rock20" parent="Rocks" unique_id=922977599 instance=ExtResource("rock_id")]
-position = Vector2(3026, 2578)
+position = Vector2(3056, 2768)
 
 [node name="Rock22" parent="Rocks" unique_id=3426527 instance=ExtResource("rock_id")]
-position = Vector2(2962, 2638)
+position = Vector2(3055, 2800)
 
 [node name="Rock23" parent="Rocks" unique_id=1049402314 instance=ExtResource("rock_id")]
-position = Vector2(2961, 2704)
+position = Vector2(3024, 2800)
 
 [node name="Rock24" parent="Rocks" unique_id=843137586 instance=ExtResource("rock_id")]
-position = Vector2(2961, 2767)
+position = Vector2(2961, 2833)
 
 [node name="Rock25" parent="Rocks" unique_id=1587252200 instance=ExtResource("rock_id")]
-position = Vector2(2961, 2832)
+position = Vector2(2992, 2769)
 
 [node name="Rock26" parent="Rocks" unique_id=1484691761 instance=ExtResource("rock_id")]
-position = Vector2(2961, 2895)
+position = Vector2(2992, 2896)
 
 [node name="Rock27" parent="Rocks" unique_id=71869734 instance=ExtResource("rock_id")]
-position = Vector2(2960, 2961)
+position = Vector2(2992, 2864)
 
 [node name="Rock21" parent="Rocks" unique_id=719168336 instance=ExtResource("rock_id")]
-position = Vector2(3057, 2575)
+position = Vector2(3058, 2865)
 
 [node name="Rock9" parent="Rocks" unique_id=1840035013 instance=ExtResource("rock_id")]
-position = Vector2(2993, 2864)
+position = Vector2(3088, 2898)
 
 [node name="Rock10" parent="Rocks" unique_id=1288514014 instance=ExtResource("rock_id")]
-position = Vector2(2994, 2800)
+position = Vector2(3088, 2929)
 
 [node name="Rock11" parent="Rocks" unique_id=323252591 instance=ExtResource("rock_id")]
-position = Vector2(2995, 2737)
+position = Vector2(3057, 2898)
 
 [node name="Rock12" parent="Rocks" unique_id=1351041151 instance=ExtResource("rock_id")]
-position = Vector2(2996, 2668)
+position = Vector2(3057, 2929)
 
 [node name="Rock7" parent="Rocks" unique_id=1912367693 instance=ExtResource("rock_id")]
-position = Vector2(3057, 2993)
+position = Vector2(3023, 2960)
 
 [node name="Rock" parent="Rocks" unique_id=-294967294 instance=ExtResource("rock_id")]
 position = Vector2(336, 3248)
