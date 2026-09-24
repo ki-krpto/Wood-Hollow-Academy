@@ -330,6 +330,36 @@ position = Vector2(7.0000134, -16.000046)
 scale = Vector2(0.07333335, 0.08374992)
 texture = ExtResource("pollutabloom_tex")
 
+[node name="Pollutabloom (SB)3" type="StaticBody2D" parent="." unique_id=852726851]
+position = Vector2(2152, 280)
+script = ExtResource("enemy_spawner_id")
+spawn_id = "D2Pollutabloom1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pollutabloom (SB)3" unique_id=1610710608]
+position = Vector2(-13, 0.9999924)
+scale = Vector2(3.5, 3.5)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Pollutabloom (SB)3" unique_id=1095319930]
+position = Vector2(-4.9999857, -11.000015)
+scale = Vector2(0.07333335, 0.08374992)
+texture = ExtResource("pollutabloom_tex")
+
+[node name="Pollutabloom (SB)4" type="StaticBody2D" parent="." unique_id=1423876027]
+position = Vector2(2164, 638)
+script = ExtResource("enemy_spawner_id")
+spawn_id = "D22Pollutabloom2"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pollutabloom (SB)4" unique_id=745094649]
+position = Vector2(0, -7.6293945e-06)
+scale = Vector2(3.5, 3.5)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Pollutabloom (SB)4" unique_id=55770142]
+position = Vector2(10.000015, -8.000015)
+scale = Vector2(0.07333335, 0.08374992)
+texture = ExtResource("pollutabloom_tex")
+
 [node name="Cave Spider (SB)" type="StaticBody2D" parent="." unique_id=438897187]
 position = Vector2(1580, 3024)
 script = ExtResource("enemy_spawner_id")
@@ -402,6 +432,21 @@ shape = SubResource("RectangleShape2D_enemy_col")
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("14_w8v24")
 
+[node name="Sewer spider4" type="StaticBody2D" parent="." unique_id=26364338]
+position = Vector2(2449, 497)
+script = ExtResource("enemy_spawner_id")
+enemy_id = "Sewer Spider"
+spawn_id = "d2SewerSpider1"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sewer spider4" unique_id=80907726]
+position = Vector2(-1, 2)
+shape = SubResource("RectangleShape2D_enemy_col")
+
+[node name="Sprite2D" type="Sprite2D" parent="Sewer spider4" unique_id=609096949]
+position = Vector2(-1, 2)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("14_w8v24")
+
 [node name="Cave Spider (SB)2" type="StaticBody2D" parent="." unique_id=1745295974]
 position = Vector2(1580, 2994)
 script = ExtResource("enemy_spawner_id")
@@ -451,3 +496,8 @@ required_items = Array[String]([])
 position = Vector2(904, 467)
 required_items = Array[String]([])
 required_spawn_ids = Array[String](["DungeonSpider1", "SewerSpider1", "SewerSpider2", "Dungeon1Pollutabloom1"])
+
+[node name="Gate3" parent="." unique_id=977858478 instance=ExtResource("15_acojt")]
+position = Vector2(2788, 472)
+required_items = Array[String]([])
+required_spawn_ids = Array[String](["D2Pollutabloom1", "d2SewerSpider1", "D22Pollutabloom2"])
