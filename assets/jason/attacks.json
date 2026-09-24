@@ -88,5 +88,11 @@
 	"type": "physical",
 	"description": "Corrosive venom that devours and restores.",
 	"effects": ["poison", "heal_self"]
+  },
+  "Dev Smite": {
+	"power": 999999999,
+	"type": "physical",
+	"description": "Super op dev move to insta kill enemies.",
+	"effects": ["poison", "heal_self"]
   }
 }

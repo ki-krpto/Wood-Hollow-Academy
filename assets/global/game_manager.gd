@@ -10,6 +10,7 @@ var magic_effects_data: Dictionary = {}
 var current_enemy: String = ""
 var current_enemy_key: String = ""
 var defeated_enemies: Array[String] = []
+var defeated_enemy_types: Dictionary = {}
 var inventory: Array[Dictionary] = []
 var opened_chests: Array[String] = []
 var story_flags: Dictionary = {}
@@ -18,6 +19,7 @@ var active_save_slot: int = -1
 var _default_player_data: Dictionary = {}
 
 signal inventory_changed
+signal enemy_defeated(enemy_id: String, enemy_key: String)
 signal dialogue_started(lines: Array[String])
 signal dialogue_finished
 
@@ -182,6 +184,22 @@ func get_story_flag(key: String) -> bool:
 func set_story_flag(key: String, value: bool = true) -> void:
 	story_flags[key] = value
 
+func mark_enemy_defeated(enemy_id: String, enemy_key: String = "") -> void:
+	# enemy_id is the enemy type ("Cave Spider"); enemy_key is the unique
+	# node path of the defeated spawner, if there was one.
+	if not enemy_id.is_empty():
+		defeated_enemy_types[enemy_id] = int(defeated_enemy_types.get(enemy_id, 0)) + 1
+	enemy_defeated.emit(enemy_id, enemy_key)
+
+func enemy_defeat_count(enemy_id: String) -> int:
+	return int(defeated_enemy_types.get(enemy_id, 0))
+
+func total_enemy_defeats() -> int:
+	var total := 0
+	for count in defeated_enemy_types.values():
+		total += int(count)
+	return total
+
 func start_dialogue(lines: Array[String]):
 	dialogue_started.emit(lines)
 
@@ -229,6 +247,7 @@ func create_new_save(slot: int) -> bool:
 	current_enemy = ""
 	current_enemy_key = ""
 	defeated_enemies.clear()
+	defeated_enemy_types.clear()
 	inventory.clear()
 	opened_chests.clear()
 	story_flags.clear()
@@ -312,6 +331,7 @@ func save_current_slot() -> bool:
 		"player_data": player_data,
 		"inventory": inventory,
 		"defeated_enemies": defeated_enemies,
+		"defeated_enemy_types": defeated_enemy_types,
 		"opened_chests": opened_chests,
 		"story_flags": story_flags,
 		"overworld_position": {
@@ -356,6 +376,20 @@ func _apply_save_data(save_data: Dictionary) -> void:
 	else:
 		player_data = _default_player_data.duplicate(true)
 
+	# Moves are defined in player.json, but saves carry their own snapshot of
+	# the moves list from whenever they were created. Merge in any moves that
+	# were added to player.json since, so new attacks show up on old saves.
+	var default_moves: Array = _default_player_data.get("moves", [])
+	if not default_moves.is_empty():
+		var merged_moves := []
+		for move_name in player_data.get("moves", []):
+			if not merged_moves.has(move_name):
+				merged_moves.append(move_name)
+		for move_name in default_moves:
+			if not merged_moves.has(move_name):
+				merged_moves.append(move_name)
+		player_data["moves"] = merged_moves
+
 	var saved_inventory = save_data.get("inventory", [])
 	inventory.clear()
 	if typeof(saved_inventory) == TYPE_ARRAY:
@@ -368,6 +402,12 @@ func _apply_save_data(save_data: Dictionary) -> void:
 	if typeof(saved_defeated) == TYPE_ARRAY:
 		for enemy_id in saved_defeated:
 			defeated_enemies.append(str(enemy_id))
+
+	defeated_enemy_types.clear()
+	var saved_defeated_types = save_data.get("defeated_enemy_types", {})
+	if typeof(saved_defeated_types) == TYPE_DICTIONARY:
+		for enemy_type in saved_defeated_types:
+			defeated_enemy_types[str(enemy_type)] = int(saved_defeated_types[enemy_type])
 
 	var saved_opened_chests = save_data.get("opened_chests", [])
 	opened_chests.clear()

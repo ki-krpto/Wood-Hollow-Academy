@@ -155,7 +155,8 @@ func _begin_step(held: Vector2) -> bool:
 			elif collider.is_in_group("enemies"):
 				var raw_id = collider.get("enemy_id")
 				var enemy_id: String = "Pollutabloom" if raw_id == null else str(raw_id)
-				var enemy_key: String = str(collider.get_path())
+				var key_val = collider.get("defeat_key")
+				var enemy_key: String = str(key_val) if key_val != null and not str(key_val).is_empty() else str(collider.get_path())
 				_start_battle_transition(enemy_id, enemy_key, collider)
 				return false
 			elif collider.is_in_group("gates") and collider.has_method("on_blocked"):

@@ -281,25 +281,39 @@ func _on_action_pressed(action: String):
 func show_move_selection():
 	state = "selecting_move"
 	hide_action_buttons()
-	var moves = GameManager.player_data.get("moves", [])
+	var moves: Array = GameManager.player_data.get("moves", [])
 	var btn_x = left_menu_rect.position.x
 	var btn_y = left_menu_rect.position.y + 8
 	var btn_w = left_menu_rect.size.x
 	var btn_h = 34
 	var row_gap = 6
 
-	for move_name in moves:
+	# Fit every move on screen: shrink the buttons as needed, then split into
+	# two columns when even that is not enough. No move gets silently dropped.
+	var usable_h: float = (left_menu_rect.end.y - 44.0) - btn_y
+	var count: int = moves.size()
+	if count > 0:
+		btn_h = int(minf(34.0, (usable_h - (count - 1) * row_gap) / count))
+	btn_h = maxi(btn_h, 24)
+	var rows := count
+	if count > 0 and (btn_h + row_gap) * count - row_gap > usable_h:
+		rows = int(ceil(count / 2.0))
+		btn_h = int(minf(34.0, (usable_h - (rows - 1) * row_gap) / rows))
+		btn_h = maxi(btn_h, 24)
+		btn_w = (btn_w - 12.0) / 2.0
+
+	for i in count:
+		var col := int(floor(i / float(rows)))
+		var row := i % rows
+		var move_name: String = moves[i]
 		var btn = Button.new()
 		btn.text = move_name
-		btn.position = Vector2(btn_x, btn_y)
+		btn.position = Vector2(btn_x + col * (btn_w + 12.0), btn_y + row * (btn_h + row_gap))
 		btn.size = Vector2(btn_w, btn_h)
 		btn.name = "MoveBtn_" + move_name
 		apply_wood_button_style(btn)
 		btn.pressed.connect(_on_move_selected.bind(move_name))
 		add_child(btn)
-		btn_y += btn_h + row_gap
-		if btn_y > left_menu_rect.end.y - 80:
-			break
 
 	var back_btn = Button.new()
 	back_btn.text = "BACK"
@@ -748,6 +762,7 @@ func victory():
 	show_message("Victory! Gained " + str(xp) + " XP!")
 	if not GameManager.defeated_enemies.has(GameManager.current_enemy_key):
 		GameManager.defeated_enemies.append(GameManager.current_enemy_key)
+	GameManager.mark_enemy_defeated(enemy_data.get("name", GameManager.current_enemy), GameManager.current_enemy_key)
 	GameManager.current_enemy = ""
 	GameManager.current_enemy_key = ""
 	await get_tree().create_timer(2.0).timeout
