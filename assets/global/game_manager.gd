@@ -1,12 +1,15 @@
 extends Node
 
 const SAVE_SLOT_COUNT := 3
+const DEPTH_SCALE_PER_DEFEAT := 0.07
+const DEPTH_SCALE_MAX_DEFEATS := 14
 
 var player_data: Dictionary = {}
 var attacks_data: Dictionary = {}
 var enemies_data: Dictionary = {}
 var items_data: Dictionary = {}
 var magic_effects_data: Dictionary = {}
+var progression_data: Dictionary = {}
 var current_enemy: String = ""
 var current_enemy_key: String = ""
 var defeated_enemies: Array[String] = []
@@ -33,11 +36,13 @@ func load_all_data():
 	enemies_data.clear()
 	items_data.clear()
 	magic_effects_data.clear()
+	progression_data.clear()
 	load_json("res://assets/jason/player.json", player_data)
 	load_json("res://assets/jason/attacks.json", attacks_data)
 	load_json("res://assets/jason/enemies.json", enemies_data)
 	load_json("res://assets/jason/items.json", items_data)
 	load_json("res://assets/jason/magiceffects.json", magic_effects_data)
+	load_json("res://assets/jason/progression.json", progression_data)
 
 func load_json(path: String, target: Dictionary) -> Dictionary:
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -66,11 +71,76 @@ func add_xp(amount: int):
 
 func level_up():
 	player_data["level"] += 1
-	player_data["max_hp"] += 10
+	player_data["max_hp"] += 15
 	player_data["hp"] = player_data["max_hp"]
-	player_data["attack"] += 2
+	player_data["attack"] += 3
 	player_data["defense"] += 1
 	player_data["xp_to_next"] = _get_xp_for_next_level()
+	_grant_level_moves()
+
+## Teaches the player whatever the progression table says they learn at this
+## level. Moves are stored on the save so the moveset survives a reload.
+func _grant_level_moves() -> void:
+	var unlocks: Dictionary = progression_data.get("move_unlocks", {})
+	var granted: Array = player_data.get("moves", [])
+	for move_name in unlocks.get(str(int(player_data["level"])), []):
+		if not granted.has(move_name):
+			granted.append(move_name)
+	player_data["moves"] = granted
+
+## Back-fills every unlock up to the current level, so a save created before
+## these moves existed still ends up with the moveset its level has earned.
+func _grant_all_level_moves() -> void:
+	var unlocks: Dictionary = progression_data.get("move_unlocks", {})
+	var granted: Array = player_data.get("moves", [])
+	for level in range(2, int(player_data.get("level", 1)) + 1):
+		for move_name in unlocks.get(str(level), []):
+			if not granted.has(move_name):
+				granted.append(move_name)
+	player_data["moves"] = granted
+
+## Full moveset = learned moves + moves granted by carried items, deduped and
+## in a stable order. Item-granted moves are what make a weapon pick a playstyle.
+func get_player_moveset() -> Array:
+	var moves: Array = []
+	for move_name in player_data.get("moves", []):
+		if not moves.has(move_name):
+			moves.append(move_name)
+	for entry in inventory:
+		var item_data: Dictionary = get_item_data(entry.get("name", ""))
+		if int(entry.get("count", 0)) <= 0:
+			continue
+		var granted_move := str(item_data.get("move", ""))
+		if not granted_move.is_empty() and not moves.has(granted_move):
+			moves.append(granted_move)
+	return moves
+
+## Base stat plus any bonuses from carried items (weapons can grant +attack
+## without mutating the save, so dropping the item also drops the bonus).
+func get_player_stat(stat_name: String, default_value: int = 0) -> int:
+	var total := int(player_data.get(stat_name, default_value))
+	for entry in inventory:
+		if int(entry.get("count", 0)) <= 0:
+			continue
+		var item_data: Dictionary = get_item_data(entry.get("name", ""))
+		var bonus: Dictionary = item_data.get("stat_bonus", {})
+		total += int(bonus.get(stat_name, 0))
+	return total
+
+## Non-boss enemies get tougher the further the player has pushed into the
+## caves, so backtracking to an early spider stays a warm-up rather than a
+## free win. Bosses are tuned by hand and skip this multiplier.
+func get_scaled_enemy_data(enemy_name: String) -> Dictionary:
+	var data: Dictionary = get_enemy_data(enemy_name).duplicate(true)
+	if data.is_empty() or bool(data.get("boss", false)):
+		return data
+	var depth: float = 1.0 + float(mini(total_enemy_defeats(), DEPTH_SCALE_MAX_DEFEATS)) * DEPTH_SCALE_PER_DEFEAT
+	data["hp"] = int(round(float(data.get("hp", 50)) * depth))
+	data["attack"] = int(round(float(data.get("attack", 5)) * depth))
+	# Defense scales at half rate so armored enemies stay threatening without
+	# turning into unkillable walls.
+	data["defense"] = int(round(float(data.get("defense", 0)) * (1.0 + (depth - 1.0) * 0.5)))
+	return data
 
 func _get_xp_for_next_level() -> int:
 	var level_up_data = {}
@@ -120,9 +190,13 @@ func change_scene(path: String) -> void:
 	get_tree().change_scene_to_file(path)
 
 func calculate_damage(attacker_attack: int, move_power: int, defender_defense: int) -> int:
-	var base = float(move_power * attacker_attack) / float(max(1, defender_defense) * 3) + 1.0
-	var multiplier = randf_range(0.9, 1.05)
-	return max(1, int(roundi(base * multiplier)))
+	# Defense has diminishing returns, so a high-DEF enemy takes longer to kill
+	# but can never become a wall. The flat term keeps chip damage meaningful
+	# instead of decaying toward zero against heavy armor.
+	var soft_def: float = float(max(0, defender_defense)) / (1.0 + float(max(0, defender_defense)) / 14.0)
+	var base: float = float(move_power * attacker_attack) / (soft_def * 1.5 + 9.0) + 1.5
+	var multiplier: float = randf_range(0.92, 1.08)
+	return maxi(1, int(roundi(base * multiplier)))
 
 func add_item(item_name: String) -> bool:
 	var item_data = get_item_data(item_name)
@@ -389,6 +463,7 @@ func _apply_save_data(save_data: Dictionary) -> void:
 			if not merged_moves.has(move_name):
 				merged_moves.append(move_name)
 		player_data["moves"] = merged_moves
+	_grant_all_level_moves()
 
 	var saved_inventory = save_data.get("inventory", [])
 	inventory.clear()

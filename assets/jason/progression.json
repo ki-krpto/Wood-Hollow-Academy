@@ -1,0 +1,9 @@
+{
+	"_comment": "Moves the player has learned by the time they reach each level. Checked on level up; already-known moves are never duplicated.",
+	"move_unlocks": {
+		"2": ["Guard Break"],
+		"4": ["Sunder"],
+		"6": ["Cinder"],
+		"8": ["Altar Mark"]
+	}
+}

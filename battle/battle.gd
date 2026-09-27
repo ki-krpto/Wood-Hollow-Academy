@@ -15,13 +15,25 @@ var enemy_data: Dictionary = {}
 var enemy_hp: int = 0
 var enemy_max_hp: int = 0
 var enemy_attack_buff: float = 1.0
+var enemy_flat_defense_bonus: int = 0
 var player_attack_buff: int = 0
 var player_poison_turns: int = 0
+
+const PLAYER_ATTACK_BUFF_CAP := 16
+const FOCUS_ATTACK_BUFF := 6
+const POISON_MAX_HP_PCT := 0.06
+const POISON_MAX_TURNS := 3
+const DEFENSE_SHRED_CAP := 6
 
 var enemy_poison_turns: int = 0
 var player_extra_turns: int = 0
 var enemy_jolt_turns: int = 0
 var enemy_caffeiene_turns: int = 0
+var enemy_defense_shred: int = 0
+
+var is_boss: bool = false
+var boss_phase_index: int = 0
+var boss_phases: Array = []
 
 var state: String = "player_choice"
 var move_selected: String = ""
@@ -73,14 +85,27 @@ func _ready():
 	_layout_message_label()
 	_layout_player_info()
 	_connect_buttons()
-	show_message("A wild " + enemy_data.get("name", "enemy") + " appeared!")
+	if is_boss:
+		state = "boss_intro"
+		show_message("BOSS: " + enemy_data.get("description", ""))
+		show_boss_intro_banner()
+		await get_tree().create_timer(2.6).timeout
+		if state != "boss_intro":
+			return
+		state = "player_choice"
+		show_message("A wild " + enemy_data.get("name", "enemy") + " appeared!")
+	else:
+		show_message("A wild " + enemy_data.get("name", "enemy") + " appeared!")
 
 func load_enemy():
 	var enemy_name = GameManager.current_enemy
-	enemy_data = GameManager.get_enemy_data(enemy_name)
+	enemy_data = GameManager.get_scaled_enemy_data(enemy_name)
 	enemy_data["name"] = enemy_name
 	enemy_hp = enemy_data.get("hp", 50)
 	enemy_max_hp = enemy_hp
+	is_boss = bool(enemy_data.get("boss", false))
+	boss_phases = enemy_data.get("phases", [])
+	boss_phase_index = 0
 
 func _create_background_orbs():
 	bg_orbs.clear()
@@ -129,7 +154,34 @@ func _layout_enemy_display():
 		enemy_sprite.texture = load(tex_path)
 	if enemy_data.get("name", "") == "Cave Spider":
 		enemy_sprite.scale = Vector2(2, 2)
+	if is_boss:
+		enemy_sprite.scale = Vector2(5, 5)
 	enemy_sprite.position = Vector2(screen_size.x * 0.5, screen_size.y * 0.18)
+
+func show_boss_intro_banner():
+	var banner = Panel.new()
+	banner.name = "BossIntroBanner"
+	banner.set_anchors_preset(Control.PRESET_FULL_RECT)
+	banner.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var banner_style = StyleBoxFlat.new()
+	banner_style.bg_color = Color(0.25, 0.0, 0.05, 0.25)
+	banner.add_theme_stylebox_override("panel", banner_style)
+	add_child(banner)
+
+	var label = Label.new()
+	label.text = "~ BOSS ~\n" + enemy_data.get("name", "???")
+	label.set_anchors_preset(Control.PRESET_FULL_RECT)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	label.add_theme_font_size_override("font_size", 42)
+	label.add_theme_color_override("font_color", Color(1.0, 0.3, 0.35))
+	label.add_theme_color_override("font_outline_color", Color(0.1, 0.0, 0.02))
+	label.add_theme_constant_override("outline_size", 8)
+	banner.add_child(label)
+
+	var tween = create_tween()
+	tween.tween_property(banner, "modulate:a", 0.0, 1.6).set_delay(1.0)
+	tween.tween_callback(banner.queue_free)
 
 func _layout_bottom_bar():
 	var bar_y = screen_size.y * 0.69
@@ -211,7 +263,7 @@ func _layout_player_info():
 	var player_pct = float(GameManager.player_data.get("hp", 0)) / float(GameManager.player_data.get("max_hp", 100))
 	player_hp_bar.size = Vector2(200 * player_pct, 14)
 
-	player_detail_label.text = "LV." + str(GameManager.player_data.get("level", 1)) + "\nATK: " + str(GameManager.player_data.get("attack", 10)) + "\nDEF: " + str(GameManager.player_data.get("defense", 5))
+	player_detail_label.text = "LV." + str(GameManager.player_data.get("level", 1)) + "\nATK: " + str(GameManager.get_player_stat("attack", 10)) + "\nDEF: " + str(GameManager.get_player_stat("defense", 5))
 	player_detail_label.position = Vector2(right_menu_rect.position.x + 230, right_menu_rect.position.y + 12)
 
 func apply_wood_button_style(btn: Button):
@@ -281,7 +333,7 @@ func _on_action_pressed(action: String):
 func show_move_selection():
 	state = "selecting_move"
 	hide_action_buttons()
-	var moves: Array = GameManager.player_data.get("moves", [])
+	var moves: Array = GameManager.get_player_moveset()
 	var btn_x = left_menu_rect.position.x
 	var btn_y = left_menu_rect.position.y + 8
 	var btn_w = left_menu_rect.size.x
@@ -407,6 +459,13 @@ func _on_item_selected(item_name: String):
 			state = "player_choice"
 			show_action_buttons()
 			return
+		if item_data.get("attribute") == "attack_buff":
+			player_attack_buff = mini(PLAYER_ATTACK_BUFF_CAP + 8, player_attack_buff + int(item_data.get("value", 8)))
+			update_player_hp_bar()
+			show_message("Used " + item_name + "! Attack rose to +" + str(player_attack_buff) + " for this battle!")
+			await get_tree().create_timer(1.0).timeout
+			execute_enemy_turn(1.0)
+			return
 		if item_data.get("attribute") == "status_effect":
 			var effect_name = str(item_data.get("effect", ""))
 			var effect_data = GameManager.get_magic_effect_data(effect_name)
@@ -438,6 +497,11 @@ func execute_defend():
 	execute_enemy_turn(0.5)
 
 func execute_run():
+	if is_boss:
+		show_message("No escape -- RATRON 3000's wheels are faster than your legs!")
+		await get_tree().create_timer(1.2).timeout
+		execute_enemy_turn(1.0)
+		return
 	if randi() % 2 == 0:
 		show_message("You fled successfully!")
 		await get_tree().create_timer(1.0).timeout
@@ -449,17 +513,29 @@ func execute_run():
 
 func execute_player_attack(move_name: String):
 	var attack_data = GameManager.get_attack_data(move_name)
-	var atk = GameManager.player_data.get("attack", 10) + player_attack_buff
-	var def = enemy_data.get("defense", 0)
+	var atk = GameManager.get_player_stat("attack", 10) + player_attack_buff
+	var def = maxi(0, int(enemy_data.get("defense", 0)) + enemy_flat_defense_bonus - enemy_defense_shred)
 	var power = attack_data.get("power", 0)
-	var dmg = GameManager.calculate_damage(atk, power, def)
+	var effects: Array = attack_data.get("effects", [])
+
+	# Scholar's fire cuts through armor: halve the target's defense for the hit.
+	var def_for_hit := def
+	if effects.has("magic_pierce"):
+		def_for_hit = int(def * 0.5)
+	var dmg = GameManager.calculate_damage(atk, power, def_for_hit)
 
 	if attack_data.get("type") == "status":
-		handle_status_effect(attack_data.get("effects", []), true)
+		handle_status_effect(effects, true, move_name)
 	else:
 		enemy_hp = max(0, enemy_hp - dmg)
 		update_enemy_hp_bar()
 		show_message(GameManager.player_data.get("name", "You") + " used " + move_name + "! Dealt " + str(dmg) + " damage!")
+		if effects.has("lifesteal"):
+			var drained := int(dmg * 0.5)
+			if drained > 0:
+				GameManager.heal_player(drained)
+				update_player_hp_bar()
+				show_message("The Mark drinks the spirit! Restored " + str(drained) + " HP!")
 
 	await get_tree().create_timer(1.0).timeout
 
@@ -467,8 +543,14 @@ func execute_player_attack(move_name: String):
 		victory()
 		return
 
-	if attack_data.get("effects", []).has("poison"):
-		handle_status_effect(["poison"], false, move_name)
+	# On-hit riders that aren't part of the damage number itself. Previously only
+	# poison was applied here, so any other on-hit effect silently did nothing.
+	var riders: Array = []
+	for effect_name in ["lower_defense", "poison"]:
+		if effects.has(effect_name):
+			riders.append(effect_name)
+	if not riders.is_empty():
+		handle_status_effect(riders, false, move_name)
 
 	if enemy_poison_turns > 0:
 		await execute_enemy_poison_tick()
@@ -485,6 +567,7 @@ func execute_player_attack(move_name: String):
 
 func execute_enemy_turn(damage_mult: float = 1.0):
 	state = "enemy_turn"
+	await check_boss_phase()
 	var wait_time := 1.0
 	var attack_count := 1
 	var skip_attack := false
@@ -554,13 +637,13 @@ func _execute_single_enemy_attack(damage_mult: float) -> void:
 	var move_name = pick_enemy_move()
 	var attack_data = GameManager.get_attack_data(move_name)
 	var atk = enemy_data.get("attack", 5) * enemy_attack_buff
-	var def = GameManager.player_data.get("defense", 5)
+	var def = GameManager.get_player_stat("defense", 5)
 	var power = attack_data.get("power", 0)
 	var dmg = GameManager.calculate_damage(atk, power, def)
 	dmg = int(ceil(dmg * damage_mult))
 
 	if attack_data.get("type") == "status":
-		handle_status_effect(attack_data.get("effects", []), false)
+		handle_status_effect(attack_data.get("effects", []), false, move_name)
 	else:
 		var player_hp = GameManager.player_data.get("hp", 0)
 		player_hp = max(0, player_hp - dmg)
@@ -588,7 +671,7 @@ func _apply_enemy_magic_effect(effect_name: String, turns: int) -> void:
 			show_message("Used item, but nothing happened.")
 
 func execute_poison_tick():
-	var poison_dmg = max(1, GameManager.player_data.get("max_hp", 100) / 10)
+	var poison_dmg = max(1, int(GameManager.player_data.get("max_hp", 100) * POISON_MAX_HP_PCT))
 	var hp = GameManager.player_data.get("hp", 0)
 	hp = max(0, hp - poison_dmg)
 	GameManager.player_data["hp"] = hp
@@ -605,7 +688,7 @@ func execute_poison_tick():
 	show_action_buttons()
 
 func execute_enemy_poison_tick():
-	var poison_dmg = max(1, enemy_max_hp / 10)
+	var poison_dmg = max(1, int(enemy_max_hp * POISON_MAX_HP_PCT))
 	enemy_hp = max(0, enemy_hp - poison_dmg)
 	update_enemy_hp_bar()
 	spawn_magic_particles("poison")
@@ -618,14 +701,17 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 		match effect:
 			"raise_attack":
 				if is_player:
-					player_attack_buff += 8
-					show_message("You focus your mind! Attack rose!")
+					if player_attack_buff >= PLAYER_ATTACK_BUFF_CAP:
+						show_message("You are already as focused as you can be.")
+					else:
+						player_attack_buff = mini(PLAYER_ATTACK_BUFF_CAP, player_attack_buff + FOCUS_ATTACK_BUFF)
+						show_message("You focus your mind! Attack rose to +" + str(player_attack_buff) + "!")
 				else:
 					enemy_attack_buff *= 1.25
 					show_message(enemy_data.get("name", "Enemy") + " plots evilly! Attack rose!")
 			"lower_attack":
 				if is_player:
-					player_attack_buff -= 5
+					player_attack_buff = maxi(0, player_attack_buff - 5)
 					show_message("Your attack was lowered!")
 				else:
 					enemy_attack_buff *= 0.75
@@ -640,14 +726,33 @@ func handle_status_effect(effects: Array, is_player: bool, source_move: String =
 					enemy_hp = min(enemy_hp + heal, enemy_max_hp)
 					update_enemy_hp_bar()
 					show_message(enemy_data.get("name", "Enemy") + " used " + source_move + "! Restored " + str(heal) + " HP!")
+			"lower_defense":
+				if not is_player:
+					enemy_defense_shred = mini(DEFENSE_SHRED_CAP, enemy_defense_shred + 3)
+					show_message(enemy_data.get("name", "Enemy") + "'s guard breaks! Defense lowered!")
 			"poison":
 				if is_player:
-					player_poison_turns += 3
+					player_poison_turns = mini(POISON_MAX_TURNS, player_poison_turns + 3)
 					show_message("You've been poisoned! You'll take damage each turn!")
 				else:
-					enemy_poison_turns += 3
+					enemy_poison_turns = mini(POISON_MAX_TURNS, enemy_poison_turns + 3)
 					spawn_magic_particles("poison")
 					show_message("The enemy is poisoned!")
+
+func check_boss_phase():
+	if not is_boss or boss_phases.is_empty():
+		return
+	while boss_phase_index < boss_phases.size():
+		var phase: Dictionary = boss_phases[boss_phase_index]
+		var threshold: float = float(phase.get("at_hp_pct", 0.5))
+		if float(enemy_hp) / float(max(1, enemy_max_hp)) > threshold:
+			break
+		boss_phase_index += 1
+		enemy_attack_buff *= float(phase.get("attack_multiplier", 1.0))
+		enemy_flat_defense_bonus += int(phase.get("defense_change", 0))
+		spawn_magic_particles(str(phase.get("particles", "poison")))
+		show_message(str(phase.get("message", enemy_data.get("name", "The boss") + " grows stronger!")))
+		await get_tree().create_timer(2.0).timeout
 
 func pick_enemy_move() -> String:
 	var moves = enemy_data.get("moves", {})

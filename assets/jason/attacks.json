@@ -8,8 +8,38 @@
   "Focus": {
 	"power": 0,
 	"type": "status",
-	"description": "Focus your mind, raising your attack.",
+	"description": "Focus your mind, raising your attack. Stacks, but only so far.",
 	"effects": ["raise_attack"]
+  },
+  "Guard Break": {
+	"power": 8,
+	"type": "physical",
+	"description": "Martial form drilled into every student. Shatters the target's guard and lowers its defense.",
+	"effects": ["lower_defense"]
+  },
+  "Sunder": {
+	"power": 18,
+	"type": "physical",
+	"description": "A committed overhead cleave, taught in the academy's advanced blades class.",
+	"effects": []
+  },
+  "Cinder": {
+	"power": 13,
+	"type": "magic",
+	"description": "A first-year cantrip. Scholar's fire bites through armor as if it weren't there.",
+	"effects": ["magic_pierce"]
+  },
+  "Altar Mark": {
+	"power": 12,
+	"type": "physical",
+	"description": "Channel the rune on your wrist. The spirit of the fallen feeds you as it refines your body.",
+	"effects": ["lifesteal"]
+  },
+  "Dull Sword Slash": {
+	"power": 12,
+	"type": "physical",
+	"description": "Not much, but it is yours, and you have used it your whole life.",
+	"effects": []
   },
   "Swoop": {
 	"power": 8,
@@ -88,6 +118,36 @@
 	"type": "physical",
 	"description": "Corrosive venom that devours and restores.",
 	"effects": ["poison", "heal_self"]
+  },
+  "Rat-a-tat Cannons": {
+	"power": 10,
+	"type": "physical",
+	"description": "Scrap-mounted cannons rattle off a burst of pellets.",
+	"effects": []
+  },
+  "Servo Tail Lash": {
+	"power": 14,
+	"type": "physical",
+	"description": "A hydraulic tail whips out from the mech's frame.",
+	"effects": []
+  },
+  "Toxic Cheese Fumes": {
+	"power": 5,
+	"type": "physical",
+	"description": "The mech vents eye-watering fumes of improperly aged cheese.",
+	"effects": ["poison"]
+  },
+  "Cheese Fondue": {
+	"power": 6,
+	"type": "physical",
+	"description": "Molten cheese splashes over you while the rat snacks to patch its mech.",
+	"effects": ["poison", "heal_self"]
+  },
+  "Overclock": {
+	"power": 0,
+	"type": "status",
+	"description": "The mech redlines its engines. The rat cackles.",
+	"effects": ["raise_attack"]
   },
   "Dev Smite": {
 	"power": 999999999,

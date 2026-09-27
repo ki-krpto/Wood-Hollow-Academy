@@ -1,11 +1,64 @@
 {
+  "Cave Bat": {
+	"hp": 30,
+	"attack": 7,
+	"defense": 1,
+	"xp_reward": 20,
+	"image": "bat.png",
+	"description": "Screechy and hard to hit. Drawn up here by the Altar's leaking mana.",
+	"moves": {
+	  "Chomp": 50,
+	  "Swoop": 40,
+	  "Evil Plot": 10
+	}
+  },
+  "Cave Spider": {
+	"hp": 42,
+	"attack": 9,
+	"defense": 2,
+	"xp_reward": 30,
+	"image": "cave_spider.webp",
+	"description": "A very scawy spider. Its fangs carry a little Altar residue.",
+	"moves": {
+	  	"Venomous Bite": 30,
+		"Toxic Lash": 20,
+		"Strike": 50
+ 	}
+	},
+  "Sewer Spider": {
+	"hp": 52,
+	"attack": 11,
+	"defense": 3,
+	"xp_reward": 40,
+	"image": "BigSpider.png",
+	"description": "A grimy spider lurking under the academy. Its bite stings twice.",
+	"moves": {
+		"Venomous Bite": 35,
+		"Toxic Lash": 20,
+		"Strike": 45
+	}
+  },
+  "Pollutabloom": {
+	"hp": 62,
+	"attack": 12,
+	"defense": 3,
+	"xp_reward": 50,
+	"image": "Pollutabloom.png",
+	"description": "A toxic plant that has been feeding on raw mana seeping through the stone.",
+	"moves": {
+		"Chomp": 50,
+		"Pollutinate": 25,
+		"Evil Plot": 15,
+		"Bloom Swap": 10
+	}
+  },
   "Ryan Gosling": {
-	"hp": 100,
-	"attack": 16,
-	"defense": 6,
+	"hp": 80,
+	"attack": 13,
+	"defense": 4,
 	"xp_reward": 100,
 	"image": "ryan.jpg",
-	"description": "He's just Ken (and very dangerous).",
+	"description": "He's just Ken (and very dangerous). Drifted down with the other refugees and never went back.",
 	"moves": {
 	  "Strike": 40,
 	  "Swoop": 30,
@@ -13,71 +66,44 @@
 	  "Chomp": 10
 	}
   },
-  "Cave Bat": {
-	"hp": 40,
-	"attack": 8,
-	"defense": 2,
-	"xp_reward": 15,
-	"image": "bat.png",
-	"description": "Screechy and hard to hit.",
-	"moves": {
-	  "Chomp": 50,
-	  "Swoop": 40,
-	  "Evil Plot": 10
-	}
-  },
   "Limestone Golem": {
-	"hp": 130,
-	"attack": 20,
-	"defense": 8,
-	"xp_reward": 250,
-	"image": "Limestone_golem.webp",
-	"description": "A literal wall of pain.",
-	"moves": {
-	  "Stoney Punch": 50,
-	  "Iron Slam": 25,
-	  "Shardy Intention": 15,
-	  "Rerocked": 10
-	}
-  },
-  "Pollutabloom": {
-	"hp": 80,
-	"attack": 14,
+	"hp": 105,
+	"attack": 13,
 	"defense": 5,
-	"xp_reward": 60,
-	"image": "Pollutabloom.png",
-	"description": "A toxic plant that can poison you.",
+	"xp_reward": 155,
+	"image": "Limestone_golem.webp",
+	"description": "A literal wall of pain. It stands in the last doorway before the deep dark.",
 	"moves": {
-	  "Chomp": 50,
-	  "Pollutinate": 25,
-	  "Evil Plot": 15,
-	  "Bloom Swap": 10
+		"Stoney Punch": 50,
+		"Iron Slam": 25,
+		"Shardy Intention": 15,
+		"Rerocked": 10
 	}
   },
-  "Cave Spider": {
-	"hp": 55,
-	"attack": 10,
-	"defense": 3,
-	"xp_reward": 25,
-	"image": "cave_spider.webp",
-	"description": "A very scawy spider",
+  "Ratron 3000": {
+	"hp": 320,
+	"attack": 20,
+	"defense": 6,
+	"xp_reward": 400,
+	"image": "BossArea1.png",
+	"boss": true,
+	"description": "A rat piloting a mech suit welded from academy scrap. The cheese is a power source. Do not ask.",
 	"moves": {
-	  	"Venomous Bite": 30,
-		"Toxic Lash": 20,
-		"Strike": 50
- 		}
+		"Rat-a-tat Cannons": 20,
+		"Servo Tail Lash": 20,
+		"Chomp": 15,
+		"Toxic Cheese Fumes": 15,
+		"Cheese Fondue": 15,
+		"Overclock": 15
 	},
-  "Sewer Spider": {
-	"hp": 65,
-	"attack": 12,
-	"defense": 4,
-	"xp_reward": 40,
-	"image": "BigSpider.png",
-	"description": "A grimy spider lurking under the town. Its bite stings twice.",
-	"moves": {
-		"Venomous Bite": 35,
-		"Toxic Lash": 20,
-		"Strike": 45
-	}
+	"phases": [
+		{
+			"at_hp_pct": 0.5,
+			"message": "Armor plating blasts off! RATRON 3000 whirs into OVERCLOCK MODE -- the rat inside is FURIOUS!",
+			"attack_multiplier": 1.35,
+			"defense_change": 2,
+			"particles": "caffeiene"
+		}
+	]
   }
 }

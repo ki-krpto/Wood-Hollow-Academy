@@ -24,6 +24,13 @@
 		"value": 50.0,
 		"image": "healthPot.webp"
 	},
+	"Whetstone": {
+		"description": "Grinds a blunted edge back to biting. Raises attack by 8 for the rest of this battle.",
+		"type": "combat_buff",
+		"attribute": "attack_buff",
+		"value": 8.0,
+		"image": "jolt_flask.png"
+	},
 	"Jolt Flask": {
 		"description": "Shocks the enemy: jittery actions, possible double turns, and chip damage each turn.",
 		"type": "combat_buff",
@@ -41,6 +48,47 @@
 		"turns": 3.0,
 		"value": 0.0,
 		"image": "caffeiene_capsule.png"
+	},
+	"Dull Sword": {
+		"description": "A dull iron sword used by youth in the capital. The pommel reads 'Property of the Royal Recruits.' Grants the move: Dull Sword Slash.",
+		"type": "weapon",
+		"attribute": "grants_move",
+		"move": "Dull Sword Slash",
+		"stat_bonus": {"attack": 2},
+		"value": 0.0,
+		"image": "quick_sheath.png"
+	},
+	"Ember Shard": {
+		"description": "A shard of crystallized mana drawn from a Scholar's cantrip. It never quite cools. Grants the move: Cinder.",
+		"type": "weapon",
+		"attribute": "grants_move",
+		"move": "Cinder",
+		"stat_bonus": {"magic": 3},
+		"value": 0.0,
+		"image": "jolt_flask.png"
+	},
+	"Nutcracker Blade": {
+		"description": "Salvaged from some unfortunate snack in the larder. Heavy, awful, and it hits like falling masonry. Grants the move: Sunder.",
+		"type": "weapon",
+		"attribute": "grants_move",
+		"move": "Sunder",
+		"stat_bonus": {"attack": 1, "defense": -1},
+		"value": 0.0,
+		"image": "quick_sheath.png"
+	},
+	"Scroll of Mending": {
+		"description": "A preserved healing cantrip. Restores 45 health.",
+		"type": "healing",
+		"attribute": "health_restore",
+		"value": 45.0,
+		"image": "scroll.png"
+	},
+	"Stamina Draught": {
+		"description": "Bitter academy brew. Restores 80 health.",
+		"type": "healing",
+		"attribute": "health_restore",
+		"value": 80.0,
+		"image": "super_health_potion.png"
 	},
 	"The Scroll": {
 		"description": "Follow the path laid before thee, and let thy steps carry thee onward, for within the kingdom there awaiteth peace and prosperity.",
