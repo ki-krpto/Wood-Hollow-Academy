@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://c5y2hfrtidsxe" path="res://assets/maps/gate.tscn" id="1_8yegx"]
 [ext_resource type="Texture2D" uid="uid://c3ps7fap2j2sp" path="res://assets/img/SmallerWater.jpg" id="1_ihv6w"]
 [ext_resource type="Texture2D" uid="uid://bqoartxrkqgly" path="res://assets/img/tiles/rock.png" id="2_ft6o4"]
+[ext_resource type="Texture2D" uid="uid://oaerlqmj25wu" path="res://assets/img/tiles/cobble1.png" id="3_d6n3a"]
+[ext_resource type="Texture2D" uid="uid://dybtkdjptuaqq" path="res://Stones.png" id="5_mmt4v"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_8yegx"]
 load_path = "res://.godot/imported/tileset.png-8167248f568e563a58c41ebac516fb37.ctex"
@@ -26,11 +28,23 @@ texture = ExtResource("2_ft6o4")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mmt4v"]
+texture = ExtResource("3_d6n3a")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ft6o4"]
 texture = ExtResource("1_ihv6w")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vk2ei"]
+texture = ExtResource("5_mmt4v")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
 
 [resource]
 tile_size = Vector2i(32, 32)
@@ -39,3 +53,6 @@ sources/0 = SubResource("TileSetAtlasSource_c3ixkrOP_Rs")
 sources/4 = SubResource("TileSetAtlasSource_ft6o4")
 sources/1 = SubResource("TileSetScenesCollectionSource_ft6o4")
 sources/2 = SubResource("TileSetAtlasSource_d6n3a")
+sources/3 = SubResource("TileSetAtlasSource_mmt4v")
+sources/8 = SubResource("TileSetAtlasSource_vk2ei")
+tile_proxies/coords_level = [[5, Vector2i(0, 0)], [8, Vector2i(0, 0)], [6, Vector2i(0, 0)], [8, Vector2i(1, 0)], [7, Vector2i(0, 0)], [8, Vector2i(2, 0)]]

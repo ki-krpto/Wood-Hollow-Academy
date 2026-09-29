@@ -514,7 +514,7 @@ func execute_run():
 func execute_player_attack(move_name: String):
 	var attack_data = GameManager.get_attack_data(move_name)
 	var atk = GameManager.get_player_stat("attack", 10) + player_attack_buff
-	var def = maxi(0, int(enemy_data.get("defense", 0)) + enemy_flat_defense_bonus - enemy_defense_shred)
+	var def: int = maxi(0, int(enemy_data.get("defense", 0)) + enemy_flat_defense_bonus - enemy_defense_shred)
 	var power = attack_data.get("power", 0)
 	var effects: Array = attack_data.get("effects", [])
 
@@ -637,7 +637,7 @@ func _execute_single_enemy_attack(damage_mult: float) -> void:
 	var move_name = pick_enemy_move()
 	var attack_data = GameManager.get_attack_data(move_name)
 	var atk = enemy_data.get("attack", 5) * enemy_attack_buff
-	var def = GameManager.get_player_stat("defense", 5)
+	var def: int = GameManager.get_player_stat("defense", 5)
 	var power = attack_data.get("power", 0)
 	var dmg = GameManager.calculate_damage(atk, power, def)
 	dmg = int(ceil(dmg * damage_mult))
