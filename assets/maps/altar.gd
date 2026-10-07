@@ -37,7 +37,10 @@ func _start_legend_dialogue() -> void:
 func _rest() -> void:
 	GameManager.player_data["hp"] = GameManager.player_data.get("max_hp", 100)
 	_show_toast("The altar's warmth washes over you. HP fully restored.")
-	GameManager.end_dialogue()
+	# Defer so player.gd's `await GameManager.dialogue_finished` (registered
+	# right after interact() returns) doesn't miss this emission. Emitting
+	# synchronously here would leave `interacting = true` forever, freezing movement.
+	GameManager.call_deferred("end_dialogue")
 
 func _grant_scroll() -> void:
 	GameManager.add_item(scroll_item)
