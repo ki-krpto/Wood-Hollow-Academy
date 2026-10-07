@@ -152,7 +152,7 @@ func _layout_enemy_display():
 	var tex_path = "res://assets/img/" + enemy_data.get("image", "")
 	if ResourceLoader.exists(tex_path):
 		enemy_sprite.texture = load(tex_path)
-	if enemy_data.get("name", "") == "Cave Spider":
+	if enemy_data.get("name", "") in ["Cave Spider", "Sewer Spider"]:
 		enemy_sprite.scale = Vector2(2, 2)
 	if is_boss:
 		enemy_sprite.scale = Vector2(5, 5)

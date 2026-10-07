@@ -31,7 +31,11 @@ var _last_hint_ms: int = -10000
 func _ready() -> void:
 	add_to_group("gates")
 	GameManager.enemy_defeated.connect(_on_enemy_defeated)
+	GameManager.inventory_changed.connect(_on_inventory_changed)
 	_check_should_open(false)
+
+func _on_inventory_changed() -> void:
+	_check_should_open(true)
 
 func _on_enemy_defeated(_enemy_id: String, _enemy_key: String) -> void:
 	_check_should_open(true)
@@ -123,6 +127,11 @@ func open_gate(announce: bool = true) -> void:
 		show_toast(open_message)
 
 func on_blocked() -> void:
+	if opened:
+		return
+	# Re-check here too, so bumping the gate right after picking up the
+	# required item opens it even if a signal was missed.
+	_check_should_open()
 	if opened:
 		return
 	var now := Time.get_ticks_msec()

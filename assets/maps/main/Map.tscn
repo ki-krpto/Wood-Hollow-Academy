@@ -551,7 +551,7 @@ shape = SubResource("RectangleShape2D_a5uyu")
 
 [node name="Gate" parent="." unique_id=1434469894 instance=ExtResource("15_acojt")]
 position = Vector2(932, 3251)
-required_items = Array[String](["Scroll"])
+required_items = Array[String](["The Scroll"])
 
 [node name="Gate2" parent="." unique_id=320193156 instance=ExtResource("15_acojt")]
 position = Vector2(904, 467)
